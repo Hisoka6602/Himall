@@ -1,0 +1,719 @@
+﻿@model Himall.CommonModel.DistributionBusionessCardConfigModel
+@{
+    /**/
+    var siteSetting = Himall.Application.SiteSettingApplication.SiteSettings;
+    //
+    string strIsBindOfficialAccounts = (siteSetting.IsOpenH5 && !string.IsNullOrWhiteSpace(siteSetting.WeixinAppId) && !string.IsNullOrWhiteSpace(siteSetting.WeixinAppSecret)) ? "1" : "0";
+
+    //链接
+    string strLinkUrl = Himall.Application.SiteSettingApplication.GetUrlHttpOrHttps(Himall.Application.SiteSettingApplication.SiteSettings.SiteUrl + "/m-wap/Distribution/SplittinRule").Replace("//m-wap", "/m-wap");
+}
+<style type="text/css">
+    input[type="color"] { width: 40px; border: none; vertical-align: middle; }
+
+    .upFile .adds { width: 100px; height: 100px; color: #FFF; position: absolute; top: 0px; text-align: center; line-height: 100px; font-size: 28px; font-weight: 600; }
+
+    .upFile .bgImg { border: 2px dashed #FF8182; width: 100px; height: 100px; margin-bottom: 5px; margin-right: 10px; cursor: pointer; }
+
+    .upFile img { width: 100%; height: 100%; }
+
+    .upFile .adds input { position: absolute; top: 0px; width: 100px; height: 100px; display: block; overflow: hidden; text-indent: -9999px; opacity: 0; cursor: pointer; }
+
+    .Vjscolor { display: none; }
+
+    .jscolor { width: 40px; font-size: 12px; line-height: 23px; border: none; vertical-align: middle; color: #eee; }
+
+    .resetSize { width: 90px; margin: 0px; padding: 0px; }
+
+
+
+
+
+
+    .edit-text-left { float: left; }
+
+    .mobile-border { width: 352px; border: 1px solid #ccc; border-radius: 15px; }
+
+    .mobile-d { width: 320px; padding: 13px 15px 0; box-sizing: content-box; }
+
+        .mobile-d i { display: block; width: 98px; height: 34px; margin: 0 auto 13px; background: url(../../Areas/Admin/Content/Images/modules.png) no-repeat 0 -74px; }
+
+        .mobile-d .mobile-title { width: 318px; height: 32px; padding-top: 32px; background: url(../../Areas/Admin/Content/Images/modules.png) no-repeat 0 0; color: #fff; font-size: 18px; text-align: center; overflow: hidden; border: 1px solid #22292C; border-bottom: none; cursor: pointer; box-sizing: content-box; }
+
+    .edit-text-right { float: left; margin-left: 30px; }
+
+    /*掌柜名片设置*/
+    .exitbusinesscard { position: relative; width: 320px; padding-top: 220px; height: 490px; background-color: #F5F5F5; }
+
+        .exitbusinesscard .img { position: absolute; top: 20px; left: 28%; padding: 1px; border: 1px dashed transparent; }
+
+            .exitbusinesscard .img.border { border: 1px dashed #8F8F8F; }
+
+            .exitbusinesscard .img img { display: block; border-radius: 50%; }
+
+        .exitbusinesscard h1 { position: absolute; top: 170px; left: 44%; font-size: 14px; }
+
+            .exitbusinesscard h1 strong,
+            .exitbusinesscard h3 strong { font-weight: normal; color: #D34619; margin-left: 3px; margin-right: 3px; }
+
+        .exitbusinesscard h3 { position: absolute; top: 190px; left: 21%; font-size: 14px; }
+
+        .exitbusinesscard .cardqrcode { padding: 3px 20px; height: 270px; }
+
+            .exitbusinesscard .cardqrcode .cardimg { position: absolute; top: 245px; left: 75px; padding: 1px; border: 1px dashed transparent; }
+
+                .exitbusinesscard .cardqrcode .cardimg.border { border: 1px dashed #8F8F8F; }
+
+            .exitbusinesscard .cardqrcode .qrcodetext1 { position: absolute; top: 425px; left: 80px; }
+
+            .exitbusinesscard .cardqrcode .qrcodetext2 { position: absolute; top: 455px; left: 50px; }
+
+            .exitbusinesscard .cardqrcode .infotitle { position: absolute; top: 225px; left: 20px; }
+
+            .exitbusinesscard .cardqrcode .cardimg span,
+            .exitbusinesscard .img span { position: absolute; width: 8px; height: 8px; background-color: #8F8F8F; display: none; }
+
+                .exitbusinesscard .cardqrcode .cardimg span.left,
+                .exitbusinesscard .img span.left { left: -5px; top: 50%; margin-top: -5px; cursor: e-resize; }
+
+                .exitbusinesscard .cardqrcode .cardimg span.top,
+                .exitbusinesscard .img span.top { top: -5px; left: 50%; margin-left: -5px; cursor: n-resize; }
+
+                .exitbusinesscard .cardqrcode .cardimg span.right,
+                .exitbusinesscard .img span.right { right: -5px; top: 50%; margin-top: -5px; cursor: e-resize; }
+
+                .exitbusinesscard .cardqrcode .cardimg span.bottom,
+                .exitbusinesscard .img span.bottom { bottom: -5px; left: 50%; margin-left: -5px; cursor: n-resize; }
+
+    .mobile-footer { margin: 10px auto; width: 62px; height: 62px; background: url(../../Areas/Admin/Content/Images/modules.png) no-repeat -253px -70px; }
+
+    .edit-text-right .edit-inner { position: relative; width: 600px; padding: 30px 20px; margin-bottom: 15px; border: 1px solid #E7E6EB; background-color: #F4F5F9; font-size: 14px; border-radius: 10px; }
+
+        .edit-text-right .edit-inner:before,
+        .edit-text-right .edit-inner:after { position: absolute; left: -16px; top: 30px; display: block; width: 9px; height: 18px; font-size: 32px; color: #F4F5F9; z-index: 100; font-family: "simsun"; content: "◆"; }
+
+        .edit-text-right .edit-inner:after { color: #E7E6EB; left: -17px; z-index: 10; }
+
+    .formitemtitle em { line-height: 32px; color: red; font-style: normal; }
+
+    .formitemtitle { padding-right: 5px; float: left; }
+
+    .resetSize { width: 90px; margin: 0px; padding: 0px; }
+
+    .form-horizontal { background-color: #F4F5F9; padding: 0; }
+
+        .form-horizontal .form-group { margin-bottom: 15px; }
+
+    .form-inline .form-group { margin-bottom: 0; }
+
+    .edit-inner label em { color: #FE0024; }
+
+    .edit-inner label { margin-bottom: 5px; }
+
+    .edit-inner #smallpic { margin-bottom: 5px; }
+
+    .edit-inner .btn.btn-primary.form-control { width: auto; }
+
+    .col-xs-9 { padding-left: 15px; }
+
+    .col-sm-12 { padding-left: 0; }
+
+    small { font-size: 12px; display: block; color: #999; line-height: 24px; }
+
+    .upload-img-box { float: left; position: relative; width: 50px; height: 50px; margin-left: 10px; margin-bottom: 5px; }
+
+        .upload-img-box img { width: 100%; height: 100%; border: none; }
+
+        .upload-img-box .glyphicon-plus::before { content: " "; }
+
+        .upload-img-box .remove-img { position: absolute; top: 0px; right: 0px; display: none; width: 100%; height: 50px; line-height: 50px; text-align: center; cursor: pointer; background: url(../../Areas/Admin/Content/Images/upload-img.png) no-repeat; z-index: 11; }
+
+        .upload-img-box img:hover .remove-img { display: block; }
+
+    .img-upload-btn { color: #fc9a18; background: url(../../Areas/Admin/Content/Images/upload-img.png) no-repeat; width: 50px; height: 50px; line-height: 50px; text-align: center; font-size: 20px; border: none; cursor: pointer; top: 0; z-index: 6; }
+
+    .form-group span { padding-left: 8px; color: #333; }
+
+        .form-group span em { color: red; font-style: normal; font-size: 14px; }
+
+    .btn { font-size: 14px; padding: 5px 20px; border-radius: 3px; vertical-align: top; }
+
+    .btn-primary { background: #0091ea; border-color: #0091ea; }
+
+    .form-control { font-size: 12px; }
+
+    textarea { resize: none !important; }
+
+    .form-control { padding: 0 10px; border: 1px solid #e4e4e4; height: 32px; border-radius: 3px; box-shadow: none; -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s; -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
+</style>
+
+<div class="container">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li><a href="@Url.Action("BaseConfig")">基本设置</a></li>
+        <li><a href="@Url.Action("PageConfig")">页面设置</a></li>
+        <li><a href="@Url.Action("RenameConfig")">分销关键字重命名</a></li>
+        <li class="active"><a href="@Url.Action("BusinessCardConfig")">分销名片</a></li>
+    </ul>
+    <div class="queryDiv">
+        <img class="queryImg" src="/Images/ic_query.png">
+        <div class="tipBox">
+            <h5>温馨提示:</h5>
+            <ul>
+                <li><span>平台可在此设置分销功能的基本设置。平台开启分销后，商家可以添加分销商品并设置分佣比例，并且佣金由商家承担。（此部分佣金将会在平台与商家之间结算时，从商家应结佣金中扣除）</span></li>
+                <li><span>为规避可能存在的风险，平台可以重命名分销员的小店菜单名称。</span></li>
+            </ul>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("SavaBusinessCardConfig", "DistributionConfig", FormMethod.Post))
+    {
+        <div id="mainhtml">
+
+            <div class="dataarea mainwidth databody">
+                <div class="datafrom">
+                    <div class="edit-text-left">
+                        <div class="mobile-border">
+                            <div class="mobile-d">
+                                <div class="mobile-header">
+                                    <i></i>
+                                    <div class="mobile-title">我的名片</div>
+                                </div>
+                                <div class="upshop-view">
+                                    <div class="exitbusinesscard" style="overflow: hidden; background: url(../../Areas/Admin/Content/Images/202001031809325134990.jpg)  center center / cover no-repeat;;">
+                                        <div style="z-index: 0; left: 0px; top: 0px;" id="HeadPanel" class="touchmove img">
+                                            <img style="width: 84px; height: 84px;" src="~/Areas/Admin/Content/Images/headLogo.png" width="135">
+                                            <span style="display: none;" class="left"></span>
+                                            <span style="display: none;" class="top"></span>
+                                            <span style="display: none;" class="right"></span>
+                                            <span style="display: none;" class="bottom"></span>
+                                        </div>
+                                        <h1 class="touchmove MyUserName" id="UnamePanel" style="font-size: 12px; left: 140px; top: 152px; color: rgb(244, 38, 6);"><strong>昵称</strong></h1>
+                                        <h3 class="touchmove ShopName" id="DescPanel" style="font-size: 12px; left: 120px; top: 363px; padding: 0px 12px; color: rgb(255, 255, 255);">成为合伙人</h3>
+                                        <div class="cardqrcode" id="CodePanel">
+                                            <div class="touchmove cardimg" style="left: 191px; top: 365px;">
+                                                <img src="@(ViewBag.QcCode)" width="200" style="width: 125px; height: 125px;">
+                                                <span style="display: none;" class="left"></span>
+                                                <span style="display: none;" class="top"></span>
+                                                <span style="display: none;" class="right"></span>
+                                                <span style="display: none;" class="bottom"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mobile-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edit-text-right">
+                        <div class="edit-inner" style="border-radius: 5px; width: 560px; margin-top: 70px;">
+                            <ul>
+                                <li>
+                                    <br>
+                                    <span class="formitemtitle">链接地址：</span>
+                                    <div class="input-group">
+                                        <span id="copyContent">
+                                            <input name="linkUrl" type="text" value="@(strLinkUrl)" readonly="readonly" id="linkUrl" class="form_input form-control" style="width:350px;">
+
+                                        </span>
+                                        <input type="button" class="btn btn-default" value="复制" id="btnCopy">
+                                    </div>
+                                </li>
+                            </ul>
+                            <strong style="color: red; font-weight: normal; display: block; margin-bottom: 30px;">注意：可以使用鼠标拖动左图中各元素,进行位置调整</strong>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-xs-2 pad resetSize control-label" for="setdate">默认头像：</label>
+                                    <div class="form-inline journal-query col-xs-9">
+                                        <div class="form-group pt3">
+                                            <label class="middle mr10">
+                                                <input type="radio" checked="checked" name="UserHeader" value="0">使用会员头像
+                                            </label>
+                                            <label class="middle mr10" style="padding-left:5px;">
+                                                <input type="radio" checked="checked" name="UserHeader" value="1">使用店铺logo
+                                            </label>
+                                            <label class="middle mr10" style="padding-left:5px;">
+                                                <input type="radio" name="UserHeader" value="2">不使用头像
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-2 pad resetSize control-label" for="setdate">默认二维码：</label>
+                                    <div class="form-inline journal-query col-xs-9">
+                                        <div class="form-group pt3">
+                                            <label class="middle mr10">
+                                                <input type="radio" checked="checked" name="QRCode" value="0">店铺二维码
+                                            </label><a title="选择之后在微商城中将显示二维码，在小程序中将显示小程序码" style="display: block;position: absolute;margin:0;top:0;left: 85px;border-left: none;">
+                                                <img src="/Images/ic_query.png">
+                                            </a>
+                                            <label class="middle mr10" style="padding-left:20px;">
+                                                <input type="radio" name="QRCode" value="1">公众号二维码
+                                            </label><a id="tipsOfficialAccounts" title="商城尚未关联公众号" style="display: none;position: absolute;margin:0;top:0;left: 220px;border-left: none;">
+                                                <img src="/Images/ic_query.png">
+                                            </a>
+                                            <input type="hidden" id="IsBindOfficialAccounts" value="@(strIsBindOfficialAccounts)" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group setmargin">
+                                    <label class="col-xs-2 pad resetSize control-label" for="setdate">个人介绍：</label>
+                                    <div class="form-inline journal-query col-xs-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control resetSize inputw200" id="MyUserName" flag="1" value="我是{{昵称}}">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;文字样式：
+                                            <button class="jscolor {valueElement:'chosen-value1'}" style="background: rgb(244, 38, 6); color: rgb(0, 0, 0);">文字</button><input id="chosen-value1" type="text" class="Vjscolor" flag="1" autocomplete="off">
+                                            <button class="jscolor {valueElement:'chosen-value2'}" style="background: rgb(255, 255, 255); color: rgb(0, 0, 0);">昵称</button>
+                                            <input type="text" class="Vjscolor" id="chosen-value2" flag="2" autocomplete="off">
+                                            &nbsp;&nbsp;<input type="number" id="MyUserNameSize" flag="1" style="width: 40px; vertical-align: middle" value="14">&nbsp;像素
+                                        </div>
+                                        <small style="margin-left: -15px;">“{{昵称}}”为系统参数，实际显示以会员的昵称替代</small>
+                                    </div>
+                                </div>
+                                <div class="form-group setmargin">
+                                    <label class="col-xs-2 pad resetSize control-label" for="setdate">分销口号：</label>
+                                    <div class="form-inline journal-query col-xs-10">
+                                        <div class="form-group">
+
+                                            <textarea id="ShopName" flag="2" class="form-control resetSize inputw200" style="height: 50px">邀请您加入{{商城名称}}分销团队</textarea>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;文字样式：
+                                            <button class="jscolor {valueElement:'chosen-value3'}" style="background: rgb(255, 255, 255); color: rgb(0, 0, 0);">文字</button>
+                                            <input type="text" class="Vjscolor" id="chosen-value3" flag="3" autocomplete="off">
+                                            <button class="jscolor {valueElement:'chosen-value4'}" style="background: rgb(255, 255, 252); color: rgb(0, 0, 0);">店铺</button>
+                                            <input type="text" class="Vjscolor" id="chosen-value4" flag="4" autocomplete="off">
+                                            &nbsp;&nbsp;<input type="number" id="ShopNameSize" flag="2" style="width: 40px; vertical-align: middle" value="14">&nbsp;像素
+                                        </div>
+                                        <small style="margin-left: -15px;">“{{商城名称}}”为系统参数，实际显示以商城名称替代</small>
+                                    </div>
+                                </div>
+                                <div class="form-group setmargin">
+                                    <div class="form-group upload-img" id="Logo"></div>
+                                    <input type="hidden" value="" id="hidUploadLogo" />
+                                    <input type="hidden" value="" id="hidoldBgImg" />
+                                </div>
+                                <div class="form-group pt10">
+                                    <label class="col-xs-2 pad resetSize control-label" for="setdate">&nbsp;</label>
+                                    <div class="form-inline journal-query col-xs-9">
+                                        <button class="btn btn-primary" id="preservation" onclick="return false" style="margin-left: -15px; width: 100px;">保存</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="~/Scripts/jscolor.min.js"></script>
+<script src="~/Scripts/jquery.nicescroll.min.js"></script>
+<script src="~/Scripts/jquery.himallUpload.js"></script>
+<script src="/Scripts/clipboard.min.js"></script>
+<script>
+    $(function () {
+        var clipboard = new Clipboard('#btnCopy', {
+            text: function () {
+                return $('#copyContent input').val();
+            }
+        });
+
+        clipboard.on('success', function (e) {
+            $.dialog.tips('复制成功');
+        });
+
+        clipboard.on('error', function (e) {
+            console.log(e);
+        });
+    });
+    
+</script>
+<script type="text/javascript">
+    var alert_h = function(msg) {
+      alert(msg);
+    }
+
+    function showResponse() {
+      //if (data == "0") {
+      //    //ShowMsg("背景图片上传图片失败!", false);
+      //    $.dialog.errorTips('背景图片上传图片失败！');
+      //  $("#preservation").attr("disabled", false);
+      //  return;
+      //} else if (data == "1") {
+      //    //ShowMsg("背景图片大小超过1M，不能上传!", false);
+      //    $.dialog.errorTips('背景图片大小超过1M，不能上传！');
+      //  $("#preservation").attr("disabled", false);
+      //  return;
+
+      //} else if (data == "2") {
+      //    //ShowMsg("上传的背景图片文件格式不正确！上传格式有(.gif、.jpg、.png、.bmp)!", false);
+      //    $.dialog.errorTips('上传的背景图片文件格式不正确！上传格式有(.gif、.jpg、.png、.bmp)！');
+      //  $("#preservation").attr("disabled", false);
+      //  return;
+
+      //} else if (data == "3" || data == "") {
+      //  data = ybgimg; //如果没有图片上,使用默认图片
+      //}
+
+      var jsonArr = [];
+      $('.touchmove').each(function() {
+        jsonArr.push({
+          left: parseInt($(this).css('left')) / 320,
+          top: parseInt($(this).css('top')),
+          width: $(this).find('img').width() / 320,
+        })
+      })
+
+
+      var $color = $(".Vjscolor");
+
+      var postData = {
+        PosList: jsonArr,
+        DefaultHead: $('input:radio[name=UserHeader]:checked').val(),
+        DefaultQRCode: $('input:radio[name=QRCode]:checked').val(),
+        MyUserName: $('#MyUserName').val(),
+        ShopName: $('#ShopName').val(),
+        //BgImg: '--BigImagePlaceholder--',
+          BgImg: $("#hidUploadLogo").val(),
+        MyUserNameSize: $("#MyUserNameSize").val(),
+        ShopNameSize: $("#ShopNameSize").val(),
+          MyUserNameColor: "#" + $color.eq(0).val(),
+        ShopNameColor: "#" + $color.eq(2).val(),
+        NickNameColor: "#" + $color.eq(1).val(),
+        StoreNameColor: "#" + $color.eq(3).val()
+      }
+
+      if (postData.MyUserNameColor == "#") {
+        postData.MyUserNameColor = "#0F0F0F";
+      }
+      if (postData.ShopNameColor == "#") {
+        postData.ShopNameColor = "#C5D234";
+      }
+      if (postData.NickNameColor == "#") {
+        postData.NickNameColor = "#DE6814";
+      }
+      if (postData.StoreNameColor == "#") {
+        postData.StoreNameColor = "#F8F1FF";
+      }
+
+
+
+
+      if (!/^\d+$/.test(postData.MyUserNameSize) || !/^\d+$/.test(postData.ShopNameSize)) {
+          $.dialog.errorTips('文字大小请填写整数值！');
+        $("#preservation").attr("disabled", false);
+        return;
+      }
+
+      $.ajax({
+          url: "/admin/DistributionConfig/SavaBusinessCardConfig",
+        type: 'post',
+        dataType: 'json',
+          timeout: 10000,
+          //data: { model: JSON.parse(postData), tempImage: data },
+          data: { model: postData, oldBgImg: $("#hidoldBgImg").val() },
+        cache: false,
+        success: function(resultData) {
+          if (resultData.success) {
+              $.dialog.tips('保存成功');
+            $("#preservation").attr("disabled", false);
+          } else {
+              $.dialog.tips(resultData.msg);
+            $("#preservation").attr("disabled", false);
+          }
+        },
+        error: function(data, status, e) {
+            $.dialog.errorTips('系统错误，请重试！' + JSON.stringify(data));
+          $("#preservation").attr("disabled", false);
+        }
+      });
+
+
+    }
+
+
+    function ReadSetData(SetData) {
+      $("#idImg").attr("src", SetData.BgImg);
+      $('.exitbusinesscard').css({
+        "background": 'url(' + SetData.BgImg + ') no-repeat center',
+        'backgroundSize': 'cover'
+      });
+
+      $('input:radio[name=UserHeader][value=' + SetData.DefaultHead + ']').attr("checked", true); //选中
+      $('input:radio[name=UserHeader][value=' + SetData.DefaultHead + ']').trigger("click");
+
+      if ($("#IsBindOfficialAccounts").val() == 0 && SetData.DefaultQRCode != 0) {
+        SetData.DefaultQRCode = 0;//它微信端没有或没配置，默认店铺二维码
+      }
+
+      $('input:radio[name=QRCode][value=' + SetData.DefaultQRCode + ']').attr("checked", true); //选中
+      $('input:radio[name=QRCode][value=' + SetData.DefaultQRCode + ']').trigger("click");
+
+      //延迟处理一下，等待jscolor执行完，以免颜色不对
+      setTimeout(function() {
+
+        $color = $(".Vjscolor");
+
+        $color.eq(0).val(SetData.MyUserNameColor.replace("#", ""));
+        $color.eq(1).val(SetData.NickNameColor.replace("#", ""));
+        $color.eq(2).val(SetData.ShopNameColor.replace("#", ""));
+        $color.eq(3).val(SetData.StoreNameColor.replace("#", ""));
+
+        $jscolor = $(".jscolor");
+        $jscolor.eq(0).css("background", SetData.MyUserNameColor);
+        $jscolor.eq(1).css("background", SetData.NickNameColor);
+        $jscolor.eq(2).css("background", SetData.ShopNameColor);
+        $jscolor.eq(3).css("background", SetData.StoreNameColor);
+        $color.trigger("change");
+
+      }, 100);
+
+
+
+      $("#MyUserName").val(SetData.MyUserName);
+      $("#ShopName").val(SetData.ShopName);
+
+      $("#MyUserName,#ShopName").trigger("keyup");
+
+      $("#MyUserNameSize").val(SetData.MyUserNameSize);
+      $("#ShopNameSize").val(SetData.ShopNameSize);
+      $("#MyUserNameSize,#ShopNameSize").trigger("change");
+
+
+
+
+      $('.touchmove').each(function(i) {
+          $(this).css({ "left": SetData.PosList[i].Left * 320 + "px", "top": SetData.PosList[i].Top + "px" });
+        $(this).find('img').width(SetData.PosList[i].Width * 320).height(SetData.PosList[i].Width * 320);
+      })
+
+      $("#DescPanel").css("padding", "0 12px");
+
+
+    }
+
+    //var ybgimg = "https://demo.vshop.kuaidiantong.cn/Storage/master/ReferralPoster/Posterbg/202001031809325134990.jpg"; //默认图片
+    var ybgimg = "/Storage/master/ReferralPoster/Posterbg/bg.jpg"; //默认图片
+
+
+    //获取上传成功后的图片路径
+    function getUploadImages() {
+        //var srcLogo = $('#logoContainer span[name="siteLogo"]').himallUpload("getImgSrc");
+      //$("#hidUploadLogo").val(srcLogo);
+      //return srcLogo;
+        return $("#hidUploadLogo").val();
+    }
+    $(function() {
+      var isBindOfficialAccounts = Number($("#IsBindOfficialAccounts").val());
+      if (isBindOfficialAccounts == 0) {
+        $("#tipsOfficialAccounts").show();
+        $("input[name='QRCode']").eq(1).attr("disabled", "disabled");
+      }
+    
+        $('#Logo').himallUpload({
+            title: '背景图片',
+            imageDescript: '点击图片上传，建议上传750*1334px，小于1M，png、jpg格式图片',
+            displayImgSrc: $("#hidUploadLogo").val(),
+            imgFieldName: "Logo",
+            dataWidth: 8,
+            callback: function (imageUrl) {
+                if (imageUrl != "") {
+                    $("#hidUploadLogo").val(imageUrl);
+                    $('.exitbusinesscard').css({
+                        "background": 'url(' + imageUrl + ') no-repeat center',
+                        'backgroundSize': 'cover'
+                    });
+                }
+            }
+        });
+
+      ///是否启用头像
+      $('input:radio[name=UserHeader]').click(function() {
+        if ($(this).val() == 2) {
+          $("#HeadPanel").hide();
+        } else {
+          $("#HeadPanel").show();
+        };
+      });
+
+      //调整字体大小
+      $("#MyUserNameSize,#ShopNameSize").change(function() {
+
+        var flag = $(this).attr("flag");
+
+        if (!/^\d+$/.test($(this).val())) {
+            //ShowMsg("请填整数值！", false);
+            $.dialog.errorTips('请填整数值！');
+          return;
+        }
+
+
+        var resize = parseInt($(this).val());
+        if (flag == 1) {
+          $("#UnamePanel").css("fontSize", resize);
+
+        } else {
+          $("#DescPanel").css("fontSize", resize);
+        }
+      });
+
+
+      //调整字体大小
+      $("#MyUserName,#ShopName").keyup(function() {
+        var flag = $(this).attr("flag");
+        var ctx = $(this).val();
+        var Thtml = ctx.replace("{{昵称}}", "<strong>昵称</strong>").replace("{{商城名称}}", "<strong>商城名称</strong>");
+        if (flag == 1) {
+          $("#UnamePanel").html(Thtml);
+        } else {
+          $("#DescPanel").html(Thtml);
+        }
+        $("#DescPanel strong").css("color", "#" + $("#chosen-value4").val());
+      });
+
+
+      //input type="color" 调整颜色
+
+      $(".Vjscolor").change(function() {
+        var flag = $(this).attr("flag");
+        var recolor = "#" + $(this).val();
+
+
+
+        if (flag == 1) {
+          $("#UnamePanel").css("color", recolor);
+        }
+        else if (flag == 2) {
+          $("#UnamePanel").find("strong").css("color", recolor);
+        }
+        else if (flag == 3) {
+          $("#DescPanel").css("color", recolor);
+        }
+        else if (flag == 4) {
+
+          $("#DescPanel").find("strong").css("color", recolor);
+        }
+
+      });
+
+      $('body').on('mousedown', '.touchmove', function(evt) {
+        evt.preventDefault();
+        var downX = evt.clientX,
+          downY = evt.clientY,
+          topN = downY - parseInt($(this).css('top')),
+          leftN = downX - parseInt($(this).css('left')),
+          winH = $('.exitbusinesscard').outerHeight(),
+          elemH = $(this).height(),
+          winW = $('.exitbusinesscard').width(),
+          elemW = $(this).outerWidth(),
+          _this = $(this);
+        _this.css('zIndex', 100);
+        $(document).on('mousemove', function(evt) {
+          var moveX = evt.clientX - leftN,
+            moveY = evt.clientY - topN;
+          if (moveY < 0) moveY = 0;
+          if (moveY > winH - elemH) moveY = winH - elemH;
+          if (moveX < 0) moveX = 0;
+          if (moveX > winW - elemW) moveX = winW - elemW;
+          _this.css({
+            'left': moveX,
+            'top': moveY
+          })
+        })
+        $(document).on('mouseup', function() {
+          $(document).off('mousemove');
+          $(document).off('mouseup');
+          _this.css('zIndex', 0);
+        })
+      });
+      $('.touchmove .left,.touchmove .right').on('mousedown', function(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        var downX = evt.clientX,
+          imgElement = $(this).parent().find('img'),
+          imgW = imgElement.width(),
+          imgH = imgElement.height(),
+          classNa = $(this)[0].className,
+          touchmoveEl = $(this).parent(),
+          moveL = parseInt(touchmoveEl.css('left')),
+          $obj = 320 - $(this).parent().width() - parseInt($(this).parent().css('left'));
+        $(document).on('mousemove', function(evt) {
+          var moveX = evt.clientX - downX;
+
+          if (classNa == 'left') {
+            moveX = -moveX;
+            touchmoveEl.css('left', moveL - moveX / 2 + 'px')
+          }
+          if (moveX > $obj) {
+
+            return;
+          }
+          imgElement.css({
+            'width': imgW + moveX,
+            'height': imgH + moveX
+          })
+        })
+        $(document).on('mouseup', function() {
+          $(document).off('mousemove');
+          $(document).off('mouseup');
+        })
+      })
+      $('.touchmove .bottom,.touchmove .top').on('mousedown', function(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        var downY = evt.clientY,
+          imgElement = $(this).parent().find('img'),
+          imgW = imgElement.width(),
+          imgH = imgElement.height(),
+          classNa = $(this)[0].className,
+          touchmoveEl = $(this).parent(),
+          moveT = parseInt(touchmoveEl.css('top'));
+        $(document).on('mousemove', function(evt) {
+          var moveY = evt.clientY - downY;
+          if (classNa == 'top') {
+            moveY = -moveY;
+            touchmoveEl.css('top', moveT - moveY / 2 + 'px')
+          }
+          imgElement.css({
+            'width': imgW + moveY,
+            'height': imgH + moveY
+          })
+        })
+        $(document).on('mouseup', function() {
+          $(document).off('mousemove');
+          $(document).off('mouseup');
+        })
+      })
+      $('.cardqrcode .cardimg,.exitbusinesscard .img').hover(function() {
+        $(this).addClass('border').find('span').show();
+      }, function() {
+        $(this).removeClass('border').find('span').hide();
+      })
+      $('#preservation').click(function() {
+        $("#preservation").attr("disabled", true)
+        //showResponse(getUploadImages());
+          showResponse();
+      });
+      // $('#MyUserName').keydown(function (){
+      //     $('.MyUserName strong').text($(this).val());
+      // })
+
+
+
+      //读取原设置数据
+        jQuery.getJSON("/Storage/master/ReferralPoster/ReferralPoster.js", { random: Math.random() }, function(SetData) {
+        if (SetData != null) {
+          ybgimg = SetData.BgImg;
+          $("#hidUploadLogo").val(ybgimg);
+          $("#hidoldBgImg").val(ybgimg);
+          ReadSetData(SetData);
+        }
+      });
+      //$("span.remove-img").click(function() {
+      //  $('.exitbusinesscard').css({
+      //    "background": 'url("https://demo.vshop.kuaidiantong.cn/Storage/master/ReferralPoster/Posterbg/201609211123101846800.jpg") no-repeat center',
+      //    'backgroundSize': 'cover'
+      //  });
+      //});
+    })
+</script>

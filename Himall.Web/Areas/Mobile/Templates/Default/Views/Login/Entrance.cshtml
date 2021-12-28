@@ -1,0 +1,124 @@
+﻿@model Himall.DTO.SiteSettings
+@{
+    ViewBag.Title = "用户入口";
+    ViewBag.CopyRight = false;
+}
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script src="/Areas/Mobile/Templates/Default/Scripts/mui.min.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/entrance.js"></script>
+<script type="text/javascript">
+    //禁用右上角菜单
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    });
+
+    $(function () {
+        if (window.__wxjs_environment === 'miniprogram') {
+            $("#btnBackApplet").show();
+        }
+    });
+    function onBackApplet() {
+        wx.miniProgram.navigateBack();
+    }
+
+    document.addEventListener('plusready', function () {
+
+        var ms = plus.webview.currentWebview(),
+            url = ms.url,
+            returnUrl = QueryString('returnUrl');
+        returnUrl = unescape(returnUrl);
+
+
+
+
+
+
+
+        var urls = ''
+        if (ms.parent().getURL().indexOf('meiqia.html') > 0) {
+            urls = ms.parent().getURL().replace('meiqia.html', '')
+        }
+        if (ms.parent().getURL().indexOf('web-show.html') > 0) {
+            urls = ms.parent().getURL().replace('web-show.html', '')
+        }
+        mui.openWindow({
+            id: 'login.html',
+            url: ms.parent().getURL().replace('web-show.html', '') + 'login.html',
+            url: urls + 'login.html',
+            extras: {
+                params: {
+                    id: 'web-show.html',
+                    extras: {
+                        link: returnUrl
+                    }
+                }
+            }
+        });
+        plus.nativeUI.closeWaiting();
+        setTimeout(function () {
+            ms.parent().close('none');
+        }, 3000);
+
+    });
+</script>
+<style>
+    body {
+        background-color: #fff;
+    }
+    body { background-color: #fff; }
+</style>
+<div style="display: none;" id="btnBackApplet" onclick="onBackApplet()"></div>
+@{Html.RenderPartial("~/Areas/Mobile/Templates/Default/Views/Shared/_RegisterCoupon.cshtml");}
+<div class="login" id="divlogin">
+    <label class="hide" id="titleType">登录@(Model.SiteName)</label>
+    <div class="login-hd">
+        <img class="login-sign" src="@Himall.Core.HimallIO.GetImagePath(Model.Logo)">
+        <a class="regist-link" id="btregister" href="#">注册</a>
+    </div>
+    <div class="login-bd">
+        <div class="login-input-group">
+            <div class="input-item flex-center"><input class="form-control" id="username" type="text" placeholder="请输入用户名/手机号"></div>
+            <div class="input-item flex-center">
+                <input class="form-control" id="password" type="password" placeholder="密码">
+                <span id="eyebtn" class="icon-eye"></span>
+                <a class="forget-pwd-link" href="#">忘记密码</a>
+            </div>
+
+            <div class="input-item flex-center" id="checkCodeArea" style="display:none;">
+                <input type="text" id="checkCodeBox" class="form-control" name="authcode" tabindex="6" maxlength="4" style="ime-mode:disabled" sta="0" placeholder="验证码">
+                <label class="img">
+                    <img id="checkCodeImg" src="/m-wap/Login/GetCheckCode">
+                </label>
+                <label class="ftx23 hline">看不清？<br><a href="javascript:void(0)" id="checkCodeChange" class="flk13">换一张</a></label>
+            </div>
+        </div>
+        <div class="textline" id=" ">Hi,<span id="bNickName" style="float:none;width:auto; font-size:inherit"></span>,账号绑定后可一键登录！</div>
+        <a id="bindBtn" class="flex-center">登 录</a>
+    </div>
+    <div class="login-ft" style="display:none;" id="fastloginbox">
+        <div class="trust-tip">
+            <span>使用微信一键登录</span>
+        </div>
+        <a class="weixin-trust" href="javascript:;" id="skip"></a>
+    </div>
+</div>
+
+<!---强制绑定手机选择注册或者绑定用户界面-->
+<div id="divForceBindPhone" class="divForceBindPhone">
+    <div class="headimage">
+        <img id="bPhoneUserPicture" src="" />
+    </div>
+    <div>
+        亲爱的用户：<span id="bPhoneNickName"></span><br />
+        <span>为了给您更好的服务，请关联一个：已绑定手机号的账号</span>
+    </div>
+    <div class="btnline">
+        <div>还没有账号？</div>
+        <button type="button" id="btnGoPhoneRegister" tabindex="1" autofocus="autofocus" class="btn_phoneregister">快速注册</button>
+    </div>
+    <div class="btnline" style="padding-top:40px;">
+        <div>已有账号？</div>
+        <button type="button" id="btnGoBindUser" class="btn_binduser">立即关联</button>
+    </div>
+</div>
+

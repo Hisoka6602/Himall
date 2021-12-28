@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9378BFDF-A45E-416A-AFBA-5ABC792F2613}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Himall.CommonModel</RootNamespace>
+    <AssemblyName>Himall.CommonModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Himall.Core">
+      <HintPath>..\..\lib\Himall.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CacheKeyCollection.cs" />
+    <Compile Include="CommonConst.cs" />
+    <Compile Include="DateRange.cs" />
+    <Compile Include="Enum\AdminPrivileges.cs" />
+    <Compile Include="Enum\CommentStatus.cs" />
+    <Compile Include="Enum\CompanyEmployeeCount.cs" />
+    <Compile Include="Enum\Coupon.cs" />
+    <Compile Include="Enum\DadaStatus.cs" />
+    <Compile Include="Enum\Distribution\DistributionBrokerageStatus.cs" />
+    <Compile Include="Enum\Distribution\DistributionProductStatus.cs" />
+    <Compile Include="Enum\Distribution\DistributorRecordType.cs" />
+    <Compile Include="Enum\Distribution\DistributorStatus.cs" />
+    <Compile Include="Enum\Distribution\DistributionWithdraw.cs" />
+    <Compile Include="Enum\ExpressStatus.cs" />
+    <Compile Include="Enum\ExpressElementType.cs" />
+    <Compile Include="Enum\LiveRoomStatus.cs" />
+    <Compile Include="Enum\MarketingType.cs" />
+    <Compile Include="Enum\ProductCommentMarkType.cs" />
+    <Compile Include="Enum\InvoiceType.cs" />
+    <Compile Include="Enum\MarketType.cs" />
+    <Compile Include="Enum\OrderDimension.cs" />
+    <Compile Include="Enum\Position.cs" />
+    <Compile Include="Enum\QR_Scene.cs" />
+    <Compile Include="Enum\RegisterTypes.cs" />
+    <Compile Include="Enum\SaleDimension.cs" />
+    <Compile Include="Enum\SellerPrivileges.cs" />
+    <Compile Include="Enum\SMSSourceType.cs" />
+    <Compile Include="Enum\SpecialCategory.cs" />
+    <Compile Include="Enum\SpecificationType.cs" />
+    <Compile Include="Enum\TargetType.cs" />
+    <Compile Include="Enum\AppMessagesType.cs" />
+    <Compile Include="Enum\FullDiscountStatus.cs" />
+    <Compile Include="Enum\AdminCatalogType.cs" />
+    <Compile Include="Enum\ImageSize.cs" />
+    <Compile Include="Enum\MarketActiveType.cs" />
+    <Compile Include="Enum\MemberGroup\AmountOfConsumption.cs" />
+    <Compile Include="Enum\MemberGroup\Purchases.cs" />
+    <Compile Include="Enum\MemberGroup\RecentlySpentTime.cs" />
+    <Compile Include="Enum\MemberGroup\MemberStatisticsType.cs" />
+    <Compile Include="Enum\DeliveryTypes.cs" />
+    <Compile Include="Enum\FreightTemplate.cs" />
+    <Compile Include="Enum\MsgType.cs" />
+    <Compile Include="Enum\OrderRefundShopAuditStatus.cs" />
+    <Compile Include="Enum\ReplyType.cs" />
+    <Compile Include="Enum\MatchType.cs" />
+    <Compile Include="Enum\BusinessType.cs" />
+    <Compile Include="Enum\FightGroupManageAuditStatus.cs" />
+    <Compile Include="Enum\ImageAdsType.cs" />
+    <Compile Include="Enum\SendMemberCodeReturn.cs" />
+    <Compile Include="Enum\SexType.cs" />
+    <Compile Include="Enum\ShopBranchSkuStatus.cs" />
+    <Compile Include="Enum\ManagerType.cs" />
+    <Compile Include="Enum\StockOpType.cs" />
+    <Compile Include="Enum\ShopBranchStatus.cs" />
+    <Compile Include="Enum\UserPrivileges.cs" />
+    <Compile Include="Enum\VTemplateClientTypes.cs" />
+    <Compile Include="Enum\WithdrawStaus.cs" />
+    <Compile Include="Enum\PlatAccountType.cs" />
+    <Compile Include="Enum\UserWithdrawType.cs" />
+    <Compile Include="Enum\WithdrawType.cs" />
+    <Compile Include="Enum\WXMsgTemplateType.cs" />
+    <Compile Include="Enum\WXSmallProgFromPageType.cs" />
+    <Compile Include="Enum\WXMsgType.cs" />
+    <Compile Include="Delegates.cs" />
+    <Compile Include="Exception\AuthorizationException.cs" />
+    <Compile Include="Exception\ExceptionMessages.cs" />
+    <Compile Include="Exception\MessageException.cs" />
+    <Compile Include="Exception\ParameterException.cs" />
+    <Compile Include="ManagerInterface\IManager.cs" />
+    <Compile Include="ManagerInterface\IPaltManager.cs" />
+    <Compile Include="ManagerInterface\ISellerManager.cs" />
+    <Compile Include="Model\AppletApiLiveProductInfo.cs" />
+    <Compile Include="Model\AppletLiveProductImportInfo.cs" />
+    <Compile Include="Model\AppletLiveRoomInfo.cs" />
+    <Compile Include="Model\AppletUploadResult.cs" />
+    <Compile Include="Model\DistributionBusionessCardConfigModel.cs" />
+    <Compile Include="Model\GaoDeMapRegionInfo.cs" />
+    <Compile Include="Model\OrderCountStatistics.cs" />
+    <Compile Include="Model\ProductBrowsedHistoryModel.cs" />
+    <Compile Include="Model\ProductCommentCountAggregateModel.cs" />
+    <Compile Include="Model\ShopStoreServiceMark.cs" />
+    <Compile Include="Model\ShopServiceMarkModel.cs" />
+    <Compile Include="Model\ShopWithDrawConfirmResult.cs" />
+    <Compile Include="Model\BranchShopFeat.cs" />
+    <Compile Include="Model\FullDiscountProductCountAggregate.cs" />
+    <Compile Include="Model\SaleStatistics.cs" />
+    <Compile Include="Model\MemberGradeRange.cs" />
+    <Compile Include="Model\OrderBasicStatistics.cs" />
+    <Compile Include="Model\OrderPostModel.cs" />
+    <Compile Include="Model\Region.cs" />
+    <Compile Include="Enum\OrderRefundStep.cs" />
+    <Compile Include="Model\SearchProductResult.cs" />
+    <Compile Include="Model\WxAppletUserPhoneInfo.cs" />
+    <Compile Include="Model\WxAppletUserInfo.cs" />
+    <Compile Include="Privileage\PrivilegeAttribute.cs" />
+    <Compile Include="Privileage\Privleages.cs" />
+    <Compile Include="Model\WeiXinShareArgs.cs" />
+    <Compile Include="QueryPageModel.cs" />
+    <Compile Include="Enum\CouponRegisterHandselStatus.cs" />
+    <Compile Include="Enum\FightGroupBuildStatus.cs" />
+    <Compile Include="Enum\FightGroupOrderJoinStatus.cs" />
+    <Compile Include="Enum\FightGroupActiveStatus.cs" />
+    <Compile Include="Enum\Settled.cs" />
+    <Compile Include="Enum\ShopAccountType.cs" />
+    <Compile Include="Enum\TopicAlign.cs" />
+    <Compile Include="Enum\WeiParticipateType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Enum\ThemeType.cs" />
+    <Compile Include="Enum\WeiActivityType.cs" />
+    <Compile Include="Enum\WeiActivityAwardType.cs" />
+    <Compile Include="SimpItem.cs" />
+    <Compile Include="WDTConfigModel.cs" />
+    <Compile Include="WeiXin\WXApplet_MsgTemplateLinkData.cs" />
+    <Compile Include="WeiXin\WX_MsgFightGroupNewJoinDataModel.cs" />
+    <Compile Include="WeiXin\WX_MSGGetCouponModel.cs" />
+    <Compile Include="WeiXin\WX_MSGItemBaseModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateKey1DataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateKey2DataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateKey3DataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateKey4DataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateKey5DataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateKey6DataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateLinkData.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateRefundDataModel.cs" />
+    <Compile Include="WeiXin\WX_MsgTemplateSendDataModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

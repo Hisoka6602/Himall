@@ -1,0 +1,489 @@
+﻿@model Himall.DTO.SiteSettings
+<link rel="stylesheet" href="/Content/Public/plugins/colorpicker/colorpicker.css" />
+<script src="~/Content/Public/plugins/colorpicker/colorpicker.js"></script>
+<link href="/Content/artdialog.css" rel="stylesheet" />
+<script src="/Scripts/jquery.artDialog.js"></script>
+<script src="/Scripts/artDialog.iframeTools.js"></script>
+
+<style>
+    .pd-white-box {
+    padding: 24px;
+    background-color: #fff;
+    margin-top: 24px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
+}
+
+    .colorpicker {
+        top: 145px;
+        left: 265px;
+        z-index: 10;
+    }
+
+    .theme-row {
+        padding-bottom: 20px;
+        border-bottom: 1px dashed #eee;
+        display: flex;
+        align-items: center;
+    }
+
+    .themebox {
+        position: relative;
+        border: 1px solid #e0e0e0;
+        padding: 4px;
+        cursor: pointer;
+        margin-left: 12px;
+        font-size: 0
+    }
+    .themebox.active{
+        border-color:#2e74ff
+    }
+    .color-box {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+    }
+
+    .primary-setting {
+        background-color: #fb1438;
+    }
+
+    .primarytxt-setting {
+        color: #fb1438;
+    }
+
+    .secondary-setting {
+        background-color: #515151;
+    }
+
+    .primary-setting-light {
+       background-color:rgba(251, 20, 56, 0.1) ;
+    }
+
+    .theme-preview-row {
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+    }
+
+    .previewbox {
+        position: relative;
+        margin-right: 20px;
+        width: 280px;
+        height: 500px;
+        border: 1px solid #e0e0e0;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-color:#fb1438;
+    }
+
+    .theme1 .color-box {
+        background-color: #fb1438
+    }
+    .theme1 .color-box + .color-box {
+        background-color: #424242 
+    }
+    .theme2 .color-box {
+        background-color: #FF5500;
+    }
+    .theme2 .color-box + .color-box {
+        background-color: #FF9900;
+    }
+    .theme3 .color-box {
+        background-color: #ffbb00;
+    }
+    .theme3 .color-box + .color-box {
+        background-color: #3f464b;
+    }
+    .theme4 .color-box {
+        background-color: #75a32e;
+    }
+    .theme4 .color-box + .color-box {
+        background-color: #ffad33;
+    }
+    .theme5 .color-box {
+        background-color: #2ba245;
+    }
+    .theme5 .color-box + .color-box {
+        background-color:#5acc73;
+    }
+    
+    .theme6 .color-box {
+        background-color: #13c2c2;
+    }
+    .theme6 .color-box + .color-box {
+        background-color:#87e0e0;
+    }
+    .theme7 .color-box {
+        background-color: #1890ff;
+    }
+    .theme7 .color-box + .color-box {
+        background-color:#ffbb33;
+    }
+    .theme8 .color-box {
+        background-color: #2f54eb;
+    }
+    .theme8 .color-box + .color-box {
+        background-color:#f52440;
+    }
+    .theme9 .color-box {
+        background-color: #cc9756;
+    }
+    .theme9 .color-box + .color-box {
+        background-color:#cc394a;
+    }
+    .theme10 .color-box {
+        background-color: #ff3369;
+    }
+    .theme10 .color-box + .color-box {
+        background-color:#ffadc3;
+    }
+
+    .theme-body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-top: 1px dashed #eee;
+    padding: 20px;
+    margin: 0 8px;
+}
+    .theme-preview-box {
+        width: 280px;
+        height: 500px;
+        position: relative;
+        margin-right: 16px;
+    }
+
+    .theme-preview-box1 {
+        background: url(/Areas/Admin/Content/Images/theme_bg1.png) no-repeat;
+    }
+
+       .price {
+            position: absolute;
+            line-height: 20px;
+            font-size: 20px;
+            color: #ff3d47;
+            font-weight: 600;
+        }
+        .theme-preview-box1 .price {
+            bottom: 136px;
+            left: 8px;
+        }
+        .theme-preview-box3 .price {
+           bottom: 9px;
+            left: 64px;
+            font-size: 12px
+        }
+        .theme-preview-box2 .price {
+            top: 195px;
+            left: 92px;
+        }
+            .price:before {
+                content: '￥';
+                font-size: 12px;
+                font-weight: 400;
+            }
+    .theme-preview-box1 .btns {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+    }
+
+        .theme-preview-box1 .btns span {
+            display: inline-block;
+            width: 102px;
+            height: 38px;
+            font-size: 12px;
+            line-height: 38px;
+            text-align: center;
+            color: #fff;
+            background-color: #3f464b;
+        }
+
+    .theme-preview-box2 {
+    background: url(/Areas/Admin/Content/Images/theme_bg2.png) no-repeat;
+}
+        .theme-preview-box2 .skus {
+            position: absolute;
+            bottom: 192px;
+            left: 55px;
+            width: 32px;
+            height: 16px;
+            color: #fff;
+            background-color: #fb1438;
+            line-height: 15px;
+            text-align: center;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            font-size: 12px;
+            border-radius: 2px;
+        }
+    .theme-preview-box2 .skus i {
+    display: inline-block;
+    -webkit-transform: scale(.7);
+    transform: scale(.7);
+}
+    .theme-preview-box2 .button {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 38px;
+    background-color: #f52440;
+    color: #fff;
+    line-height: 39px;
+    text-align: center;
+    font-size: 12px;
+}
+
+    .theme-preview-box3 {
+    background: url(/Areas/Admin/Content/Images/theme_bg3.png) no-repeat;
+}
+    .theme-preview-box3 .button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #f52440;
+    color: #fff;
+    width: 80px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    font-size: 12px;
+}
+</style>
+<div class="container">
+    <ul class="nav nav-tabs-custom clearfix clear-v16">
+        <li class="active"><a>主题色设置</a></li>
+    </ul>
+
+    <div class="pd-white-box">
+        <div class="theme-row">
+            <span>推荐颜色</span>
+            <div class="themebox theme1">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme2">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme3">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme4">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme5">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme6">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme7">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme8">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme9">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+            <div class="themebox theme10">
+                <div class="color-box"></div>
+                <div class="color-box"></div>
+            </div>
+        </div>
+        
+        <div class="theme-body">
+            <div class="theme-preview-box theme-preview-box1">
+                <div class="price">160</div>
+                <div class="btns"><span id="btnaddcart">加入购物车</span><span style="background-color:#fb1438;" id="btnbuy">立即购买</span></div>
+            </div>
+            <div class="theme-preview-box theme-preview-box2">
+                <div class="price">160</div>
+                <div class="skus"><i>黑色</i></div>
+                <div class="button">确定</div>
+            </div>
+            <div class="theme-preview-box theme-preview-box3"><div class="price">160</div><div class="button">提交订单</div></div>
+        </div>
+    </div>
+    <div class="pro-detail-btn text-center">
+        <div class="btn btn-primary" onclick="saveColor()">保存信息</div>
+    </div>
+</div>
+<input type="hidden" id="primaryColor" value="@Model.PrimaryColor" />
+<input type="hidden" id="primaryTxtColor" value="@Model.PrimaryTxtColor" />
+<input type="hidden" id="secondaryColor" value="@Model.SecondaryColor" />
+<input type="hidden" id="secondaryTxtColor" value="@Model.SecondaryTxtColor"/>
+<script>
+    var primaryColor = $('#primaryColor').val() || '#fb1438',
+        primaryTxtColor = $('#primaryTxtColor').val() || '#ffffff',
+        secondaryColor = $('#secondaryColor').val() || '#515151',
+        secondaryTxtColor = $('#secondaryTxtColor').val() || '#ffffff',
+        lightColor;
+    function saveColor() {
+        var loading = showLoading();
+        $.ajax({
+            type: "post",
+            url: '/admin/WXSmallProgram/SaveSiteSettings',
+            data: { primaryColor: primaryColor, primaryTxtColor: primaryTxtColor, secondaryColor: secondaryColor, secondaryTxtColor: secondaryTxtColor },
+            dataType: "json",
+            success: function (data) {
+                loading.close();
+                if (data) {
+                    if (data.success == true) {
+                        $.dialog.tips('保存成功', function () {
+                            location.href = location.href;
+                        });
+                    } else {
+                        $.dialog.errorTips(data.message);
+                    }
+                } else {
+                    $.dialog.errorTips('保存失败！');
+                }
+            },
+            error: function (data) {
+                loading.close();
+                $.dialog.errorTips('保存失败！');
+            }
+        });
+    }
+    function primarySelector() {
+        $('.colorpicker').eq(0).toggle()
+        $('.colorpicker').eq(1).hide()
+    }
+    function secondarySelector() {
+        $('.colorpicker').eq(1).toggle()
+        $('.colorpicker').eq(0).hide()
+    }
+
+    $(".theme-row .themebox").click(function () {
+        $(this).addClass('active').siblings().removeClass('active')
+    })
+
+    $('.theme1').click(function () {
+        primaryColor = '#fb1438'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#424242';
+        secondaryTxtColor = '#ffffff';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme2').click(function () {
+        primaryColor = '#ff5500'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#ff9900';
+        secondaryTxtColor = '#ffffff';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme3').click(function () {
+        primaryColor = '#ffbb00'
+        primaryTxtColor = '#000000'
+        secondaryColor = '#3f464b';
+        secondaryTxtColor = '#ffffff';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme4').click(function () {
+        primaryColor = '#75a32e'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#ffad33';
+        secondaryTxtColor = '#000000';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme5').click(function () {
+        primaryColor = '#2ba245'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#5acc73';
+        secondaryTxtColor = '#ffffff';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme6').click(function () {
+        primaryColor = '#13c2c2'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#87e0e0';
+        secondaryTxtColor = '#000000';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme7').click(function () {
+        primaryColor = '#1890ff'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#ffbb33';
+        secondaryTxtColor = '#000000';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme8').click(function () {
+        primaryColor = '#2f54eb'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#f52440';
+        secondaryTxtColor = '#ffffff';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme9').click(function () {
+        primaryColor = '#cc9756'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#cc394a';
+        secondaryTxtColor = '#ffffff';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+    $('.theme10').click(function () {
+        primaryColor = '#ff3369'
+        primaryTxtColor = '#ffffff'
+        secondaryColor = '#ffadc3';
+        secondaryTxtColor = '#7a0020';
+        lightColor = hex2rgb(primaryColor, 0.1);
+        change()
+    })
+
+    function change() {
+        $('.price').css('color', primaryColor);
+        $('.button,#btnbuy').css('background-color', primaryColor);
+        $('.skus').css('color', primaryTxtColor);
+        $('.skus').css('background-color', primaryColor);
+        $('.theme-preview-box').css('background-color', primaryColor);
+        $('.button,#btnbuy').css('color', primaryTxtColor);
+
+        $('#btnaddcart').css('background-color', secondaryColor);
+        $('#btnaddcart').css('color', secondaryTxtColor);
+    }
+
+    $(function () {
+        $(".themebox").each(function (index) {
+            if (rgb2hextrue($(this).find(".color-box").eq(0).css("background-color")) == primaryColor) {
+                $(this).click();
+                return false;
+            }
+        })
+        change();
+    });
+    function rgb2hextrue(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+        }
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
+    //hex2rgb 
+    function hex2rgb (hex, alpha) {
+        var rgb = [0, 0, 0];
+        if (/#(..)(..)(..)/g.test(hex)) {
+            rgb = [parseInt(RegExp.$1, 16), parseInt(RegExp.$2, 16), parseInt(RegExp.$3, 16)];
+            rgb.push(alpha);
+        };
+        return "rgba(" + rgb.join(",") + ")";
+    }
+</script>

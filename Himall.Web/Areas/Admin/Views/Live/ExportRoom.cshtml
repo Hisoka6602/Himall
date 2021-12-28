@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Himall.DTO.Live.LiveViewModel>
+@{
+    Layout = null;
+}<table cellspacing="0" cellpadding="5" rules="all" border="1">
+    <thead>
+        <tr>
+            <th>直播间ID</th>
+            <th>直播间名称</th>
+            <th>店铺名称</th>
+            <th>主播昵称</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>状态</th>
+            <th>加购人数</th>
+            <th>加购次数</th>
+            <th>支付人数</th>
+            <th>支付订单数</th>
+            <th>支付金额</th>
+        </tr>
+    </thead>
+    <tbody id="list-table-body">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RoomId</td>
+                <td>@item.Name</td>
+                <td>@item.ShopName</td>
+                <td>@item.AnchorName</td>
+                <td>@item.StartTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                @if (item.EndTime.HasValue)
+                {
+                    <td>@item.EndTime.Value.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                }
+                else
+                {
+                    <td>&nbsp;</td>
+                }
+                <td>@item.StatusDesc</td>
+                <td>@item.CartMember</td>
+                <td>@item.CartCount</td>
+                <td>@item.PaymentMember</td>
+                <td>@item.PaymentOrder</td>
+                <td>@item.PaymentAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

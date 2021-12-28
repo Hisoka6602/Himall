@@ -1,0 +1,51 @@
+﻿@model Himall.DTO.SiteSettings
+@{
+    ViewBag.Title = "物流设置";
+    Model.KuaidiType = 1;//它快递100接口没有实现，默认快递鸟；
+}
+
+<script src="~/Scripts/v.js"></script>
+<div class="container clear-r">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li><a href="./Management">快递单模板管理</a></li>
+        <li class="active"><a href="./Setting">快递鸟设置</a></li>
+
+    </ul>
+    <div class="queryDiv">
+		<img class="queryImg" src="/Images/ic_query.png">
+		<div class="tipBox">
+			<h5>温馨提示:</h5>
+			<ul>
+				<li><span>状态为开启的快递公司，商家发货时才能进行选择。</span></li>
+			</ul>
+		</div>
+	</div>
+    @using (Html.BeginForm("SaveSetting", "Collocation", FormMethod.Post, new { id = "form1" }))
+    {
+    <div class="form-horizontal">
+        <div class="form-group kd2">
+            <label class="col-sm-5" for="" style="font-size:larger;color:red">您的物流查询剩余单数：&nbsp;&nbsp;&nbsp;&nbsp;@(ViewBag.SurplusQuantity) 条&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://enterprise.wuliu.kuaidiantong.cn/Home/Login?SiteUrl=@(ViewBag.CurUrl)&ProductType=1" class="ml_10 colorBlue" target="_blank" style="cursor:pointer;font-size:smaller">点击购买</a></label>
+        </div>
+        <div class="form-group kd2">
+            <label class="col-sm-2 control-label" for="">app_key：</label>
+            <div class="col-sm-3">
+                @Html.EditorFor(item => item.KuaidiApp_key, new { htmlAttributes = new { @class = "form-control input-sm" } })
+            </div>
+            <div class="col-md-2">
+                <span class="help-default"><a href="https://enterprise.wuliu.kuaidiantong.cn/Home/Login?SiteUrl=@(ViewBag.CurUrl)&ProductType=1" class="ml_10 colorBlue" target="_blank" style="cursor:pointer">点击申请</a></span>
+            </div>
+        </div>
+        <div class="form-group kd2">
+            <label class="col-sm-2 control-label" for="">appSecret：</label>
+            <div class="col-sm-3">@Html.EditorFor(item => item.KuaidiAppSecret, new { htmlAttributes = new { @class = "form-control input-sm" } })</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="button" id="Save" class="btn btn-primary" value="保 存">
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+<script src="~/Areas/Admin/Scripts/ExpressTemplateSetting.js"></script>

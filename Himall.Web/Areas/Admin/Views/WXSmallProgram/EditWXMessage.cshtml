@@ -1,0 +1,131 @@
+﻿@model List<Himall.Entities.WeiXinMsgTemplateInfo>
+@{
+    var WeixinAppletId = ViewBag.WeixinAppletId;
+    var WeixinAppletSecret = ViewBag.WeixinAppletSecret;
+}
+<script src="~/Areas/Admin/Scripts/WXSmallMessage.js?t=20191214"></script>
+
+<div class="container">
+    <ul class="nav nav-tabs-custom clearfix clear-v16">
+        <li class="active"><a href="@Url.Action("EditWXMessage")">商城小程序微信通知</a></li>
+        @*<li><a href="@Url.Action("EditWXO2OMessage")">O2O小程序微信通知</a></li>*@
+    </ul>
+    <div class="queryDiv">
+        <img class="queryImg" src="/Images/ic_query.png">
+        <div class="tipBox">
+            <h5>温馨提示:</h5>
+            <ul>
+                @*<li><span>商城小程序的相关消息推送设置，详细说明请点击"<a target="_blank" href="http://download.92hi.com/bangzhuzhongxin/changjianwenti/himall(xcxxxmb).pdf">帮助指南</a>"。</span></li>
+                <li><span>设置完成之后，消息会通过微信的“服务通知”推送给会员。</span></li>*@
+                <li><span>配置前请先确保微信小程序后台--订阅消息中没有任何已有模板，然后点击获取模板ID。获取后请不要删除相应的模板，否则将影响消息的正常使用。</span></li>
+                <li><span>获取完成之后，会员在小程序中同意订阅之后，消息将会通过微信的“服务通知”推送给会员。</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-horizontal" style="padding:20px 0 0 0;">
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">小程序AppId</label>
+            <div class="col-sm-4">
+                <input class="form-control input-sm text-box single-line" id="WeixinAppletId" name="WeixinAppletId" type="text" value="@WeixinAppletId">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">小程序AppSecret</label>
+            <div class="col-sm-4">
+                <input class="form-control input-sm text-box single-line" id="WeixinAppletSecret" name="WeixinAppletSecret" type="text" value="@WeixinAppletSecret">
+            </div>
+        </div>
+    </div>
+    <table class="table mt20">
+        <thead>
+            <tr>
+                <th width="260" class="tac">模版标题</th>
+                <th width="120" class="tac">模板编号</th>
+                <th width="220" class="tac">场景说明</th>
+                <th class="tac">模板ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                Himall.Core.Plugins.Message.MessageTypeEnum curmsgtype = ((Himall.Core.Plugins.Message.MessageTypeEnum)item.MessageType);
+                <tr style="text-align:center">
+                    <td align="center">
+                        @if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.OrderCreated)
+                        {
+                            @("订单未付款")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.OrderRefundFail)
+                        {
+                            @("退款通知")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.OrderShipping)
+                        {
+                            @("订单发货通知")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.ShopOrderShipping)
+                        {
+                            @("订单发货通知")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.SelfTakeOrderPay)
+                        {
+                            @("订单提货通知")
+                        }
+                        else
+                        {
+                            @(curmsgtype.ToDescription())
+                        }
+                    </td>
+                    <td align="center">
+                        @(item.TemplateNum)
+                    </td><td align="center">
+                        @if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.OrderRefundFail)
+                        {
+                            @("退款审核后通知会员")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.OrderShipping)
+                        {
+                            @("快递配送订单发货后通知")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.ShopOrderShipping)
+                        {
+                            @("门店配送订单发货后通知")
+                        }
+                        else if (curmsgtype == Himall.Core.Plugins.Message.MessageTypeEnum.SelfTakeOrderPay)
+                        {
+                        @("自提订单付款成功后通知")
+                        }
+                        else
+                        {
+                        @(curmsgtype.ToDescription())
+                        }
+                    </td>
+                    <td align="center">
+                        <input type="text" formitem name="@(item.Id)" class="form-control input-sm w240" value="@(item.TemplateId)" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-horizontal pd0 mt20 ml15">
+        <div class="form-group">
+            <div class="col-sm-3"><input type="button" id="btn" class="btn btn-primary" value="保 存" /></div>
+            <a class="btn btn-default float btnTemplateId">获取模板ID</a>
+            <a class="btn btn-default float j_viewQrcode">小程序二维码</a>
+        </div>
+    </div>
+</div>
+<div id="j_Qrcode" style="display:none;">
+    <div class="dialog-form">
+        <div class="form-group">
+            <p style="text-align:center"><font color="red">请使用微信扫描该二维码</font></p>
+            <p style="text-align:center">扫码后即可访问平台小程序</p>
+            <p style="text-align:center"><img width="250" height="250" class="j_qrcodeImg" /></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+

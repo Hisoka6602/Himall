@@ -1,0 +1,52 @@
+﻿@{  var shopCategorys = (List<Himall.DTO.ShopCategory>)ViewBag.ShopCategorys;
+}
+<script src="~/Scripts/jquery.hiMallDatagrid.js"></script>
+<script src="~/Scripts/jquery.himallLinkage.nocreate.js"></script>
+<script src="~/Scripts/jquery.himall.Region.js"></script>
+<script src="~/Areas/admin/Scripts/ShopBranchProductManagement.js"></script>
+<div class="container Sclear-M">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li><a href="@Url.Action("Management")">门店管理</a></li>
+        <li class="active"><a>商品管理</a></li>
+    </ul>
+
+    <div class="search-box">
+        <div class="form-inline custom-inline">
+            <div class="form-group" filter normal audit saleoff>
+                <label class="label-inline" for="">当前门店：@ViewBag.ShopBranchName</label>
+            </div>
+            <div class="form-group" filter normal>
+                <label class="label-inline" for="">商品名称：<input class="form-control input-ssm" type="text" id="shopBranchName" onkeydown="return NameSearch(event);return false;"></label>
+            </div>
+            <div class="form-group" filter normal>
+                <label class="label-inline" for="">
+                    商品分类：
+                    <select id="shopCategory" class="form-control input-ssm w90">
+                        <option value="0">请选择</option>
+                        @{
+                    var dic = new Dictionary<long, string>();
+                    for (int i = 0; i < shopCategorys.Count; i++)
+                    {
+                        var item = shopCategorys[i];
+                        var isParent = item.ParentCategoryId == 0;
+                        var key = isParent ? item.Id : item.ParentCategoryId;
+                        var html = string.Format("<option value='{0}'>{1}{2}</option>", item.Id, isParent ? "" : "&nbsp;&nbsp;&nbsp;&nbsp;", item.Name);
+
+                        if (dic.ContainsKey(key))
+                        {
+                            html = isParent ? html + dic[key] : (dic[key] + html);
+                        }
+                        dic[key] = html;
+                    }
+                        }
+                        @Html.Raw(string.Join("", dic.Values.ToArray()))
+                    </select>
+                </label>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-sm" id="searchButton" style="top:0">搜 索</button>
+            </div>
+        </div>
+    </div>
+    <table class="table mt5" id="shopDatagrid"></table>
+</div>

@@ -1,0 +1,66 @@
+﻿@using Himall.Entities
+@model ArticleInfo
+@{
+    ViewBag.Title = "文章详情";
+}
+
+<style>
+    .main {
+        padding: 16px;
+        background-color: #fff;
+        width: 100%;
+        border-bottom: 1px solid #ebebeb;
+    }
+    .cssborder h2 {
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .art_add_date {
+        font-size: 12px;
+    }
+
+    .art_add_date strong {
+        font-weight: normal;
+        color:#307bfb;
+    }
+
+    .art_add_c {
+        padding-top: 14px;
+    }
+
+    .art_add_c p {
+        font-size: 14px !important;
+    }
+
+    .art_add_c img {
+        max-width: 100%;
+    }
+</style>
+    <div class="main" id="articlelistContainer">
+        <div class="articledetail" id="articledetail">
+            <div class="cssborder">
+                <h2 class="h2">
+                    @Model.Title
+                </h2>
+                <div class="art_add_date">
+                    发布日期：<span class="cORed">@Model.AddDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+
+                    <strong class="spanB" style="cursor: pointer;" id="retcategory">【返回列表】</strong>
+                </div>
+                <div class="art_add_c">
+                    @MvcHtmlString.Create(@Model.Content)
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#retcategory").click(function (e) {
+            var CategoryId = 0;
+            CategoryId = QueryString("cid");
+            if (isNaN(CategoryId)) CategoryId = 0;
+            document.location.href = "../?cid=" + CategoryId;
+        });
+    </script>
+
+

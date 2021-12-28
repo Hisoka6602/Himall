@@ -1,0 +1,49 @@
+﻿@model List<Himall.Entities.BusinessCategoryInfo>
+@{
+    ViewBag.Title = ViewBag.ShopName+ " 的经营类目";
+}
+<script src="~/Scripts/jquery.hiMallDatagrid.js"></script>
+<script src="~/Scripts/jquery.himallLinkage.nocreate.js"></script>
+<script src="~/Scripts/CommonJS.js"></script>
+<script src="~/Areas/Admin/Scripts/ShopBusinessCategory.js?t=2019"></script>
+
+<div class="container">
+    <ul class="breadcrumb clearfix">
+
+        <li><a href="./Management">店铺管理</a></li>
+
+        <li class="active"><a>“@(ViewBag.ShopName)” 店铺的经营类目</a></li>
+
+        <li class="active"><a class="add-business" style="color:#2481d1;text-decoration:underline;margin-top:0px;margin-left:30px;"><span class="glyphicon glyphicon-plus-sign"></span>新增经营类目</a></li>
+    </ul>
+    <div class="queryDiv">
+        <img class="queryImg" src="/Images/ic_query.png">
+        <div class="tipBox">
+            <h5>温馨提示:</h5>
+            <ul>
+                <li><span>官方自营店默认拥有所有类目的经营权限，入驻商家需要申请经营类目。</span></li>
+                <li><span>商家冻结后，商家将无法登录卖家中心，店铺所有商品都会下架， 商家下面的所有门店也会冻结。商家解冻后，所有商品需要重新上架，所有门店也需要重新解冻。</span></li>
+            </ul>
+        </div>
+    </div>
+    <div id="shopToolBar">
+        <div class="search-box">
+            <form class="form-inline custom-inline">
+                <div class="form-group" style="position:relative;top:-1px;">
+                    <label class="label-inline w75" for="">经营类目名</label>
+                    <input class="form-control input-ssm" type="text" id="categoryName">
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-primary btn-sm" id="searchBtn" value="搜 索">
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table mt5" id="shopDatagrid" style="margin-bottom:10px;"></table>
+    <div class="form-group" style="margin-bottom:60px;">
+        <input type="button" class="btn btn-primary" id="SaveBtn" value="保存分佣比例"  style="margin-left:150px;"/>
+    </div>
+
+</div>
+
+<input type="hidden" id="shopId" value="@ViewBag.ShopId" />

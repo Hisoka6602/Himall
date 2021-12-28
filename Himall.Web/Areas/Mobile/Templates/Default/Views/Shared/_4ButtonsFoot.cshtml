@@ -1,0 +1,19 @@
+﻿<!--_4ButtonsFoot start -->
+
+@using Himall.Core;
+@{
+    var FootMenuList = ObjectContainer.Current.Resolve<Himall.Service.WeixinMenuService>().GetFootMenus();
+}
+<div class="footerempty"></div>
+<footer id="footerbt">
+    @foreach (var footmenu in FootMenuList)
+    {
+        <div class="@(footmenu.Id == 0 ? "current" : "")">
+            <a href="@footmenu.Url">
+                <img src="@footmenu.MenuIcon" style="width: 23px;height: 23px;" />
+                <p>@footmenu.Name</p>
+            </a>
+        </div>
+    }
+</footer>
+<!--_4ButtonsFoot end-->

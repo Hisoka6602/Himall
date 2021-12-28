@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "../Shared/_Base.cshtml";
+    ViewBag.Title = "组合购";
+    ViewBag.ShowAside = 1;
+}
+
+@model  List<Himall.DTO.ProductCollocationModel>
+<style type="text/css">
+    .nostock { position: absolute; width: 100%; height: 100%; top: 0px; background: rgba(33,33,33,0.3); z-index: 98; }
+        .nostock i { z-index: 99; font-size: 16px; color: #fff; display: block; font-style: normal; text-align: center; line-height: 100%; margin-top: 40%; }
+</style>
+<div class="container container-z">
+    <div class="detail-bd">
+        <div id="productColloCation">
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var m in Model)
+                {
+                    var title = m.Name;
+                    var pros = m.Products;
+                    int i = pros.Count();
+                    int index = 0;
+                    int len = i;
+                    <div class="item swiper-container">
+
+                        <div class="hmui-after hmui-after-middle detail-pbuy-hd">
+                            @title
+                            <span>
+                                @if (pros.Where(p => !p.IsMain).Sum(p => p.Stock) > 0)
+                                {
+                                    <a href="@Url.Action("ProductDetail", "PortfolioBuy", new { productId = m.ProductId })">最高省<em id="groupPriceMinus" style="color:red;">@m.Cheap</em>元</a>
+                                }
+                                else
+                                {
+                                    <a href="#">最高省<em id="groupPriceMinus" style="color:red;">@m.Cheap</em>元</a>
+                                }
+                            </span>
+                        </div>
+                        <ul class="detail-pbuy-bd swiper-wrapper">
+                            @foreach (var t in pros)
+                            {
+                                i--;
+                                index++;
+                                <li class="swiper-slide">
+                                    <div class="thumb">
+                                        @if (t.Stock > 0)
+                                        {
+                                            <a href="@Url.Action("Detail", "Product", new { id = t.ProductId })"><img src="@Himall.Core.HimallIO.GetProductSizeImage(t.Image, 1, 220)"></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Detail", "Product", new { id = t.ProductId })"><img src="@Himall.Core.HimallIO.GetProductSizeImage(t.Image, 1, 220)"><span class="nostock"><i>已售馨</i></span></a>
+                                        }
+                                        @if (i >= 1)
+                                        {
+                                            <div class="icon-sum flex-center">+</div>
+                                        }
+                                    </div>
+                                    <p class="price">¥ <strong>@t.MinCollPrice</strong></p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Areas/Mobile/Templates/Default/Scripts/swiper.min.js?v=20183030"></script>
+<script type="text/javascript">
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 40,
+        freeMode: true
+    });
+</script>

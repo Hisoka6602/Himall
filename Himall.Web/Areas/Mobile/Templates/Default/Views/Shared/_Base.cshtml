@@ -1,0 +1,156 @@
+﻿@{
+    bool? IsShowDistributionHead = (bool?)ViewBag.IsShowDistributionHead;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no">
+    <title>@ViewBag.Title</title>
+    <script>
+        (function () {
+            var baseFontSize = 100;
+            var baseWidth = 320;
+            var clientWidth = document.documentElement.clientWidth || window.innerWidth;
+            var innerWidth = Math.max(Math.min(clientWidth, 480), 320);
+
+            var rem = 100;
+
+            if (innerWidth > 362 && innerWidth <= 375) {
+                rem = Math.floor(innerWidth / baseWidth * baseFontSize);
+                //rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.9);
+            }
+
+            if (innerWidth > 375) {
+                rem = Math.floor(innerWidth / baseWidth * baseFontSize);
+                //rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.84);
+            }
+
+            window.__baseREM = rem;
+            document.querySelector('html').style.fontSize = rem + 'px';
+        }());
+    </script>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css?v=20183030">
+    <link rel="stylesheet" href="~/Areas/Mobile/Templates/Default/Content/custom.css?v=20193030">
+    @RenderSection("Styles", false)
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/Scripts/CommonJS.js?v=20210415"></script>
+    <script src="~/Areas/Mobile/Templates/Default/Scripts/custom.js?v=20183030"></script>
+    <script src="~/Areas/Mobile/Templates/Default/Scripts/buylib.js?v=20183030"></script>
+    <script src="~/Scripts/imitateRequire.js?v=20183030"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <script>
+		//imitateRequireJS.addJsFile([{
+		//	group: 'common',
+		//	fileNames: [
+		//		{ nickName: 'jquery.artDialog', fileName: 'jquery.artDialog.js' },
+		//		{ nickName: 'artDialog', fileName: 'artDialog.iframeTools.js', depends: ['jquery.artDialog'] },
+		//	]
+		//}]);
+
+		function Refresh() {
+		    var redirecturl = '@Url.Action("RedirectToUrl", new { url="{0}" })';
+		    location.href = redirecturl.replace(encodeURIComponent("{0}"), encodeURIComponent(location.href));
+        }
+
+        function smallAhref() {
+            $('#footerbt').hide();
+            $('a').click(function () {
+                var _this = $(this);
+                var href = _this.attr('href');
+                var isMiniHref = false;
+                if (href.indexOf('/productdetail/') > 0
+                    || href.indexOf('/countdowndetail/') > 0
+                    || href.indexOf('/countdown/') > 0
+                    || href.indexOf('/coupondetail/') > 0
+                    || href.indexOf('/grouplist/') > 0
+                    || href.indexOf('/limittimebuy/') > 0) {
+                    isMiniHref = true;
+                }
+                if (href.indexOf('/Product/Detail/') > 0) {
+                    isMiniHref = true;
+                    if (_this.attr("islimit") == "1") {
+                        href = href.toLowerCase().replace(/\/m-wap\/product\/detail\//g, "../countdowndetail/countdowndetail?id=0&productid=");
+                    } else {
+                        href = href.toLowerCase().replace(/\/m-wap\/product\/detail\//g, "../productdetail/productdetail?id=");
+                    }
+                }
+                if (href.toLowerCase().indexOf('/limittimebuy/detail/') > 0) {
+                    isMiniHref = true;
+                    href = href.toLowerCase().replace(/\/m-wap\/limittimebuy\/detail\//g, "../countdowndetail/countdowndetail?id=0&productid=");
+                }
+                if (href.toLowerCase().indexOf('/couponinfo/') > 0) {
+                    var couponId = href.toLowerCase().substring(href.toLowerCase().lastIndexOf("/")+1);
+                    isMiniHref = true;
+                    href = "../coupondetail/coupondetail?id=" + couponId;
+                }
+                if (isMiniHref) {
+                    wx.miniProgram.navigateTo({ url: href });
+                }
+                else {
+                    window.location.href = href;
+                }
+                return false;
+            });
+        }
+
+        $(function () {
+            if (wx != null) {
+                wx.miniProgram.getEnv(function (res) {
+                    if (res.miniprogram) {//如是小程序嵌套网页链接地址跳转改变;
+                        smallAhref();
+                    } else {
+                        $('#footerbt').show();
+                    }
+                })
+            } else {
+                $('#footerbt').show();
+            }
+        });
+    </script>
+</head>
+<body>
+    <!--_Base start-->
+    <script>
+		var areaName = '@ViewBag.AreaName';
+		var MAppType = '@ViewBag.MAppType';
+    </script>
+    <div id="shop-head"></div>
+    @if (IsShowDistributionHead == true)
+    {
+        @Html.Action("DistributionHeader", "Home");
+    }
+    @RenderBody()
+    @{Html.RenderPartial("~/Areas/Mobile/Templates/Default/Views/Shared/_Aside.cshtml");}
+    @{
+        if (ViewBag.CopyRight != null && ((bool)ViewBag.CopyRight))
+        {
+            <div class="bottom" onclick="javascript:window.location.href='/@ViewBag.AreaName'" style="background-image:url(@ViewBag.Logo)">Copyright &copy; 长沙海商网络技术有限公司 版权所有</div>
+        }
+    }
+    @{
+        //在IOS上点qq客服切换到qq聊天再返回微信端显示不是之前当前网页是它js影响(nicescroll的js不确定在移动端哪些页需要用)，则确认首页详细页不需用这里判断不加载
+        string requrl = ("/" + ViewContext.RouteData.Values["controller"] + "/" + ViewContext.RouteData.Values["action"]).ToLower();//控制器/方法名
+        if (!requrl.Equals("/home/index") && !requrl.Equals("product/detail")&&!requrl.Equals("/order/submitebycart"))
+        {
+            <script src="~/Scripts/jquery.nicescroll.min.js"></script>
+        }
+    }
+    <script src="~/Areas/Mobile/Templates/Default/Scripts/_Base.js?v=20200921"></script>
+    <link rel="stylesheet" href="~/Areas/Mobile/Templates/Default/Content/artdialog.css?v=20183030">
+    <script src="~/Scripts/jquery.artDialog.js?v=20183030"></script>
+    <script src="~/Areas/Mobile/Templates/Default/Scripts/artDialog.iframeTools.js?v=20183030"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/jquery.scrollLoading.min.js"></script>
+
+    @RenderSection("Scripts", false)
+
+    @Html.Partial("_ShowMessage")
+    <!--_Base end-->
+</body>
+</html>

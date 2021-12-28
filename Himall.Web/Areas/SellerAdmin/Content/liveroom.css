@@ -1,0 +1,39 @@
+﻿.searcharea .form-control { width: 200px; }
+.displaysequence { width: 40px; text-align: center; margin-left: 15px; }
+.nostart { color: darkgreen; font-family: Arial, Helvetica, sans-serif; }
+.ended { color: darkred; font-family: Arial, Helvetica, sans-serif; }
+.step { width: 96%; margin: 10px 2%; clear: both; height: 30px; }
+    .step ul { margin: 0px; padding: 0px; }
+        .step ul li { width: 50%; float: left; margin: 0px; padding: 0px; line-height: 30px; color: #333; background: #ccc; display: block; text-align: center; }
+            .step ul li.hover { background: #0094ff; color: #ffffff; }
+.areacolumn .columnright .formitem .formitemtitle, .databody .datafrom .formitem .formitemtitle, .Pop_up .mianform .formitemtitle, .dataarea .areaform .formitemtitle { width: 180px !important; }
+.areacolumn .columnright .formitem p { margin-left: 180px !important; }
+.ml_198 { margin-left: 180px !important; }
+span.timerange_text { width: 10px; margin: 0px 5px; }
+.checkboxs { float: left; width: 80%; display: block; }
+.tipBox { position: absolute; left: 508px; top: -10px; z-index: 9; background: #fff8e1; border: solid 1px #ffc107; display: none; padding: 10px; }
+    .tipBox:before { content: ""; position: absolute; left: -6px; top: 18px; display: block; width: 10px; height: 10px; background: #fff8e1; border-left: solid 1px #ffc107; border-bottom: solid 1px #ffc107; transform: rotateZ(45deg); }
+.areacolumn .columnright .formitem .tipBox p { font-size: 13px; display: table-row; line-height: 20px; width: auto !important; height: auto !important; color: #616161; margin: 0px !important; padding: 0px !important; margin-left: 0px !important; }
+.showbox { position: absolute; left: 600px; top: 48px; width: 250px; height: 800px; margin-top: -20px; }
+.sharebox { background: url(/Areas/SellerAdmin/content/images/sharebg.png) no-repeat top center; background-size: 100%; padding-top: 50px; height: 240px; margin-bottom: 20px; }
+.sharebgbox { width: 219px; height: 156px; margin-left: 15px; background: url('') no-repeat top center; background-size: cover; }
+.backwallbox { background: url('') no-repeat top center; background-color: #616161; background-size: cover; height: 509px; width: 240px; margin-left: 5px; overflow: hidden }
+    .backwallbox .backwallbgbox { background: url(/Areas/SellerAdmin/content/images/clientBg_1_2_3.png) no-repeat top center; height: 100%; width: 100%; background-size: 104%; }
+
+.preview_card_head { padding: 30px 28px 0; color: #fff; }
+.preview_card_head_inner { display: inline-block; padding: 1px 15px 0px 20px; position: relative; background-color: rgba(0, 0, 0, 0.1); border-radius: 13px; height: 28px; }
+.preview_card_avatar { position: absolute; top: 2px; left: 3px; display: block; width: 25px; height: 25px; border-radius: 50%; margin-right: 15px; border: 1px solid #fff; }
+.preview_card_head_info { position: relative; top: -1px; margin-left: 10px; }
+.preview_card_head_info_title { FONT-WEIGHT: 200; font-weight: normal; font-size: 12px; max-width: 6em; padding: 0px; margin: 0px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preview_card_head_info_desc { font-size: 10px !important; line-height: 16px; }
+.columnright { padding: 0; border: 0 #ccc solid; }
+.formitem { width: 100%; margin-top: 10px; }
+.columnright .formitem .formitemtitle { text-align: right; width: 180px; float: left; line-height: 32px; color: #666; }
+    .columnright .formitem .formitemtitle em { color: red; }
+.columnright .formitem span { float: left; display: block; }
+span.timerange_text { width: 10px; margin: 0px 5px; }
+.columnright .formitem li { margin-bottom:30px; text-align: left; clear: both; width: 100%; line-height: 32px; float: left; }
+.input-sm[type='text'] { float: left; }
+.queryImg { float: left; margin-top: 7px; margin-left: 10px; }
+.upload_pic_notic { display: inline-block; line-height: 60px; }
+input[type="radio"], input[type="checkbox"] { margin: 10px 0 0; line-height: normal; vertical-align: top; }

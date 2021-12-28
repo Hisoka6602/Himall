@@ -1,0 +1,372 @@
+﻿@model Himall.Web.Areas.Admin.Models.AdvanceModel
+<link href="~/fonts/iconfont.css" rel="stylesheet" />
+<!-- diy css start-->
+<link rel="stylesheet" href="/Content/PublicMob/css/style.css" />
+<link rel="stylesheet" href="/Content/Public/plugins/diy/diy-min.css" />
+<!-- 线上环境 -->
+<link rel="stylesheet" href="/Content/Public/css/dist/component-min.css?j=0.3" />
+<link rel="stylesheet" href="/Content/Public/plugins/jbox/jbox-min.css" />
+<link rel="stylesheet" href="/Areas/admin/Templates/common/style/head.css">
+<link rel="stylesheet" href="/Content/Public/css/dist/home/Shop/edit_homepage.css" />
+
+@Html.Partial("~/Areas/Admin/Views/Shared/_AdminVisualTemplate.cshtml")
+<!--链接使用js-->
+<script src="/Content/Public/js/dist/lib-min.js"></script>
+<script src="/Scripts/jquery.form.js"></script>
+<script src="/Scripts/bootstrap.min.js"></script>
+
+
+@Html.Hidden("IsOpenStore", (bool)ViewBag.IsOpenStore)
+
+<script src="/Content/Public/plugins/jbox/jquery.jbox-min.js"></script>
+<script src="/Content/Public/plugins/zclip/jquery.zclip-min.js"></script>
+<!-- 线上环境 -->
+
+<script src="/Scripts/jquery.artDialog.js"></script>
+<script src="/Scripts/artDialog.iframeTools.js"></script>
+<script src="/Content/Public/js/dist/component-min.js?j=5.7"></script>
+<script src="/Content/Public/modulesJs/scroll.js"></script>
+<script src="/Scripts/jquery.himallUpload.js"></script>
+<script src="/Content/Public/js/jquery-ui/jquery-ui.min.js"></script>
+<script src="/Content/Public/js/config.js?v=3.0"></script>
+<script src="/Content/Public/plugins/diy/diy.core.js?v=20190429"></script>
+<script src="/Content/Public/plugins/diy/diy.base64code.js"></script>
+<script src="/Content/Public/plugins/diy/diy.data2html.js"></script>
+<script src="/Content/Public/plugins/diy/diy.events.js?v=20190429"></script>
+<script src="/Content/Public/plugins/diy/diy.verify.js"></script>
+<script src="/Content/Public/plugins/diy/diy.init.js"></script>
+
+<script src="/Content/Public/js/dist/home/Shop/edit_homepage.js?v=2.0"></script>
+<script src="/Scripts/jquery.himallLinkage.nocreate.js"></script>
+
+<script type="text/javascript" src="/Scripts/daterangepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.zh-CN.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-datetimepicker.min.css">
+
+<script src="/Scripts/jquery.himallLinkage.nocreate.js"></script>
+<script src="/Scripts/jquery.hiMallDatagrid.js"></script>
+<style>
+    .row{
+        margin-left: 0;
+    }
+    .upload_pic {
+        width: 60px;
+        height: 60px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        border: 1px solid gray;
+        display: inline-block;
+    }
+    .product.pic {
+        display: inline-block;
+        border: 1px dashed #cbcacf;
+        position: relative;
+        padding: 5px;
+        margin-right: 15px;
+    }
+
+        .product.pic .upload_pic {
+            border: none;
+            display: block;
+            overflow: hidden
+        }
+
+        .product.pic .upload.pic.btn {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDphNWRmOTIyMS1lNmM2LTExNGQtODY0YS04OWUwMTUwNWYxYTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RUEyOTEzQUQ4OTlCMTFFODhDQ0JCMEUyMzlFNUNGMjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RUEyOTEzQUM4OTlCMTFFODhDQ0JCMEUyMzlFNUNGMjMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ZjdmODMyYjMtYTYwZC1lYjRlLWE3YTEtZTJhNjk1ZWNiOGJhIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6YzQ1OGQ3YTQtODBiZS0xMWU4LTgxNDUtZjc5N2RjNGJiZTM4Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+0iRq5wAAAD5JREFUeNpivHnzJgOR4D8an5EYTUwMNAajFoxaMGoBAwMLlhxKbs4ejQPy44CRzDAfLU1HLRi1YLBYABBgAPJ2Br527grLAAAAAElFTkSuQmCC) no-repeat;
+            background-size: 100%;
+        }
+
+        .product.pic .btn:active {
+            box-shadow: none;
+        }
+
+        .product.pic .video.btn {
+            width: 60px;
+            height: 60px;
+            padding: 0;
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDphNWRmOTIyMS1lNmM2LTExNGQtODY0YS04OWUwMTUwNWYxYTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RUEyOTEzQUQ4OTlCMTFFODhDQ0JCMEUyMzlFNUNGMjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RUEyOTEzQUM4OTlCMTFFODhDQ0JCMEUyMzlFNUNGMjMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ZjdmODMyYjMtYTYwZC1lYjRlLWE3YTEtZTJhNjk1ZWNiOGJhIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6YzQ1OGQ3YTQtODBiZS0xMWU4LTgxNDUtZjc5N2RjNGJiZTM4Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+0iRq5wAAAD5JREFUeNpivHnzJgOR4D8an5EYTUwMNAajFoxaMGoBAwMLlhxKbs4ejQPy44CRzDAfLU1HLRi1YLBYABBgAPJ2Br527grLAAAAAElFTkSuQmCC) no-repeat;
+            background-size: 30px;
+            background-position: center center;
+        }
+
+        .product.pic .del {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            color: #fff;
+            background-color: #d21818;
+            display: block;
+            width: 20px;
+            height: 20px;
+            line-height: 18px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 100%;
+            font-family: Verdana;
+            font-size: 12px;
+        }
+
+    .preview-wrap {
+        width: 375px;
+        float: left;
+    }
+
+        .preview-wrap p {
+            padding: 8px 0;
+            margin-left: 0;
+        }
+
+    .preview-wrap-inner {
+        height: 667px;
+        position: relative;
+    }
+
+        .preview-wrap-inner .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .preview-wrap-inner .mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+
+    #advert_img_wrap {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        display: none;
+    }
+
+        #advert_img_wrap img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #advert_img_wrap i {
+            position: absolute;
+            top: -34px;
+            right: -21px;
+            font-size: 27px;
+            opacity: 0.4;
+            transform: rotate(-45deg);
+            color: #fff;
+        }
+
+    .form-controls {
+        margin-left: 0;
+    }
+
+    .w_200 {
+        width: 200px;
+    }
+
+    .input-no-at {
+        height: 24px;
+        line-height: 24px;
+        width: 200px;
+    }
+
+    .opdiv {
+        display: none;
+    }
+</style>
+<div class="container">
+    <ul class="breadcrumb">
+        <li class="active">弹窗广告</li>
+    </ul>
+    <input type="hidden" value="@Model.Img" id="advert_img_default" />
+    <div class="pd-white-box">
+        <div class="row">
+            <div class="preview-wrap">
+                <p>效果预览</p>
+                <div class="preview-wrap-inner">
+                    <img class="bg" src="/Storage/master/ReferralPoster/Posterbg/homebg.png" />
+                    <div id="advert_img_wrap">
+                        <img id="advert_img" src="@Model.Img" />
+                        <i class="iconfont icon-icon_add"></i>
+                    </div>
+                    <div class="mask" id="advert_img_mask"></div>
+                </div>
+            </div>
+            <div class="col-xs-7">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">是否开启活动：</label>
+                        <div class="col-sm-6">
+                            <label for="activeOpenStatus" class="radio-inline">
+                                <input type="radio" value="1" name="IsEnable" id="activeOpenStatus" @(Model.IsEnable ? "checked" : "") />
+                                <span class="fake-radio"></span>开启
+                            </label>
+                            <label for="activeCloseStatus" class="radio-inline">
+                                <input type="radio" value="2" name="IsEnable" id="activeCloseStatus" @(Model.IsEnable ? "" : "checked") />
+                                <span class="fake-radio"></span>关闭
+                            </label>
+                            <div class="color-9 mt10">开启后，消费者在进入小程序的时候会显示弹窗广告。</div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group opdiv">
+                        <label for="" class="col-sm-3 control-label">上传广告图片：</label>
+                        <div class="col-sm-6">
+                            <div class="product pic j-selectimg">
+                                <div class="upload_pic" imagesrc="@Model.Img" style="background-image:url('@Model.Img')">
+                                    <input type="hidden" name="ShowImage" id="ShareImg" value="@Model.Img" />
+                                </div>
+                                <span class="upload pic btn"></span>
+                                <i class="del hide">x</i>
+                            </div>
+                            <input name="picsValid" picrequired="true" style="width:0;border:0;padding:0" 用于验证 />
+                            <div class="advertingimg"></div>
+                            <div class="color-9 mt10">建议上传800px*1000px及以上的等比例png格式图片文件</div>
+                        </div>
+
+                    </div>
+                    <div class="form-group opdiv">
+                        <label for="" class="col-sm-3 control-label">链接到：</label>
+                        <div class="col-sm-6">
+
+                            <div class="advertinghref">
+
+
+                            </div>
+                            <input type="hidden" name="Href" id="Href" value="@Model.Link" />
+                        </div>
+
+                    </div>
+                    <div class="form-group opdiv">
+                        <label for="" class="col-sm-3 control-label">开始投放时间：</label>
+                        <div class="col-sm-6">
+                            <input readonly type="text" data-d-group="0" name="StartTime" class="auto form-control input-sm start_datetime w_200" id="starttime" value="@Model.StartTime.ToString("yyyy-MM-dd")">
+                            <div class="color-9 mt10">达到开始投放时间后，弹窗广告才会被投送</div>
+                        </div>
+                    </div>
+                    <div class="form-group opdiv">
+                        <label for="" class="col-sm-3 control-label">结束投放时间：</label>
+                        <div class="col-sm-6">
+                            <input readonly type="text" data-d-group="0" value="@Model.EndTime.ToString("yyyy-MM-dd")" name="EndTime" class="auto form-control input-sm end_datetime w_200" id="endtime">
+                            <div class="color-9 mt10">达到结束投放时间后，弹窗广告将停止投放</div>
+                        </div>
+
+                    </div>
+                    <div class="form-group opdiv">
+                        <label for="" class="col-sm-3 control-label">重复显示设置：</label>
+                        <div class="col-sm-6">
+                            <label for="repeatOpenStatus" class="radio-inline">
+                                <input type="radio" value="1" name="IsRepeatShow" id="repeatOpenStatus" @(Model.IsReplay ? "checked" : "") />
+                                <span class="fake-radio"></span>开启
+                            </label>
+                            <label for="repeatCloseStatus" class="radio-inline">
+                                <input type="radio" value="2" name="IsRepeatShow" id="repeatCloseStatus" @(Model.IsReplay ? "" : "checked") />
+                                <span class="fake-radio"></span>关闭
+                            </label>
+                            <div class="color-9 mt10">
+                                广告只会在用户每天第一次进入商城首页时弹出。
+                                若开启重复显示，用户每一次重新进入商城首页都会弹出广告，直到用户点击进入弹窗链接之后，当天不再显示广告
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-sm-12" style="text-align:center">
+                            <a id="btn_save" class="btn btn-primary step needValid" style="margin-right:20px;">保存</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <script type="text/j-template" id="tpl_diy_ctrl_typeadv">
+        <div>
+            <div class="formitems">
+
+                <div class="form-controls">
+                    <% if(item.linkType && item.linkType!=10 && item.linkType!=33&& item.linkType!=23){ %>
+                    <a href="<%= item.link %>" target="_blank" class="badge badge-success" title="<%= item.title %>">
+                        <span><%= HiShop.linkType[item.linkType] %></span>
+                        <em class="badge-link ovfEps"><%= item.title %></em>
+                    </a>
+                    <%}%>
+
+                    <% if(item.linkType==10|| item.linkType==33|| item.linkType==23){ %>
+                    <input type="text" name="customlink" class="input input-no-at" value="<%= item.link %>">
+                    <% } %>
+
+                    <div class="droplist">
+                        <a href="javascript:;" class="droplist-title j-droplist-toggle">
+                            <% if(item.linkType==0){ %>
+                            <span>请选择</span>
+                            <%}else{%>
+                            <span>修改</span>
+                            <%}%>
+                            <i class="gicon-chevron-down"></i>
+                        </a>
+                        <ul class="droplist-menu">
+                            <li data-val="1"><a href="javascript:;"><%= HiShop.linkType[1] %></a></li>
+                            @*<li data-val="2"><a href="javascript:;"><%= HiShop.linkType[2] %></a></li>*@
+                            <li data-val="5"><a href="javascript:;"><%= HiShop.linkType[5] %></a></li>
+                            <li data-val="6"><a href="javascript:;"><%= HiShop.linkType[6] %></a></li>
+                            <li data-val="15"><a href="javascript:;"><%= HiShop.linkType[15] %></a></li>
+        @*<li data-val="3"><a href="javascript:;"><%= HiShop.linkType[3] %></a></li>*@
+                            <li data-val="4"><a href="javascript:;"><%= HiShop.linkType[4] %></a></li>
+        <li data-val="9"><a href="javascript:;"><%= HiShop.linkType[9] %></a></li>
+        <li data-val="24"><a href="javascript:;"><%= HiShop.linkType[24] %></a></li>
+        <li data-val="26"><a href="javascript:;"><%= HiShop.linkType[26] %></a></li>
+        @*<li data-val="30"><a href="javascript:;"><%= HiShop.linkType[30] %></a></li>*@
+        <li data-val="29"><a href="javascript:;"><%= HiShop.linkType[29] %></a></li>
+        @if (ViewBag.IsOpenStore)
+        {
+            <li data-val="28"><a href="javascript:;"><%= HiShop.linkType[28] %></a></li>
+            <li data-val="33"><a href="javascript:;"><%= HiShop.linkType[33] %></a></li>
+
+            <li data-val="34"><a href="javascript:;"><%= HiShop.linkType[34] %></a></li>
+        }
+
+        <li data-val="31"><a href="javascript:;"><%= HiShop.linkType[31] %></a></li>
+        <li data-val="32"><a href="javascript:;"><%= HiShop.linkType[32] %></a></li>
+                            @*<li data-val="40"><a href="javascript:;"><%= HiShop.linkType[40] %></a></li>*@
+                        </ul>
+                    </div>
+                    <% if(item.linkType==10){ %>
+                    <span class="fi-help-text">外链请加上 http:// 前缀</span>
+                    <%}%>
+                    <% if(item.linkType==33){ %>
+                    <span class="fi-help-text">请输入小程序AppID</span>
+                    <% } %>
+                    <% if(item.linkType==23){ %>
+                    <span class="fi-help-text">输入格式：电话号码</span>
+                    <% } %>
+                    <input type="hidden" class="j-verify" name="item_id" value="">
+                    <span class="fi-help-text j-verify-linkType"></span>
+                </div>
+            </div>
+
+        </div>
+    </script>
+    <script src="~/Areas/Admin/Scripts/PopupActive.js?v=1.1"></script>

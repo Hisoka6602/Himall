@@ -1,0 +1,75 @@
+﻿@model Himall.Entities.ProductInfo
+@{
+    ViewBag.Title = "himall本地宝导入";
+}
+<script src="~/Scripts/jquery.himallUpload.js"></script>
+<script src="~/Scripts/jquery.himallLinkage.nocreate.js"></script>
+
+<div class="container Sclear-F">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li class="active"><a>自制数据包导入</a></li>
+        <li><a href="ImportManage">淘宝数据包导入</a></li>
+    </ul>
+    <h5 class="tips-top">
+        <span class="help-default">
+            <i></i>  温馨提示：<br />
+            第1步：提前在系统内维护好商品分类<br />
+            第2步：<a href="~/Storage/Template/商品导入模板.xlsx">下载商家模板</a><br />
+            第3步：导入模板中填入商品信息，上传文件进行导入<br />
+            第4步：导入的excel大小限制为1M，ZIP包大小限制为20M<br />
+        </span>
+    </h5>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="red">*</span>商品状态：</label>
+            <div class="col-sm-6 form-control-static">
+                <input name="paraSaleStatus" status="1" type="radio" checked="checked" id="paraSaleStatus1"><label for="paraSaleStatus1" style="margin-right:20px;"> 出售</label>
+                <input name="paraSaleStatus" status="3" type="radio" id="paraSaleStatus3"><label for="paraSaleStatus3"> 仓库</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">数据包：</label>
+            <div class="col-sm-3 form-control-static">
+                <form id="formUpload" action="/common/PublicOperation/UploadFile" enctype="multipart/form-data" method="post" target="iframeUpload">
+                    <div class="divFile">
+                        <input type="text" id="inputFile" value="请选择文件" disabled="disabled" />
+                        <input type="button" value="选择文件" />
+                        <input type="file" id="btnFile" class="inputFile" name="_file" />
+                        <input type="hidden" id="hidIsLocal" name="hidIsLocal" value="1" />
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="divAttention">
+                    <h5 style="color:red;">注意事项：</h5>
+                    <p>
+                       1、 如需上传商品图片，需同时将图片与表格打包 ZIP 上传，图片名称需与表格中的商品图片名称
+                        保持一致。如果不需要上传商品图片，直接添加表格文件即可，上传的表格格式只能为xlsx。
+                    </p>
+                    <p style="color:red;">2、把xlsx文件和图片文件夹都命名为products然后选中两个打成zip的压缩包 </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" class="btn btn-primary" id="btnHimallUpload" value="导 入" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<iframe name="iframeUpload" src="" width="350" height="35" frameborder="0" scrolling="no" style="display:none" id="iframe"></iframe>
+<iframe id="iframeImport" style="display:none;"></iframe>
+<input id="inputCount" type="hidden" value="@ViewBag.Count" />
+<input id="inputTotal" type="hidden" value="@ViewBag.Total" />
+<input id="inputSuccess" type="hidden" value="@ViewBag.Success" />
+<input id="inputShopid" type="hidden" value="@ViewBag.shopid" />
+<input id="inputUserid" type="hidden" value="@ViewBag.userid" />
+<input id="inputCanCreate" type="hidden" value="@ViewBag.CanCreate" />
+<input id="inputCanNotCreateMessage" type="hidden" value="@ViewBag.CanNotCreateMessage" />
+<script src="~/Areas/SellerAdmin/Scripts/radialIndicator.js"></script>
+<script src="~/Areas/SellerAdmin/Scripts/ProductImport.js?v=202008271645"></script>

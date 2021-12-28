@@ -1,0 +1,118 @@
+﻿@using Himall.Entities
+@model ArticleInfo
+@{
+    ViewBag.Title = "文章列表";
+}
+<script src="~/Scripts/iscroll.js"></script>
+<style>
+    .articlelist {
+        padding: 0 12px;
+        background-color:#fff;
+        margin-top:16px
+    }
+    .articlelist a {
+        display: flex;
+        padding: 16px 0;
+        border-bottom:1px solid #eee;
+    }
+    .articlelist a>div {
+        flex: 1;
+        padding: 4px 12px 0 0;
+    }
+
+    .articlelist a img {
+        width: 100px;
+        height: 56px;
+    }
+    .tip{
+        text-align:center;
+        padding:50px 0;
+    }
+    /*文章列表*/
+    #wrapper li {
+        padding: 0 16px;
+        white-space: nowrap;
+        height: 48px;
+        line-height: 48px;
+    }
+
+    #wrapper li.current {
+        border-bottom: 2px solid #212121;
+        
+    }
+
+    #wrapper li a:hover, #wrapper li.current a {
+        color: #212121;
+    }
+
+    #wrapper ul {
+        position:absolute;
+        display:flex;
+    }
+
+    #wrapper {
+        width:100%;
+        position: relative;
+        background: #fff;
+        height: 48px;
+        line-height: 48px;
+        color: #747474;
+        font-size: 14px;
+    }
+</style>
+
+
+<div class="container">
+    <div id="wrapper" style="overflow:hidden;">
+        <ul id="scroller">
+            <li><a class="@(ViewBag.ArticleCateId.ToString() =="0" ? "current" : "")" href="@Url.Action("Index", "Article", new { cid=0})">全部</a></li>
+            @foreach (var cate in ((List<ArticleCategoryInfo>)ViewBag.Category))
+            {
+                <li class="@(ViewBag.ArticleCateId.ToString() == cate.Id.ToString() ? "current" : "")">
+                    <a href='@Url.Action("Index", "Article", new { cid=cate.Id})'>
+                        @cate.Name
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    @if (((List<ArticleInfo>)ViewBag.Articles).Count > 0)
+    {
+        <div class="articlelist clearfix" id="articlelist">
+            <ul>
+                @foreach (var item in ((List<ArticleInfo>)ViewBag.Articles))
+                {
+                    <li>
+                        <a class="item" href='@Url.Action("Detail","Article",new { id=item.Id})'>
+                            <div> @item.Title</div>
+                            <img src="@item.IconUrl"/>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <p class="tip">没有相关文章</p>
+    }
+</div>
+    <script>
+        var myscroll;
+        function loaded() {
+            setTimeout(function () {
+                myscroll = new iScroll("wrapper", {
+                    hScrollbar: false,
+                    hideScrollbar: false,
+                    bounce: false,
+                });
+
+                 myscroll.scrollToElement('li.current', 500);
+            }, 300);
+        }
+        $(function () {
+            loaded();
+        })
+        
+    </script>
+

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Himall.DTO.Live.LiveProduct>
+@{
+	Layout = null;
+}<table cellspacing="0" cellpadding="5" rules="all" border="1">
+    <thead>
+      <tr>
+        <th>商品名称</th>
+        <th>价格</th>
+        <th>销售数量</th>
+        <th>销售金额</th>
+      </tr>
+    </thead>
+    <tbody id="list-table-body">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price.ToString("f2")</td>
+                <td>@item.SaleCount</td>
+                <td>@item.SaleAmount.ToString("f2")</td>
+            </tr>
+        }
+    </tbody>
+</table>

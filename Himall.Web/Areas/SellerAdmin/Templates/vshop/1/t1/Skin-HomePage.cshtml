@@ -1,0 +1,56 @@
+﻿@{Layout = "/Areas/Mobile/Templates/Default/Views/Shared/_Base.cshtml";}
+@{
+long curshopid=1,curvshopid=10;
+}
+<div class="container">
+@(Html.Action("VShopHeader", "vshop", new { id = curvshopid }))
+<link rel="stylesheet" href="/Content/PublicMob/css/style.css" />
+<link rel="stylesheet" href="/Areas/Admin/templates/common/style/mycss.css" rev="stylesheet" type="text/css">
+<link rel="stylesheet" href="/Areas/Admin/templates/common/style/head.css">
+<script type="text/javascript">
+var curshopid=1,curvshopid=10;
+</script>
+<style>#footerbt {display: none;}</style>
+            <div class="members_con">
+                <section class="custom-space" style="height:10px; background-color: #f7f8f9"></section>
+            </div>
+        
+            <div class="cap-search-box" style="background: #ffffff; padding: 12px 12px">
+                <div class="cap-search " style="height: 28px;  background-color: #F3F3F3; border-radius: 4px;color:#BDBDBD">
+                    <i style="margin-left:12px" class="iconfont icon-c-search"></i>
+                    <span>搜索商品</span>
+                </div>
+            </div>
+        
+            <div class="members_con" style="background-color: ; padding: 0px 0; border-radius: 0">
+                
+                
+                <ul class="image-poster style1  " style="margin: 0 0px">
+                    
+                    <li style="margin-top: 0px; margin-left: 0">
+                        
+                        <a href="/m-Wap/LimitTimeBuy/Home?shopid=1"">
+                        <img src="/Content/Public/images/diy/choose.png" style="object-fit: cover; width: " />
+                        </a>
+                        
+                         
+                    </li>
+                    
+                    <li style="margin-top: 0px; margin-left: 0">
+                        
+                        <a href="/m-Wap/FightGroup?shopid=1"">
+                        <img src="/Content/Public/images/diy/choose.png" style="object-fit: cover; width: " />
+                        </a>
+                        
+                         
+                    </li>
+                    
+                </ul>
+                
+                
+            </div>
+        @{Html.RenderPartial("~/Areas/Mobile/Templates/Default/Views/Shared/_4ButtonsFoot_shop.cshtml");}
+</div>
+<a class="WX-backtop"></a>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/shophome.js"></script>
+ <script src="~/Scripts/swipe-template.js"></script>

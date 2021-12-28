@@ -1,0 +1,309 @@
+﻿@model Himall.Entities.DistributorInfo
+@{
+    ViewBag.FootIndex = 4;
+    var weiXinShareArgs = this.WeiXinShareArgs;
+    var site = Himall.Application.SiteSettingApplication.SiteSettings;
+}
+
+<style>
+    #divRepeledReason {
+        border: 1px dashed #e7e5ea;
+        background: #fff;
+        padding: 0.75rem;
+        float: left;
+        width: 100%;
+    }
+
+        #divRepeledReason font {
+            width: 100%;
+            font-size: 0.6rem;
+            color: #000;
+            display: inline-block;
+        }
+
+        #divRepeledReason span {
+            margin-top: 0.25rem;
+            color: #666;
+            display: inline-block;
+        }
+
+    .t_1 {
+        float: left;
+        font-size: 0.6rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .bgb {
+        overflow: hidden;
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 490px;
+        width: 320px;
+        background-size: 100%;
+        position: relative;
+        margin: 10px auto auto auto;
+    }
+
+        .bgb div {
+            position: absolute;
+        }
+
+    .share_yj {
+        background: url(../images/new/share_bg.jpg) no-repeat;
+        background-size: 100%;
+        padding: 0.75rem;
+        padding-bottom: 0;
+    }
+
+    .share_bg1 {
+        background: url(../images/new/yj_top.png) no-repeat;
+        background-size: 100%;
+        height: 0.65rem;
+    }
+
+    .share_bg2 {
+        background: url(../images/new/yj_bg_06.png) no-repeat;
+        background-size: 100% 100%;
+        height: 0.95rem;
+        margin-top: -0.1rem;
+    }
+
+    .share_yj .info1 {
+        background: #fff;
+        padding: 0.75rem;
+        font-size: 0.7rem;
+        margin-top: -1px;
+    }
+
+        .share_yj .info1 span {
+            display: block;
+            overflow: hidden;
+            clear: both;
+        }
+
+        .share_yj .info1 b {
+            text-align: center;
+            display: block;
+            padding: 0.5rem 10%;
+            overflow: hidden;
+        }
+
+            .share_yj .info1 b img {
+                width: 8.25rem;
+            }
+
+        .share_yj .info1 em {
+            display: block;
+            overflow: hidden;
+            clear: both;
+            text-align: center;
+            color: #999;
+        }
+
+    .share_yj .info2 {
+        background: #fff;
+        border-radius: 0px 0px 10px 10px;
+        padding: 0.35rem;
+        margin-top: -1px;
+    }
+
+        .share_yj .info2 span {
+            display: block;
+            overflow: hidden;
+            clear: both;
+            margin-bottom: 0.5rem;
+        }
+
+            .share_yj .info2 span em {
+                float: left;
+                background: url(../images/new/yongjin_07.jpg) no-repeat;
+                background-size: cover;
+                width: 1.25rem;
+                line-height: 0.8rem;
+                text-align: center;
+                color: #fff;
+                height: 0.8rem;
+                margin-right: 0.5rem;
+                margin-top: 0.1rem;
+            }
+
+            .share_yj .info2 span b {
+                font-weight: normal;
+                float: left;
+                width: 70%;
+                overflow: hidden;
+                font-size: 0.7rem;
+                color: #666;
+            }
+
+        .share_yj .info2 .btn1 {
+            width: 100%;
+            text-align: center;
+            margin: 0.5rem 0px;
+        }
+
+            .share_yj .info2 .btn1 a {
+                border: 1px solid #000;
+                margin: 0 auto;
+                line-height: 1.25rem;
+                width: 4.5rem;
+                height: 1.25rem;
+                display: block;
+                text-align: center;
+                border-radius: 0.2rem;
+                font-size: 0.6rem;
+            }
+
+    .share_btn2 {
+        background-color: #ffc107;
+        text-align: center;
+        margin-top: 0.75rem;
+        color: #fff;
+        width: 100%;
+        /*height: 2rem;
+        line-height: 2rem;
+        border-radius: 0.5rem;*/
+        height: 45px;
+        line-height: 45px;
+        border-radius: 10px;
+    }
+
+    .icon_yongjin_11 {
+        font-size: 1.2rem;
+        line-height: 2rem !important;
+        padding: 0 0.25rem;
+        position: absolute;
+    }
+
+    .share_btn2 a {
+        color: #fff;
+        font-size: 0.8rem;
+    }
+
+    .zhezhao {
+        background: #000;
+        top: 0px;
+        left: 0px;
+        opacity: 0.85;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: none;
+    }
+
+        .zhezhao img {
+            padding: 0.75rem;
+            margin-top: 30%;
+            width: 100%;
+            z-index: 1;
+        }
+
+    .share_bottom {
+        position: fixed;
+        width: 100%;
+        bottom: 0px;
+        left: 0px;
+        /*padding: 0.75rem;*/
+        padding: 20px;
+        /*background: #d84315;*/
+        overflow: hidden;
+    }
+
+    .share_btn2 {
+        margin-top: 0px;
+    }
+
+    .share_yj .info2 {
+        margin-bottom: 2rem;
+    }
+</style>
+<div id="posterPanel" runat="server">
+    <img id="userReferralQRCode" src="@(ViewBag.ReferralPosterUrl + "?rnd=" + (new Random()).Next())" style="width:100%;border-width:0px;" />
+    <div class="share_yj1">
+        <div class="zhezhao">
+            <img src="/Areas\Mobile/Templates/Default/Images/Splittin_pic.png" id="imghtmlfxvshop">
+            <img src="/Areas\Mobile/Templates/Default/Images/SplittinWap_pic.png" id="imghtmlfxwapshop">
+        </div>
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+        <script type="text/javascript">
+            function Hide(e) {
+                if ($(e.target)[0].id == "btnshare")
+                    return;
+                $('.zhezhao').css('display', 'none');
+            }
+            $(function () {
+                $('#btnshare').click(function () {
+                    $('.zhezhao').css('display', 'block');
+                })
+
+                $('.zhezhao').click(function () {
+                    $('.zhezhao').css('display', 'none');
+                })
+
+                $(document).bind('click', Hide);
+
+                $("[name=description]").attr("content", $("#hidDescription").val())
+
+            });
+        </script>
+
+    </div>
+    <div class="share_bottom">
+        <div class="share_btn2">长按图片保存</div>
+    </div>
+</div>
+@if (Model == null)
+{
+<div id="noreferralPanel">
+    <div class="notreferral">
+        <div class="img"><img src="/Areas/Mobile/Templates/Default/Images/group-1.png" alt="" /></div>
+        <div class="txt">您还不是本商城@(string.IsNullOrEmpty(site.DistributorRenameMarket) ? site.DistributorRenameMarket : "分销员")噢~<br />申请成为@(string.IsNullOrEmpty(site.DistributorRenameMarket) ? site.DistributorRenameMarket : "分销员")，有礼！</div>
+        <div class="btns">
+            <a href="ReferralRegisterAgreement" class="btn_login" style="margin-bottom:0;">了解@(string.IsNullOrEmpty(site.DistributorRenameMarket) ? site.DistributorRenameMarket : "分销员")</a>
+            <a href="default" class="btn-default">返回商城首页</a>
+        </div>
+    </div>
+</div>
+}
+else if(Model!=null && Model.DistributionStatus== Himall.CommonModel.DistributorStatus.NotAvailable.GetHashCode())
+{
+<div id="repeledPanel">
+    <div style="float:left;width:100%;padding:2.5rem;text-align:center;">
+        <img src="/Areas/Mobile/Templates/Default/Images/clear_mob.png" style="width:4.2rem; margin:0 auto;" />
+    </div>
+    <div class="t_1">
+        您于 商城清退@(string.IsNullOrEmpty(site.DistributorRenameMarket) ? site.DistributorRenameMarket : "分销员")资格。
+    </div>
+    @*<div id="divRepeledReason" runat="server" visible="false">
+        <font>商家解释：</font>
+        <span>
+            <asp:Literal id="repeledReason" runat="server"></asp:Literal>
+        </span>
+    </div>*@
+</div>
+}
+
+
+<script>
+    var loading = showLoading();
+	var winxinShareArgs = {
+        success: function () {
+            loading.close();
+		},
+        error: function () {
+            loading.close();
+            imitateRequireJS.load('artDialog', function () {
+                $.dialog.errorTips('注册微信接口失败，请刷新页面');
+            });
+		},
+		share: {
+		    title: '@(Model.ShopName)',
+		    desc: '@(Model.ShopName),精选好货,集您所需',
+		    link: '@(Request.Url.Scheme + "://"+Request.Url.Authority+Url.Action("Index","Home",new { SpreadId =Model.MemberId}))',
+		    imgUrl: '@(Model.ShopLogo)',
+		    success: function (res) {
+		    }
+		}
+	};
+</script>
+@Html.Partial("_WeiXinShare")

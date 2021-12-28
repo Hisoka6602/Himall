@@ -1,0 +1,7 @@
+﻿@helper ShowTemp(bool flag, Func<object, HelperResult> template)
+{
+    if (flag)
+    {
+        @template(null)
+    }
+}

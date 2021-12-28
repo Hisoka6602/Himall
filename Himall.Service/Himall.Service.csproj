@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{361A90EB-3BBE-405A-826A-33C0D0ACABF7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Himall.Service</RootNamespace>
+    <AssemblyName>Himall.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Himall.Web\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Himall.Web\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Himall.Core, Version=2.7.6423.29994, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Himall.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Himall.JDSDK.Area">
+      <HintPath>..\..\lib\Himall.JDSDK.Area.dll</HintPath>
+    </Reference>
+    <Reference Include="Hishop.Open.Api">
+      <HintPath>..\..\lib\Hishop.Open.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.4.4\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.4.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.1.0\lib\net451\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Senparc.CO2NET, Version=1.3.200.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.CO2NET.1.3.200\lib\net45\Senparc.CO2NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.CO2NET.APM, Version=0.9.200.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.CO2NET.APM.0.9.200\lib\net45\Senparc.CO2NET.APM.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.NeuChar, Version=1.3.200.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.NeuChar.1.3.200\lib\net45\Senparc.NeuChar.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.NeuChar.App, Version=0.9.200.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.NeuChar.App.0.9.200\lib\net45\Senparc.NeuChar.App.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin, Version=6.8.200.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.6.8.200\lib\net45\Senparc.Weixin.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP, Version=16.11.200.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.MP.16.11.200\lib\net45\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.WxOpen, Version=3.8.601.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.WxOpen.3.8.601\lib\net45\Senparc.Weixin.WxOpen.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="zxing, Version=1.0.4727.18517, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.2.1.1\lib\net20\zxing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CacheManager.cs" />
+    <Compile Include="Instance.cs" />
+    <Compile Include="Live\LiveService.cs" />
+    <Compile Include="Market\DistributionService.cs" />
+    <Compile Include="Market\RechargePresentRuleService.cs" />
+    <Compile Include="Market\FullDiscountService.cs" />
+    <Compile Include="O2O\ShopBranchService.cs" />
+    <Compile Include="Order\BranchCartService.cs" />
+    <Compile Include="Order\CartService.cs" />
+    <Compile Include="Order\ComplaintService.cs" />
+    <Compile Include="Order\ExpressService.cs" />
+    <Compile Include="Order\GiftsOrderService.cs" />
+    <Compile Include="Order\OrderService.cs" />
+    <Compile Include="Order\PaymentConfigService.cs" />
+    <Compile Include="Order\RefundService.cs" />
+    <Compile Include="Order\TradeCommentService.cs" />
+    <Compile Include="Order\ExpressDaDaService.cs" />
+    <Compile Include="Order\WDTOrderService.cs" />
+    <Compile Include="Product\SearchProductService.cs" />
+    <Compile Include="Product\StockService.cs" />
+    <Compile Include="Shop\CityExpressConfigService.cs" />
+    <Compile Include="Shop\ShopShippersService.cs" />
+    <Compile Include="Shop\AppMessageService.cs" />
+    <Compile Include="Shop\ProductLadderPriceService.cs" />
+    <Compile Include="SpecificationService.cs" />
+    <Compile Include="Market\CouponSendByRegisterService.cs" />
+    <Compile Include="Market\FightGroupService.cs" />
+    <Compile Include="Market\WeiActivityInfoService.cs" />
+    <Compile Include="Market\CollocationService.cs" />
+    <Compile Include="Market\ShopBonusService.cs" />
+    <Compile Include="Market\WeiActivityWinService.cs" />
+    <Compile Include="Member\MemberLabelService.cs" />
+    <Compile Include="Member\MemberInviteService.cs" />
+    <Compile Include="Market\BonusService.cs" />
+    <Compile Include="Market\Business\Bonus\GenerateDetailContext.cs" />
+    <Compile Include="Market\Business\Bonus\IGenerateDetail.cs" />
+    <Compile Include="Market\Business\Bonus\Implement\FixedGeneration.cs" />
+    <Compile Include="Market\Business\Bonus\Implement\RandomlyGeneration.cs" />
+    <Compile Include="Market\CouponService.cs" />
+    <Compile Include="Market\LimitTimeBuyService.cs" />
+    <Compile Include="Market\MarketService.cs" />
+    <Compile Include="Member\FreightTemplateService.cs" />
+    <Compile Include="Member\MemberCapitalService.cs" />
+    <Compile Include="Member\MemberGradeService.cs" />
+    <Compile Include="Member\MemberIntegralConversionFactoryService.cs" />
+    <Compile Include="Member\MemberIntegralService.cs" />
+    <Compile Include="Member\MemberSignInService.cs" />
+    <Compile Include="Member\ShippingAddressService.cs" />
+    <Compile Include="Product\GiftService.cs" />
+    <Compile Include="RegionService.cs" />
+    <Compile Include="Product\ProductDescriptionTemplateService.cs" />
+    <Compile Include="Product\ShopCategoryService.cs" />
+    <Compile Include="Shop\CashDepositsService.cs" />
+    <Compile Include="Shop\CustomerService.cs" />
+    <Compile Include="Shop\AccountService.cs" />
+    <Compile Include="Shop\SettledService.cs" />
+    <Compile Include="Shop\ShopOpenApiService.cs" />
+    <Compile Include="Site\ArticleCategoryService.cs" />
+    <Compile Include="Site\ArticleService.cs" />
+    <Compile Include="Site\FloorService.cs" />
+    <Compile Include="Site\MobileHomeProductsService.cs" />
+    <Compile Include="Site\MobileHomeTopicService.cs" />
+    <Compile Include="Site\NavigationService.cs" />
+    <Compile Include="Site\ShopHomeModuleService.cs" />
+    <Compile Include="Site\ThemeService.cs" />
+    <Compile Include="Shop\BillingService.cs" />
+    <Compile Include="Statistic\OrderAndSaleStatisticsService.cs" />
+    <Compile Include="System\AdvanceService.cs" />
+    <Compile Include="System\AppBaseService.cs" />
+    <Compile Include="System\PhoneIPCodeService.cs" />
+    <Compile Include="TemplateVisualization\PhotoSpaceService.cs" />
+    <Compile Include="System\SensitiveWordService.cs" />
+    <Compile Include="System\SystemAgreementService.cs" />
+    <Compile Include="System\MessageService.cs" />
+    <Compile Include="System\OperationLogService.cs" />
+    <Compile Include="Site\HomeCategoryService.cs" />
+    <Compile Include="Site\SlideAdsService.cs" />
+    <Compile Include="Statistic\StatisticsService.cs" />
+    <Compile Include="System\ManagerService.cs" />
+    <Compile Include="Member\MemberService.cs" />
+    <Compile Include="Product\BrandService.cs" />
+    <Compile Include="Product\CategoryService.cs" />
+    <Compile Include="Product\CommentService.cs" />
+    <Compile Include="Product\ConsultationService.cs" />
+    <Compile Include="System\PrivilegesService.cs" />
+    <Compile Include="Product\ProductService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBase.cs" />
+    <Compile Include="Shop\ShopService.cs" />
+    <Compile Include="System\SiteSettingService.cs" />
+    <Compile Include="Product\TopicService.cs" />
+    <Compile Include="Product\TypeService.cs" />
+    <Compile Include="TemplateVisualization\TemplateSettingsService.cs" />
+    <Compile Include="Weixin\AutoReplyService.cs" />
+    <Compile Include="Weixin\PoiService.cs" />
+    <Compile Include="Weixin\VShopService.cs" />
+    <Compile Include="Weixin\WeixinMenuService.cs" />
+    <Compile Include="Weixin\WXMsgTemplateService.cs" />
+    <Compile Include="Weixin\WXCardService.cs" />
+    <Compile Include="Weixin\WXApiService.cs" />
+    <Compile Include="Weixin\WXHelper.cs" />
+    <Compile Include="Weixin\WXSmallProgramService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Himall.CommonModel\Himall.CommonModel.csproj">
+      <Project>{9378bfdf-a45e-416a-afba-5abc792f2613}</Project>
+      <Name>Himall.CommonModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Himall.DTO\Himall.DTO.csproj">
+      <Project>{8E003825-40AF-44FC-B3A2-EDF867B0C050}</Project>
+      <Name>Himall.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Himall.Entities\Himall.Entities.csproj">
+      <Project>{e13df551-86e7-4f8a-835f-6e94705561ac}</Project>
+      <Name>Himall.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

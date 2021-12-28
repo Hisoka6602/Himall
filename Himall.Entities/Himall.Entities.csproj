@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E13DF551-86E7-4F8A-835F-6E94705561AC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Himall.Entities</RootNamespace>
+    <AssemblyName>Himall.Entities</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Himall.Entities.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Himall.Core">
+      <HintPath>..\..\lib\Himall.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MongoDB.Bson, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.4.4\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.4.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.11\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Generated\Himall.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Himall.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PartialMap\LiveProductInfo.cs" />
+    <Compile Include="Models\PartialMap\LiveProductLibraryInfo.cs" />
+    <Compile Include="UnitTest.cs" />
+    <Compile Include="Models\Generated\IModel.cs" />
+    <Compile Include="Models\IBaseCoupon.cs" />
+    <Compile Include="Models\PartialMap\AccountDetailInfo.cs" />
+    <Compile Include="Models\PartialMap\AccountInfo.cs" />
+    <Compile Include="Models\PartialMap\DistributorGradeInfo.cs" />
+    <Compile Include="Models\PartialMap\DistributorInfo.cs" />
+    <Compile Include="Models\PartialMap\ActiveInfo.cs" />
+    <Compile Include="Models\PartialMap\ActiveMarketServiceInfo.cs" />
+    <Compile Include="Models\PartialMap\AgreementInfo.cs" />
+    <Compile Include="Models\PartialMap\AttributeInfo.cs" />
+    <Compile Include="Models\PartialMap\BannerInfo.cs" />
+    <Compile Include="Models\PartialMap\BusinessCategoriesApplyDetailInfo.cs" />
+    <Compile Include="Models\PartialMap\BusinessCategoriesApplyInfo.cs" />
+    <Compile Include="Models\PartialMap\BusinessCategoryInfo.cs" />
+    <Compile Include="Models\PartialMap\OrderInvoiceInfo.cs" />
+    <Compile Include="Models\PartialMap\InvoiceTitleInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberIntegralRecordInfo.cs" />
+    <Compile Include="Models\PartialMap\OrderVerificationCodeInfo.cs" />
+    <Compile Include="Models\PartialMap\ProductCommentInfo.cs" />
+    <Compile Include="Models\PartialMap\RoleInfo.cs" />
+    <Compile Include="Models\PartialMap\ShippingFreeGroupInfo.cs" />
+    <Compile Include="Models\PartialMap\CustomerServiceInfo.cs" />
+    <Compile Include="Models\PartialMap\ExpressInfoInfo.cs" />
+    <Compile Include="Models\PartialMap\FlashSaleInfo.cs" />
+    <Compile Include="Models\PartialMap\FloorTablInfo.cs" />
+    <Compile Include="Models\PartialMap\FreightAreaContentInfo.cs" />
+    <Compile Include="Models\PartialMap\GiftInfo.cs" />
+    <Compile Include="Models\PartialMap\GiftOrderInfo.cs" />
+    <Compile Include="Models\PartialMap\IntegralMallAdInfo.cs" />
+    <Compile Include="Models\PartialMap\LimitTimeMarketInfo.cs" />
+    <Compile Include="Models\PartialMap\ManagerInfo.cs" />
+    <Compile Include="Models\PartialMap\MenuInfo.cs" />
+    <Compile Include="Models\PartialMap\OrderComplaintInfo.cs" />
+    <Compile Include="Models\PartialMap\OrderItemInfo.cs" />
+    <Compile Include="Models\PartialMap\ProductDescriptionInfo.cs" />
+    <Compile Include="Models\PartialMap\ProductDescriptionTemplateInfo.cs" />
+    <Compile Include="Models\PartialMap\SendMsgInfo.cs" />
+    <Compile Include="Models\PartialMap\ShopBranchInfo.cs" />
+    <Compile Include="Models\PartialMap\CouponInfo.cs" />
+    <Compile Include="Models\PartialMap\CollocationInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberBuyCategoryInfo.cs" />
+    <Compile Include="Models\PartialMap\ShopBonuInfo.cs" />
+    <Compile Include="Models\PartialMap\ShopBonusReceiveInfo.cs" />
+    <Compile Include="Models\PartialMap\CouponRecordInfo.cs" />
+    <Compile Include="Models\PartialMap\ShippingAddressInfo.cs" />
+    <Compile Include="Models\PartialMap\ShopBrandApplyInfo.cs" />
+    <Compile Include="Models\PartialMap\ShopInfo.cs" />
+    <Compile Include="Models\PartialMap\ShoppingCartInfo.cs" />
+    <Compile Include="Models\PartialMap\ShopRenewRecordInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberGradeInfo.cs" />
+    <Compile Include="Models\PartialMap\ChargeDetailInfo.cs" />
+    <Compile Include="Models\PartialMap\ApplyWithDrawInfo.cs" />
+    <Compile Include="Models\PartialMap\ShippingFreeRegionInfo.cs" />
+    <Compile Include="Models\PartialMap\FreightTemplateInfo.cs" />
+    <Compile Include="Models\PartialMap\BonuInfo.cs" />
+    <Compile Include="Models\PartialMap\CapitalDetailInfo.cs" />
+    <Compile Include="Models\PartialMap\FightGroupActiveInfo.cs" />
+    <Compile Include="Models\PartialMap\FightGroupActiveItemInfo.cs" />
+    <Compile Include="Models\PartialMap\FightGroupInfo.cs" />
+    <Compile Include="Models\PartialMap\FightGroupOrderInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberContactInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberIntegralInfo.cs" />
+    <Compile Include="Models\PartialMap\MemberOpenIdInfo.cs" />
+    <Compile Include="Models\PartialMap\OrderInfo.cs" />
+    <Compile Include="Models\PartialMap\BaseModel.cs" />
+    <Compile Include="Models\Generated\PetaPoco.cs" />
+    <Compile Include="Models\PartialMap\OrderRefundInfo.cs" />
+    <Compile Include="Models\PartialMap\ProductInfo.cs" />
+    <Compile Include="Models\PartialMap\SKUInfo.cs" />
+    <Compile Include="Models\PartialMap\StatisticOrderCommentInfo.cs" />
+    <Compile Include="Models\PartialMap\TopicInfo.cs" />
+    <Compile Include="Models\PartialMap\TypeInfo.cs" />
+    <Compile Include="Models\PartialMap\VShopExtendInfo.cs" />
+    <Compile Include="Models\PartialMap\VShopInfo.cs" />
+    <Compile Include="Models\PartialMap\WXCardCodeLogInfo.cs" />
+    <Compile Include="Models\PartialMap\WXCardLogInfo.cs" />
+    <Compile Include="Models\PartialMap\SlideAdInfo.cs" />
+    <Compile Include="Models\PartialMap\WXMaterialInfo.cs" />
+    <Compile Include="NetRube.Data\Attributes\ColumnAttribute.cs" />
+    <Compile Include="NetRube.Data\Attributes\ExplicitColumnsAttribute.cs" />
+    <Compile Include="NetRube.Data\Attributes\IgnoreAttribute.cs" />
+    <Compile Include="NetRube.Data\Attributes\PrimaryKeyAttribute.cs" />
+    <Compile Include="NetRube.Data\Attributes\ResultColumnAttribute.cs" />
+    <Compile Include="NetRube.Data\Attributes\TableNameAttribute.cs" />
+    <Compile Include="NetRube.Data\Core\AnsiString.cs" />
+    <Compile Include="NetRube.Data\Core\ColumnInfo.cs" />
+    <Compile Include="NetRube.Data\Core\DatabaseType.cs" />
+    <Compile Include="NetRube.Data\Core\ExpandoColumn.cs" />
+    <Compile Include="NetRube.Data\Core\IMapper.cs" />
+    <Compile Include="NetRube.Data\Core\Mappers.cs" />
+    <Compile Include="NetRube.Data\Core\MultiPocoFactory.cs" />
+    <Compile Include="NetRube.Data\Core\Page.cs" />
+    <Compile Include="NetRube.Data\Core\PocoColumn.cs" />
+    <Compile Include="NetRube.Data\Core\PocoData.cs" />
+    <Compile Include="NetRube.Data\Core\Sql.cs" />
+    <Compile Include="NetRube.Data\Core\StandardMapper.cs" />
+    <Compile Include="NetRube.Data\Core\TableInfo.cs" />
+    <Compile Include="NetRube.Data\Core\Transaction.cs" />
+    <Compile Include="NetRube.Data\Database.cs" />
+    <Compile Include="NetRube.Data\DatabaseTypes\MySqlDatabaseType.cs" />
+    <Compile Include="NetRube.Data\DatabaseTypes\OracleDatabaseType.cs" />
+    <Compile Include="NetRube.Data\DatabaseTypes\PostgreSQLDatabaseType.cs" />
+    <Compile Include="NetRube.Data\DatabaseTypes\SQLiteDatabaseType.cs" />
+    <Compile Include="NetRube.Data\DatabaseTypes\SqlServerCEDatabaseType.cs" />
+    <Compile Include="NetRube.Data\DatabaseTypes\SqlServerDatabaseType.cs" />
+    <Compile Include="NetRube.Data\DbFactory.cs" />
+    <Compile Include="NetRube.Data\Linq\BuilderContext.cs" />
+    <Compile Include="NetRube.Data\Linq\DelBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\ExpressionVisitor.cs" />
+    <Compile Include="NetRube.Data\Linq\GetBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\JoinBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\OrderByBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\SelectBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\SetBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\StrBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\UpdateBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\GroupByBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\HavingBuilder.cs" />
+    <Compile Include="NetRube.Data\Linq\WhereBuilder.cs" />
+    <Compile Include="NetRube.Data\MongoDBClient.cs" />
+    <Compile Include="NetRube.Data\OracleProvider.cs" />
+    <Compile Include="NetRube.Data\PetaPocoExt.cs" />
+    <Compile Include="NetRube.Data\Utilities\ArrayKey.cs" />
+    <Compile Include="NetRube.Data\Utilities\AutoSelectHelper.cs" />
+    <Compile Include="NetRube.Data\Utilities\Cache.cs" />
+    <Compile Include="NetRube.Data\Utilities\EnumMapper.cs" />
+    <Compile Include="NetRube.Data\Utilities\PagingHelper.cs" />
+    <Compile Include="NetRube.Data\Utilities\ParametersHelper.cs" />
+    <Compile Include="NetRube\Accessor.cs" />
+    <Compile Include="NetRube\ArgumentNullOrEmptyException.cs" />
+    <Compile Include="NetRube\Constants.cs" />
+    <Compile Include="NetRube\Dict.cs" />
+    <Compile Include="NetRube\Enum\AccessorType.cs" />
+    <Compile Include="NetRube\Enum\QueryOperatorType.cs" />
+    <Compile Include="NetRube\Enum\TextCaseType.cs" />
+    <Compile Include="NetRube\FastJson\Cache.cs" />
+    <Compile Include="NetRube\FastJson\Json.cs" />
+    <Compile Include="NetRube\FastJson\JsonAccessor.cs" />
+    <Compile Include="NetRube\FastJson\JsonParser.cs" />
+    <Compile Include="NetRube\FastJson\JsonSerializer.cs" />
+    <Compile Include="NetRube\FastReflection.cs" />
+    <Compile Include="NetRube\PagedList.cs" />
+    <Compile Include="NetRube\Singleton.cs" />
+    <Compile Include="NetRube\StartAndEnd.cs" />
+    <Compile Include="NetRube\STR.cs" />
+    <Compile Include="NetRube\TrackingEntity.cs" />
+    <Compile Include="NetRube\Utils\Array.cs" />
+    <Compile Include="NetRube\Utils\Char.cs" />
+    <Compile Include="NetRube\Utils\CheckValue.cs" />
+    <Compile Include="NetRube\Utils\Convert.cs" />
+    <Compile Include="NetRube\Utils\IO.cs" />
+    <Compile Include="NetRube\Utils\Number.cs" />
+    <Compile Include="NetRube\Utils\Others.cs" />
+    <Compile Include="NetRube\Utils\Text.cs" />
+    <Compile Include="NetRube\XmlSerialization.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Models\Generated\PetaPoco.Core.ttinclude" />
+    <None Include="Models\Generated\PetaPoco.Generator.ttinclude" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\Generated\Himall.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Himall.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Himall.CommonModel\Himall.CommonModel.csproj">
+      <Project>{9378BFDF-A45E-416A-AFBA-5ABC792F2613}</Project>
+      <Name>Himall.CommonModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

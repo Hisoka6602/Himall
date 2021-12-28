@@ -1,0 +1,415 @@
+﻿@{
+    ViewBag.CopyRight = false;
+}
+<style>
+    body {
+        background-color: #fff;
+    }
+
+    body, html {
+        height: 100%;
+    }
+
+    .login-input-group {
+        padding: 0;
+    }
+</style>
+@{Html.RenderPartial("~/Areas/Mobile/Templates/Default/Views/Shared/_RegisterCoupon.cshtml");}
+<div class="login mobile-reg">
+    <h3>注册账号</h3>
+    <div class="login-input-group">
+        @Html.Hidden("istheftbrush", ((ViewBag.IsTheftBrush != null && (bool)ViewBag.IsTheftBrush) ? "1" : "0"))
+        <input id="hidSlideValidateAppKey" value="@(ViewBag.SlideValidateAppKey)" type="hidden" />
+        <div class="option">
+            <span>手机号</span><input type="tel" placeholder="请输入手机号" id="username" />
+        </div>
+        <div class="option" style="@((ViewBag.IsTheftBrush != null && (bool)ViewBag.IsTheftBrush)?"display:none;":"")">
+            <span>验证码</span><input type="hidden" id="introducer" name="introducer" value="@ViewBag.Introducer" />
+            <input type="text" placeholder="图片点击可更改" maxlength="4" id="checkCode" />
+            <a class="code"><img src="" id="checkCodeImg" /></a>
+            <i id="checkBoxIcon" class="glyphicon" style="font-size:18px;"></i>
+        </div>
+        <input type="hidden" id="pluginId" value="Himall.Plugin.Message.SMS" />
+        <div class="option"><span>密码</span><input type="password" id="password" /></div>
+        <div class="option"><span>重复密码</span><input type="password" id="repeatPassword" /></div>
+        <div class="option">
+            <span>手机验证码</span>
+            <a class="btn-send" id="btnAuthCode">获取短信验证码</a>
+            <a class="btn-agian" style="display:none">60s后重发</a>
+            <input style="width:71%;" class="mobile-code" id="mobilecheckCode" type="text" />
+        </div>
+        <div class="option" id="hdCode" style="overflow:hidden;display:none;">
+            <div id="captcha" style="height:100%;"></div>
+        </div>
+        <script type="text/javascript" charset="utf-8" src="//g.alicdn.com/sd/ncpc/nc.js?t=2015052012"></script>
+    </div>
+    <div class="reg-agreement">
+        <input type="checkbox" checked="" id="regCheck">
+        我已阅读并同意<a href="/@ViewBag.AreaName/Login/RegisterAgreement">《会员注册协议》</a>
+    </div>
+    <a id="registBtn">注 册</a>
+</div>
+<script>
+    //禁用右上角菜单
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    });
+
+    $(function () {
+        // $('.login-00').height($('.container').width()*63/40);
+
+        var openId = QueryString('openId');
+        var serviceProvider = QueryString('serviceProvider');
+        var nickName = QueryString('nickName');
+        var sex = QueryString('sex');
+        var city = QueryString('city');
+        var province = QueryString('province');
+        var country = QueryString('country');
+
+        if (!openId || !serviceProvider)
+            $('#bindInfo').hide();
+
+
+        // $('.login').css('marginTop', -$('.login').height() / 2);
+
+        var checkCodeUrl = '/' + areaName + '/register/GetCheckCode';
+        $('#checkCodeImg').attr('src', checkCodeUrl + '?time=' + (new Date()).getTime());
+
+        $('#checkCodeImg').click(function () {
+            $('#checkCodeImg').attr('src', checkCodeUrl + '?time=' + (new Date()).getTime());
+        });
+
+        $('#registBtn').click(function () {
+            regist();
+        });
+
+        $('#checkCode').bind('input', function () {
+            checkCheckCode();
+        });
+        $('#btnAuthCode').click(function () {
+            if ($("#istheftbrush").val() == "1") {
+                SlidingShow();//滑动验证显示
+            } else {
+                SendCode();
+            }
+        });
+    });
+
+    var count = 60;
+    var t;
+    function countDown1() {
+        $("#btnAuthCode").html(count + 's');
+        $("#btnAuthCode").addClass("btn-agian");
+        if (count == 1) {
+            //$("#btnAuthCode").bind('click', SendCode);
+            $("#btnAuthCode").html('重新发送');
+            $("#btnAuthCode").removeClass("btn-agian");
+            $("#btnAuthCode").removeAttr("disabled");
+            count = 60;
+            return;
+        } else {
+            t = setTimeout(countDown1, 1000);
+        }
+        count--;
+    }
+    function checkCheckCode(callback) {
+        var checkCode = $('#checkCode').val();
+        var icon = $('#checkBoxIcon');
+        var correct = false;
+        if (checkCode && checkCode.length == 4) {
+            $.ajax({
+                type: "post",
+                url: '/' + areaName + '/register/CheckCode',
+                data: { checkCode: checkCode },
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result.success) {
+                        !icon.hasClass('glyphicon-ok-circle') && icon.addClass('glyphicon-ok-circle');
+                        correct = true;
+                    }
+                    else
+                        !icon.hasClass('glyphicon-remove-circle') && icon.addClass('glyphicon-remove-circle');
+                    callback && callback(correct);
+                }
+            });
+        }
+        else {
+            icon.removeClass('glyphicon-ok-circle').removeClass('glyphicon-remove-circle');
+            callback && callback(correct);
+        }
+    }
+
+    function CheckMobileCode() {
+        var checkurl = '/' + areaName + '/register/CheckMobileCode';
+        var destination = $("#username").val();
+        var id = $('#pluginId').val();
+        var code = $('#mobilecheckCode').val();
+        var flag = false;
+        $.ajax({
+            type: "post",
+            url: checkurl,
+            data: { pluginId: id, code: code, destination: destination },
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.success) {
+                    flag = true;
+                }
+                else {
+                    $.dialog.errorTips(result.msg);
+                    flag = false;
+                }
+            }
+        });
+        return flag;
+    }
+
+
+    function check() {
+        var reg1 = /^(13|14|15|16|17|18|19)[0-9]{9}$/,
+            // reg2 = /^\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+            str = $('#username').val();
+        var flag = false;
+        var a = reg1.test(str);
+        if (!a) {
+            $.dialog.errorTips('请填写正确的手机号码');
+            return false;
+        }
+        var checkCode = $('#checkCode').val();
+        if (!checkCode || checkCode.length < 4) {
+            $.dialog.errorTips('图形验证码输入错误！');
+            return false;
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: '/' + areaName + '/register/CheckCode',
+                data: { checkCode: checkCode },
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result.success) {
+                        flag = true;
+                    }
+                    else {
+                        $.dialog.errorTips('图形验证码输入错误或者超时！');
+                        flag = false;
+                    }
+                }
+            });
+        }
+        return flag;
+    }
+
+    function SendCode() {
+        if (!check()) {
+            return;
+        }
+        var destination = $("#username").val();
+        var id = $('#pluginId').val();
+        var checkCode = $('#checkCode').val();
+        $("#btnAuthCode").unbind('click');
+        var murl = '/' + areaName + '/register/SendMobileCode';
+        $.post(murl, { pluginId: id, destination: destination, imagecheckCode: checkCode }, function (result) {
+            if (result.success) {
+                t = setTimeout(countDown1, 1000);
+            } else {
+                $("#btnAuthCode").bind('click', SendCode);
+                $("#btnAuthCode").html('重新发送');
+                $("#btnAuthCode").removeClass("btn-agian");
+                $("#btnAuthCode").removeAttr("disabled");
+                $.dialog.errorTips('发送验证码失败,' + result.msg);
+            }
+        });
+    }
+
+    function regist() {
+        if (!$("#regCheck").is(":checked")) {
+            $.dialog.errorTips('请先同意注册协议！');
+            return;
+        }
+        var username = $.trim($('#username').val());
+        var password = $.trim($('#password').val());
+        var repeatPassword = $.trim($('#repeatPassword').val());
+        var introducer = $("#introducer").val();
+        var checkCode = $('#checkCode').val();
+        var mobilecheckCode = $('#mobilecheckCode').val();
+
+        var reg = /^(0?(13|15|18|14|17|19|16)[0-9]{9})$/;
+        if (!username) {
+            $.dialog.errorTips('请输入手机号');
+            return false;
+        }
+        else if (!reg.test(username)) {
+            $.dialog.errorTips('您输入的手机号不正确');
+            return false;
+        }
+        else if (!password) {
+            $.dialog.errorTips('请输入密码');
+            return false;
+        }
+        else if (password.length < 6 && password.length > 20) {
+            $.dialog.errorTips('密码必须6-20位字符');
+            return false;
+        }
+        else if (!repeatPassword) {
+            $.dialog.errorTips('请再次输入密码');
+        }
+        else if (password != repeatPassword) {
+            $.dialog.errorTips('两次密码不一致');
+            return false;
+        }
+        if ($("#istheftbrush").val() != "1") {//没加防伪验证不需图形验证
+            if (!checkCode) {
+                $.dialog.errorTips('请填写验证码');
+                return false;
+            }
+        }
+        if (!mobilecheckCode) {
+            $.dialog.errorTips('请填写手机验证码');
+            return false;
+        }
+        var loading = showLoading('请稍候', 1);
+
+        if (!CheckMobileCode()) {
+            $.dialog.errorTips('手机验证码输入错误或者超时！');
+            loading.close();
+            return;
+        }
+        if ($("#istheftbrush").val() == "1") {
+            postregister(loading);
+        } else {
+            checkCheckCode(function (success) {
+                if (!success) {
+                    loading.close();
+                    $.dialog.errorTips('验证码错误');
+                }
+                else {
+                    postregister(loading);
+                }
+            });
+        }
+    }
+    function postregister(loading) {
+        $.post('/' + areaName + '/register',
+            {
+                username: $.trim($('#username').val()),
+                password: $.trim($('#password').val()),
+                checkCode: $('#checkCode').val(),
+                mobilecheckCode: $('#mobilecheckCode').val(),
+                serviceProvider: QueryString('serviceProvider'),
+                openId: QueryString('openId'),
+                unionid: QueryString('unionid'),
+                introducer: $("#introducer").val(),
+                headimgurl: QueryString('headimgurl'),
+                nickName: QueryString('nickName'),
+                sex: QueryString('sex'),
+                city: QueryString('sex'),
+                province: QueryString('province'),
+                country: QueryString('country')
+            },
+            function (result) {
+                loading.close();
+                if (result.success) {
+                    var returnUrl = QueryString('returnUrl');
+                    if (!returnUrl)
+                        returnUrl = '/' + areaName;
+
+                    var strMessage = "注册成功!";
+                    if (result.data.num > 0) {//新人专享礼包
+                        FillCoupon(result.data.coupons, returnUrl);
+                    } else {
+                        if (getQueryString("type") == "gift") {
+                            strMessage = "很抱歉！优惠券已被领完，请期待下次活动！";
+                        }
+
+                        $.dialog.succeedTips(strMessage, function () {
+                            location.replace(decodeURIComponent(returnUrl));
+                        });
+                    }
+                }
+                else
+                    $.dialog.alert('注册失败!' + result.msg);
+            });
+    }
+    //获取URL中值
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    //显示防盗刷验证
+    function SlidingShow() {
+        if ($("#btnAuthCode").hasClass("btn-agian"))
+            return false;//倒计时还显示防盗刷不显示
+        var reg1 = /^(13|14|15|16|17|18|19)[0-9]{9}$/,
+            str = $('#username').val();
+        var flag = false;
+        var a = reg1.test(str);
+        if (!a) {
+            $.dialog.errorTips('请填写正确的手机号码');
+            return false;
+        }
+
+        $("#hdCode").fadeIn(1000);
+        hdShow();
+    }
+
+    //加载防盗刷验证
+    function hdShow() {
+        var hidSlideValidateAppKey = $("#hidSlideValidateAppKey").val();
+        var nc_token = [hidSlideValidateAppKey, (new Date()).getTime(), Math.random()].join(':');
+        var NC_Opt =
+        {
+            renderTo: "#captcha",
+            appkey: hidSlideValidateAppKey,
+            scene: "nc_message",
+            token: nc_token,
+            customWidth: 320,
+            trans: { "key1": "code0" },
+            elementID: ["usernameID"],
+            is_Opt: 0,
+            language: "cn",
+            isEnabled: true,
+            timeout: 3000,
+            times: 5,
+            apimap: {
+            },
+            callback: function (data) {
+                jQuery.ajax({
+                    type: "post",
+                    dataType: "json",
+                    data: { sessionId: data.csessionid, sig: data.sig, scene: NC_Opt.scene, token: nc_token, appkey: NC_Opt.appkey, issendcode: true, contact: $("#username").val(), checkcontacttype: 1 },
+                    url: "/WebCommon/AuthenticateSig",
+                    success: function (data) {
+                        if (data.success) {
+                            t = setTimeout(countDown1, 1000);
+                            $.dialog.tips("已向‘" + $("#username").val() + "'发送验证短信！");
+                            $("#hdCode").fadeOut(1000);
+                        } else {
+                            //$("#btnAuthCode").bind('click', SendCode);
+                            $("#btnAuthCode").html('重新发送');
+                            $("#btnAuthCode").removeClass("btn-agian");
+                            $("#btnAuthCode").removeAttr("disabled");
+                            $.dialog.errorTips(data.msg);
+                        }
+                    },
+                    error: function () {
+                        $.dialog.errorTips("网络连接超时，请您稍后重试");
+                    }
+                });
+            }
+        }
+        var nc = new noCaptcha(NC_Opt)
+
+        nc.upLang('cn', {
+            _startTEXT: "请按住滑块，拖动到最右边",
+            _yesTEXT: "验证通过",
+            _error300: "哎呀，出错了，点击<a href=\"javascript:__nc.reset()\">刷新</a>再来一次",
+            _errorNetwork: "网络不给力，请<a href=\"javascript:__nc.reset()\">点击刷新</a>",
+        })
+    }
+</script>
+

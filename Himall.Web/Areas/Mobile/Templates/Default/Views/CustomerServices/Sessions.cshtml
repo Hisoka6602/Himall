@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "消息";
+    ViewBag.CopyRight = false;
+}
+
+<style>
+    body, html { background: #F0F0F0; }
+
+    .list { background-color: #fff; border-radius: 8px; overflow: hidden; padding: 0 16px; margin-top: 16px; }
+
+        .list li { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; padding: 16px 0; }
+
+            .list li::after { background-color: #f0f0f0; }
+
+            .list li img { width: 44px; height: 44px; border-radius: 50%; margin-right: 8px; -ms-flex-negative: 0; flex-shrink: 0; }
+
+            .list li .text-wrap { -webkit-box-flex: 1; -ms-flex: 1; flex: 1; overflow: hidden; }
+
+    .text-wrap .name { display: -webkit-box; display: -ms-flexbox; display: flex; line-height: 28px; }
+
+        .text-wrap .name div { -webkit-box-flex: 1; -ms-flex: 1; flex: 1; overflow: hidden; -o-text-overflow: ellipsis; text-overflow: ellipsis; white-space: nowrap; }
+
+        .text-wrap .name span { -ms-flex-negative: 0; flex-shrink: 0; margin-left: 12px; font-size: 12px; color: #999; }
+
+    .text-wrap .desc { height: 17px; margin-top: 4px; padding-right: 40px; font-size: 12px; color: #747474; }
+
+    .text-wrap .new { position: absolute; right: 0; bottom: 16px; background-color: #fb1438; padding: 0 5px; border-radius: 8px; line-height: 16px; color: #fff; font-size: 10px; }
+</style>
+
+<script src="/Scripts/template.js"></script>
+
+<ul class="list" id="list"></ul>
+
+<script>
+  var chatRequestUrl = 'https://hichat.kuaidiantong.cn/clientApi/',
+    pager = 1,
+    isEnd = false,
+				loading = false,
+				userId = "@ViewBag.UserId";
+
+  var d = new Date(),
+    year = d.getFullYear(),
+    month = d.getMonth() + 1,
+    day = d.getDate(),
+    currentDate = year+'-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day);
+
+  $(function() {
+    loadData('reset')
+  })
+
+  function loadData(re) {
+    if (isEnd || loading) {
+      return
+    }
+      loading = true
+      var domain = 'https://' + window.location.host + (window.location.host.endsWith("/") ? "" : "/");
+    $.ajax({
+      url: chatRequestUrl + 'OAuth/domainSessions',
+      data: {
+          domain: domain,
+        // domain: 'https://himallssl.himall.kuaidiantong.cn/',
+        openId: userId,
+        pager: pager,
+        size: 10
+      },
+      dataType:'json',
+      type:'get',
+      success:function(res){
+        var data = res.data;
+        data.forEach(function(item) {
+          var lastDate = item.lastTime.substring(0, 10);
+          if (lastDate !== currentDate) {
+            item.lastTime = lastDate.replace(/-/g, '/')
+          } else {
+            item.lastTime = item.lastTime.substring(11, 19)
+          }
+        })
+        if (data.length < 10) {
+          isEnd = true
+        }
+        if (re) {
+          document.querySelector('#list').innerHTML = template('initData', data);
+        } else {
+          document.querySelector('#list').insertAdjacentHTML('beforeEnd', template('initData', data));
+        }
+        loading = false
+        pager++
+
+      }
+    })
+
+  }
+
+  var timer = null;
+  var clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight,document.body.clientHeight);
+  window.addEventListener('scroll', function(e) {
+    clearTimeout(timer);
+    timer =setTimeout(function(){
+      var scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+      if(clientHeight + scrollTop >= scrollHeight){
+        loadData()
+      }
+    }, 300)
+  });
+
+		$('#list').on('click', 'li', function () {
+				window.location.href = '/' + areaName + '/CustomerServices/HiChat?shopName=' + $(this).data('name') + '&appkey=' + $(this).data('appkey') + '&userId=@ViewBag.UserId&nick=@ViewBag.Nick&photo=' + encodeURIComponent("@ViewBag.Photo")
+  })
+</script>
+
+<script id="initData" type="text/html">
+    {{each}}
+    <li class="border-bot" data-name="{{$value.name}}" data-appkey="{{$value.appKey}}">
+        <img src="{{$value.logo}}" />
+        <div class="text-wrap">
+            <div class="name">
+                <div>{{$value.name}}</div>
+                <span>{{$value.lastTime}}</span>
+            </div>
+            <div class="desc text-overflow">{{$value.content}}</div>
+            {{if $value.unRead}}<span class="new">{{$value.unRead}}</span>{{/if}}
+        </div>
+    </li>
+    {{/each}}
+</script>

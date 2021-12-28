@@ -1,0 +1,706 @@
+﻿@{
+    ViewBag.Title = "在线客服";
+    ViewBag.CopyRight = false;
+}
+
+<style>
+  .chat {
+    background: #F0F0F0;
+    height: calc(100vh + 1px);
+    padding-bottom: 52px;
+    overflow-y: auto;
+  }
+
+  .transparent {
+    opacity: 0
+  }
+  
+  .chat .item {
+    overflow: hidden;
+  }
+  
+  .chat .item:last-child {
+    margin-bottom: 16px;
+  }
+  
+  .chat .flex-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    margin-top: 12px;
+  }
+  
+  .chat .time {
+    margin: 16px 0;
+    text-align: center;
+    font-size: 12px;
+    color: #8f8f8f;
+  }
+  
+  .chat .photo {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 0 12px;
+  }
+  
+  .chat .photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    -o-object-fit: cover;
+        object-fit: cover;
+  }
+  
+  .chat .photo::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid #E6E6E6;
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+        transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+        transform-origin: 0 0;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    border-radius: 8px;
+  }
+
+    .chat .msg-content {
+        -webkit-box-flex: 1;
+        chatRequestUrl -ms-flex: 1;
+        flex: 1;
+        margin-right: 64px;
+    }
+  
+  .chat .msg-content .product {
+    margin: 0;
+  }
+  
+  .chat .msg-content .text {
+    position: relative;
+    display: inline-block;
+    padding: 12px;
+    background: #fff;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    border-radius: 0 8px 8px 8px;
+    text-align: left;
+    word-break: break-all;
+  }
+  
+  .chat .msg-content .text::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    border-top: 8px solid #fff;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    z-index: 2;
+  }
+  
+  .chat .msg-content .img {
+    width: 84px;
+    display: inline-block;
+    border-radius: 8px;
+    vertical-align: top;
+    -o-object-fit: cover;
+        object-fit: cover;
+  }
+  
+  .chat .msg-content .username {
+    margin-bottom: 4px;
+    color: #424242;
+    line-height: 20px;
+  }
+  
+  .chat .self .flex-wrap {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+    text-align: right;
+  }
+  
+  .chat .msg-system {
+    display: inline-block;
+    left: 50%;
+    position: relative;
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+    padding: 0 14px;
+    line-height: 28px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .chat .self .msg-content {
+    margin-left: 64px;
+    margin-right: 0;
+  }
+  
+  .chat .self .msg-content .text {
+    border-radius: 8px 0 8px 8px;
+    background: #226bf2;
+    color: #fff;
+    border-color: #226bf2;
+  }
+  
+  .chat .self .msg-content .text::before {
+    left: auto;
+    right: -5px;
+    border-top-color: #226bf2;
+  }
+  
+  .chat .product {
+    margin: 12px 24px 16px;
+    text-align: left;
+    padding: 12px;
+    background: #fff;
+    border-radius: 8px;
+  }
+  
+  .chat .product img {
+    width: 84px;
+    height: 84px;
+    border-radius: 4px;
+    float: left;
+    margin-right: 12px;
+    -o-object-fit: cover;
+        object-fit: cover;
+  }
+  
+  .chat .product .name {
+    font-size: 15px;
+    line-height: 22px;
+    height: 44px;
+    word-break: break-all;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  
+  .chat .product .price {
+    margin-top: 12px;
+    font-size: 20px;
+    line-height: 28px;
+    color: #ff3d47;
+  }
+  
+  .chat .product .price text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .chat .product button {
+    float: right;
+    width: 72px;
+    height: 28px;
+    padding: 0;
+    background: #226BF2;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 12px;
+    border: 0;
+  }
+  
+  .chat .product button::after {
+    display: none;
+  }
+  
+  .border-top {
+    position: relative;
+  }
+  
+  .border-top:after {
+    content: '';
+    height: 1px;
+    background-color: #f0f0f0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .input-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 24px;
+    background: #F4F5F6;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    z-index: 2;
+    height: 52px;
+  }
+  
+  .input-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: rgba(188, 188, 188, 0.3);
+    height: 1px;
+    -webkit-transform: scaleY(.5);
+        -ms-transform: scaleY(.5);
+            transform: scaleY(.5);
+  }
+  
+  .input-wrap .text-area {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    position: relative;
+  }
+  
+  .input-wrap input {
+    width: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 20px;
+    padding: 0 12px;
+    height: 36px;
+    line-height: 36px;
+    border: 0;
+    font-size: 14px;
+  }
+  
+  .input-wrap .send-img {
+    padding: 8px;
+    font-size: 22px;
+    position: relative;
+  }
+  
+  .input-wrap .send-img input {
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+  }
+</style>
+
+<script src="/Scripts/signalr.min.js"></script>
+<script src="/Scripts/template.js"></script>
+
+<div class="chat transparent" id="chat"></div>
+
+<div class="input-wrap border-top">
+  <div class="text-area">
+    <input id="sendInput" type="text" placeholder="请输入您想咨询的问题" />
+  </div>
+  <div class="send-img glyphicon glyphicon-picture"><input id="sendImage" type="file" accept="image/*"></div>
+</div>
+
+<script>
+    var chatRequestUrl = 'https://hichat.kuaidiantong.cn/clientApi/',
+    connection,
+    messages = [],
+    isInit = false,
+    chatToken,
+    domain,
+    workerAvatar,
+    productData = {
+      name: decodeURIComponent(QueryString('name')||''),
+      price: QueryString('price'),
+      image: decodeURIComponent(QueryString('image')),
+      url: QueryString('id')
+    },
+    isLoading = false,
+    loading,
+    userInfo = {
+      nick: decodeURIComponent(QueryString('nick')),
+      photo: QueryString('photo') || 'https://hichatoss.oss-cn-zhangjiakou.aliyuncs.com/default.png'
+    };
+  
+  var d = new Date(),
+    year = d.getFullYear(),
+    month = d.getMonth() + 1,
+    day = d.getDate(),
+    currentDate = { year, month, day };
+
+  $(function() {
+    var shopName = decodeURIComponent(QueryString('shopName') || '在线客服');
+    document.title = shopName;
+
+    loading = showLoading();
+    $.ajax({
+      url: chatRequestUrl + 'OAuth/GetSession',
+      data: {
+        openId: QueryString('userId'),
+        appKey: QueryString('appkey'),
+        name: userInfo.nick,
+        avatar: userInfo.photo
+      },
+      type: 'GET',
+      dataType: 'json',
+      success: function(res) {
+        if (res.success) {
+          chatToken = res.data.token;
+          domain = res.data.domain;
+          workerAvatar = res.data.avatar;
+          initConnection();
+          loadMessage();
+        } else {
+          loading.close();
+          alert(res.msg);
+        }
+      }
+    })
+  })
+
+  function initConnection() {
+    // 创建连接
+    connection = new signalR.HubConnectionBuilder().withUrl( domain + '/user', {
+      accessTokenFactory: function(){
+        return chatToken
+      }
+    }).withAutomaticReconnect([0, 2000, 2000, 2000, 2000, 2000, 10000, 10000]).build()
+    connection.start()
+    
+    // 接收聊天消息
+    connection.on('receive', function (msg) {
+      msg.photo = workerAvatar
+      msg.timeDate = formatTime(msg.time)
+      if (msg.time - messages[messages.length - 1].time > 300) {
+        msg.timeStr = msg.timeDate.hours + ':' + msg.timeDate.minutes;
+      }
+      messages.push(msg)
+      chat.insertAdjacentHTML('beforeend', template('msgItem', msg))
+      chat.scrollTop = chat.scrollHeight
+    })
+  }
+
+  function loadMessage(callback) {
+    if (isLoading) {
+      return
+    }
+    isLoading = true
+    var lastMsg = null
+    if (messages.length) {
+      lastMsg = messages[0]
+      if (lastMsg.isSendItem) {
+        lastMsg = messages[1]
+      }
+    }
+    
+    $.ajax({
+      url: chatRequestUrl + 'chat/messages',
+      data: {
+        direction: 1,
+        start: lastMsg ? lastMsg.sequenceId : 0
+      },
+      headers: {
+        Authorization: 'Bearer ' + chatToken
+      },
+      dataType:'json',
+      type:'get',
+      success:function(res){
+        if (!res.data.data) {
+          if (!messages.length) {
+            messages = [{
+              isSendItem: true,
+              sequenceId: 0,
+              data: productData,
+              time: parseInt(new Date().getTime() / 1000 + 8 * 3600),
+              type: 1,
+              timeDate: currentDate
+            }]
+            chat.innerHTML = template('initData', messages)
+          }
+          if (!isInit) {
+            $('.chat').removeClass('transparent')
+            loading.close()
+            isInit = true
+          }
+          return
+        }
+        var newMessages = res.data.data.reverse()
+        newMessages.forEach(function(item, index) {
+          item.timeDate = formatTime(item.time)
+          if (index > 0) {
+            var prevMsg = newMessages[index-1];
+            if (item.timeDate.month !== prevMsg.timeDate.month || item.timeDate.day !== prevMsg.timeDate.day) {
+              item.timeStr = (item.timeDate.year !== currentDate.year ? item.timeDate.year+'年':'')+ item.timeDate.month+'月'+item.timeDate.day+'日 '+item.timeDate.hours+':'+item.timeDate.minutes
+            }
+            if (item.timeDate.month === prevMsg.timeDate.month && item.timeDate.day === prevMsg.timeDate.day) {
+              item.timeStr = item.timeDate.hours+':'+item.timeDate.minutes;
+              if (parseInt(item.timeDate.month) !== currentDate.month || parseInt(item.timeDate.day) !== currentDate.day) {
+                item.timeStr = item.timeDate.month+'月'+item.timeDate.day+'日' + item.timeStr;
+              }
+            }
+            if (item.time - prevMsg.time < 300) {
+              item.timeStr = ''
+            }
+          } else {
+            let str = ''
+            if (currentDate.year !== item.timeDate.year) {
+              str = item.timeDate.year+'年'+item.timeDate.month+'月'+item.timeDate.day+'日 '+item.timeDate.hours+':'+item.timeDate.minutes;
+            } else {
+              if (currentDate.month !== parseInt(item.timeDate.month) || currentDate.day !== parseInt(item.timeDate.day)) {
+                str = item.timeDate.month+'月'+item.timeDate.day+'日 '+item.timeDate.hours+':'+item.timeDate.minutes
+              } else {
+                str = item.timeDate.hours+':'+item.timeDate.minutes
+              }
+            }
+            item.timeStr = str
+          }
+          if (item.role === 2) {
+            if(item.workerId){
+              var worker = res.data.items['worker.' + item.workerId];
+              item.workerName = worker.name;
+              item.photo = workerAvatar;
+            }else{
+              item.workerName = '客服';
+              item.photo = workerAvatar;
+            }
+          } else {
+            item.photo = userInfo.photo;
+          }
+          if (item.type === 3) {
+            item.data = JSON.parse(item.data);
+          }
+        
+        })
+
+        const lastMsg = Object.assign({}, messages[messages.length-1])
+        if (!isInit) {
+          lastMsg.isSendItem = true
+          lastMsg.sequenceId = 99999
+          lastMsg.data = productData
+          newMessages.push(lastMsg)
+        }
+        messages = newMessages.concat(messages)
+        isLoading = false
+        
+        chat.innerHTML = template('initData', messages)
+        
+        if (!isInit) {
+          setTimeout(function() {
+            chat.scrollTop = chat.scrollHeight
+            $('.chat').removeClass('transparent')
+            loading.close()
+          }, 300)
+          isInit = true
+        }
+        
+        callback && callback()
+      }
+    })
+  }
+  
+  $('#chat').on('click', '#sendProductBtn', function() {
+    connection.invoke('sendProduct', productData.name, productData.price, productData.image, productData.url + '')
+    this.parentNode.parentNode.style.display = 'none'
+    
+    messageAdd(productData, 3)
+  })
+  
+  sendInput.addEventListener('keyup', function(e) {
+    if((e||window.e).keyCode==13){
+      if (!this.value.trim()) {
+        return
+      }
+      this.blur()
+      connection.invoke('send', this.value)
+      messageAdd(this.value, 1)
+      this.value = ''
+    }
+  })
+  
+  sendImage.addEventListener('change', function(e) {
+    var _this = this,
+      file = e.target.files[0],
+      xhr = new XMLHttpRequest(),
+      formData = new FormData();
+      
+    if(!file) {
+      return
+    }
+    var loading = showLoading();
+    formData.append('file', file);
+    
+    xhr.open('POST', chatRequestUrl + 'chat/upload', true);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + chatToken);
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState == 4 && xhr.status == 200){
+        var res = JSON.parse(xhr.responseText)
+        loading.close()
+        if (!res.success) {
+          return alert(res.msg)
+        }
+        messageAdd(res.data.data, 2)
+      }
+    }
+    xhr.send(formData);
+  })
+  
+  // 添加消息到列表
+  function messageAdd(data, type) {
+    var msg = {
+      data,
+      role: 1,
+      photo: userInfo.photo,
+      sequenceId: messages[messages.length - 1].sequenceId + 1,
+      time: parseInt(new Date().getTime() / 1000 + 8 * 3600),
+      type
+    }
+    msg.timeDate = formatTime(msg.time)
+    var lastMsg = messages[messages.length - 1].time ? messages[messages.length - 1] : messages[messages.length - 2];
+    if (msg.time - lastMsg.time > 300) {
+      var str = '';
+      if (lastMsg.year !== msg.timeDate.year) {
+        str = msg.timeDate.year +'年'+msg.timeDate.month+'月'+msg.timeDate.day+'日 '+msg.timeDate.hours+':'+msg.timeDate.minutes;
+      } else {
+        if (parseInt(lastMsg.month) !== parseInt(msg.timeDate.month) || parseInt(lastMsg.day) !== parseInt(msg.timeDate.day)) {
+          str = msg.timeDate.month+'月'+msg.timeDate.day+'日 '+msg.timeDate.hours+':'+msg.timeDate.minutes;
+        } else {
+          str = msg.timeDate.hours + ':' + msg.timeDate.minutes;
+        }
+      }
+      msg.timeStr = str;
+    }
+    messages.push(msg)
+    
+    chat.insertAdjacentHTML('beforeend', template('msgItem', msg))
+    
+    chat.scrollTop = chat.scrollHeight
+    
+    if (type === 2) {
+      setTimeout(function() {
+        chat.scrollTop = chat.scrollHeight
+      }, 200)
+    }
+  }
+  
+  var timerScroll = null;
+  chat.addEventListener('scroll', function(e) {
+    var _this = this,
+      top = _this.scrollTop,
+      height = _this.scrollHeight;
+    clearTimeout(timerScroll);
+    timerScroll = setTimeout(function(){
+      if (top === 0) {
+        loadMessage(function() {
+          chat.scrollTo(0, _this.scrollHeight - height)
+        })
+      }
+    }, 300)
+  })
+  
+  function formatTime(timestamp) {
+    var d = new Date((timestamp - 8 * 3600) * 1000),
+      year = d.getFullYear(),
+      month = d.getMonth() + 1,
+      day = d.getDate(),
+      hours = d.getHours(),
+      minutes = d.getMinutes();
+
+    if(month < 10) month = '0' + month
+    if(day < 10) day = '0' + day
+    if(hours < 10) hours = '0' + hours
+    if(minutes < 10) minutes = '0' + minutes
+
+    return { year, month, day, hours, minutes }
+  }
+  
+  window.onbeforeunload = function(params) {
+    connection && connection.stop()
+  }
+
+  $('#chat').on('click', '.product-link', function() {
+    window.location.href = '/' + areaName + '/product/detail/' + $(this).data('url')
+  })
+</script>
+
+<script id="initData" type="text/html">
+  {{each}}
+  <div class="item {{$value.role===1?'self':''}}" id="msg{{$value.sequenceId}}">
+    {{if !$value.isSendItem}}
+      {{if $value.timeStr}}<div class="time">{{$value.timeStr}}</div>{{/if}}
+      <div class="flex-wrap">
+        {{if $value.role !== 3}}
+          <div class="photo">
+            <img src="{{$value.photo}}" >
+          </div>
+          <div class="msg-content">
+            {{if $value.role===2}}<div class="username">{{$value.workerName}}</div>{{/if}}
+            {{if $value.type===1}}<div class="text">{{$value.data}}</div>{{/if}}
+            {{if $value.type===2}}<img class="img" src="{{$value.data}}?x-oss-process=image/resize,w_168" data-preview-src="{{$value.data}}" data-preview-group="1" />{{/if}}
+            {{if $value.type===3}}
+              <div class="product product-link" data-url="{{$value.data.url}}">
+                <img src="{{$value.data.image}}" />
+                <div class="name">{{$value.data.name}}</div>
+                <div class="price"><text>￥</text>{{$value.data.price}}</div>
+              </div>
+            {{/if}}
+          </div>
+        {{else}}
+          <div class="msg-system">{{$value.data}}</div>
+        {{/if}}
+      </div>
+    {{else}}
+      {{if $value.data.name}}
+        <div class="product">
+          <img src="{{$value.data.image}}" />
+          <div class="name">{{$value.data.name}}</div>
+          <div class="price">
+            <text>￥</text>{{$value.data.price}}
+            <button id="sendProductBtn">发给客服</button>
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+  {{/each}}
+</script>
+
+<script id="msgItem" type="text/html">
+  <div class="item {{role===1?'self':''}}" id="msg{{sequenceId}}">
+    {{if timeStr}}<div class="time">{{timeStr}}</div>{{/if}}
+    <div class="flex-wrap">
+      {{if role !== 3}}
+        <div class="photo">
+          <img src="{{photo}}" >
+        </div>
+        <div class="msg-content">
+          {{if role===2}}<div class="username">{{workerName}}</div>{{/if}}
+          {{if type===1}}<div class="text">{{data}}</div>{{/if}}
+          {{if type===2}}<img class="img" src="{{data}}?x-oss-process=image/resize,w_168" data-preview-src="{{data}}" data-preview-group="1" />{{/if}}
+          {{if type===3}}
+            <div class="product product-link" data-url="{{data.url}}">
+              <img src="{{data.image}}" />
+              <div class="name">{{data.name}}</div>
+              <div class="price"><text>￥</text>{{data.price}}</div>
+            </div>
+          {{/if}}
+        </div>
+      {{else}}
+        <div class="msg-system">{{data}}</div>
+      {{/if}}
+    </div>
+  </div>
+</script>

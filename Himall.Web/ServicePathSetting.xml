@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ServiceConfig>
+  <Service >
+    <configfile>WinActiveService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinActiveService\bin\Release\WinActiveService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinBrokerageService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinBrokerageService\bin\Release\WinBrokerageService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinLimitTimeBuyService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinLimitTimeBuyService\bin\Release\WinLimitTimeBuyService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinOrderCommentsService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinOrderCommentsService\bin\Release\WinOrderCommentsService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinOrderProductStatisticsService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinOrderProductStatisticsService\bin\Release\WinOrderProductStatisticsService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinOrderService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinOrderService\bin\Release\WinOrderService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinOrderTradeStatisticsService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinOrderTradeStatisticsService\bin\Release\WinOrderTradeStatisticsService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinSettlementService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinSettlementService\bin\Release\WinSettlementService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinShopServices\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinShopServices\bin\Release\WinShopServices.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinStatisticsService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinStatisticsService\bin\Release\WinStatisticsService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinSyncOrderService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinSyncOrderService\bin\Release\WinSyncOrderService.exe</connconfigfile>
+  </Service>
+  <Service >
+    <configfile>WinVirtualOrderService\bin\Release\ServiceSetting.xml</configfile>
+    <connconfigfile>WinVirtualOrderService\bin\Release\WinVirtualOrderService.exe</connconfigfile>
+  </Service>
+</ServiceConfig>

@@ -1,0 +1,471 @@
+﻿@{
+    ViewBag.ShowAside = 2;//显示返回顶部按钮
+}
+@{Layout = "/Areas/Mobile/Templates/Default/Views/Shared/_Base.cshtml";}
+<div class="container">
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <script src="~/Areas/Mobile/Templates/Default/Scripts/WeiXinShare.js"></script>
+    <link rel="stylesheet" href="/Content/PublicMob/css/style.css" />
+    <link rel="stylesheet" href="/Areas/Admin/templates/common/style/mycss.css" rev="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/Areas/Admin/templates/common/style/head.css">
+    <div id='modules'></div>
+    <div class="popup-advert" id="advert" style="display:none">
+        <div class="popup-advert-inner">
+            <img id="advertImg" onclick="handleAdvert()" />
+            <div class="colose" onclick="closeAdvert()"><i class="iconfont icon-close"></i></div>
+        </div>
+    </div>
+    @{Html.RenderPartial("~/Areas/Mobile/Templates/Default/Views/Shared/_4ButtonsFoot.cshtml");}
+</div>
+<script>
+    var advertLinkInfo = {};
+    $(function () {
+        $.ajax({
+            url: '/Areas/Admin/Templates/vshop/t1/Data/default.json',
+            data: {
+                timestamp: new Date().getTime()
+            },
+            context: document.getElementById('modules'),
+            success: function (data) {
+                var str = '';
+                if (typeof (data) == "string") {
+                    data = JSON.parse(data);
+                }
+                var pidList = [], groupPidList = [], limitPidList = [];
+                for (var i = 0; i < data.LModules.length; i++) {
+                    var de = new Base64(),
+                        item = data.LModules[i];
+                    if (item.type == 1 && item.content.showType == 2) {
+                        str += template('initSwiper', item)
+                    } else if (item.type === 10) {
+                        str += template('initCoupons', item)
+                    } else {
+                        if (item.type === 8) {
+                            item.content.goodslist.forEach(pro => {
+                                pidList.push(pro.item_id);
+                            });
+                        }
+                        if (item.type === 15) {
+                            item.content.goodslist.forEach(pro => {
+                                groupPidList.push(pro.item_id);
+                            });
+                        }
+                        if (item.type === 14) {
+                            item.content.goodslist.forEach(pro => {
+                                limitPidList.push(pro.item_id);
+                            });
+                        }
+                        str += de.decode(item.dom_conitem);
+                    }
+                }
+                $(this).html(str)
+                if (pidList.length > 0) {
+                    GetViewProductByIds(pidList)
+                }
+                if (limitPidList.length > 0) {
+                    GetLimitProductByIds(limitPidList)
+                }
+                if (groupPidList.length > 0) {
+                    GetGroupProductByIds(groupPidList)
+                }
+                $('.swiper-container').each(function () {
+                    new Swiper('#' + this.id, {
+                        pagination: '.swiper-pagination',
+                        autoplay: 4000,
+                        speed: 500
+                    });
+                });
+
+                InitCube();
+            }
+        })
+        $.ajax({
+            url: 'm-wap/home/GetPopuActive',
+            data: {},
+            success: function (data) {
+                getPopupAdvert(data);
+            }
+        })
+    })
+
+    //更新魔方计算
+    function InitCube() {
+        var windowWidth = $(window).width();
+        windowWidth = windowWidth > 640 ? 640 : windowWidth; //手机屏幕最大640
+
+        var cubeLength = $('#modules').find('.cube-preview').length;
+        if (cubeLength > 0) {
+            for (var i = 0; i < cubeLength; i++) {
+                var cubeDom = $('#modules').find('.cube-preview')[i],
+                    pageMargin = parseFloat($(cubeDom).attr('page-margin')),
+                    imgMargin = parseFloat($(cubeDom).attr('img-margin')),
+                    showType = parseFloat($(cubeDom).attr('show-type')),
+                    imgHieght = parseFloat($(cubeDom).attr('img-height')),
+                    length = $(cubeDom).children('.item').length;
+
+                var cubeDomHeight = showType < 4 ? imgHieght * (windowWidth - pageMargin * 2) / 320 + 'px' : (375 - pageMargin * 2) + 'px';
+
+                $(cubeDom).css('height', cubeDomHeight);
+                for (var j = 0; j < length; j++) {
+                    var itemDom = $(cubeDom).children('.item')[j],
+                        width = parseFloat($(itemDom).attr('width')),
+                        height = parseFloat($(itemDom).attr('height')),
+                        top = parseFloat($(itemDom).attr('top')),
+                        left = parseFloat($(itemDom).attr('left'));
+
+                    var itemHeight = height * (windowWidth - pageMargin * 2) / 320 - imgMargin + 'px',
+                        itenWidth = width * (windowWidth - pageMargin * 2) / 320 - imgMargin + width / 320 * imgMargin + 'px',
+                        itemTop = top * (windowWidth - pageMargin * 2) / 320 + 'px',
+                        itemLeft = left * (windowWidth - pageMargin * 2) / 320 + left / 320 * imgMargin + 'px';
+
+                    $(itemDom).css({
+                        'width': itenWidth,
+                        'height': itemHeight,
+                        'top': itemTop,
+                        'left': itemLeft,
+                    })
+                }
+            }
+        }
+    }
+
+    function countDown(time, callback) {
+        var day = 0,
+            hour = 0,
+            minute = 0,
+            second = 0;
+        if (time > 0) {
+            day = '' + Math.floor(time / (24 * 60 * 60));
+            hour = '' + Math.floor(time / (60 * 60) - (day * 24));
+            minute = '' + Math.floor(time / 60 - (day * 24 * 60) - (hour * 60));
+            second = '' + Math.floor(time - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60));
+        }
+        if (hour < 10) {
+            hour = '0' + hour;
+        }
+        if (minute < 10) {
+            minute = '0' + minute;
+        }
+        if (second < 10) {
+            second = '0' + second;
+        }
+        callback(day, hour, minute, second);
+    }
+    function getPopupAdvert(data) {
+       
+        // 总开关未开启，直接接结束
+        if (!data.isEnable) {
+            return
+        }
+        advertLinkInfo = JSON.parse(data.link);
+        var advertSetting = JSON.parse(localStorage.getItem('advertSetting'));
+        var currentTime = new Date();
+        var isShow = false;
+        var lastRecord = null;
+        var readTime = new Date();
+        // 重复显示开关
+        var isRead = false;
+        if (advertSetting) {
+            lastRecord = advertSetting.lastRecord
+            isRead = advertSetting.isRead
+            readTime = lastRecord ? new Date(lastRecord) : new Date()
+            advertSetting.lastRecord = new Date().getTime() // 记录本次打开时间
+        } else {
+            advertSetting = {
+                lastRecord: new Date().getTime(),
+                isRead: false
+            }
+        }
+        localStorage.setItem('advertSetting', JSON.stringify(advertSetting));
+        var isExpire = false;
+        // 两日期Date相差1，即为过期
+        if (currentTime.getFullYear() >= readTime.getFullYear() && currentTime.getMonth() >= readTime.getMonth() && currentTime.getDate() - readTime.getDate() >= 1) {
+            isExpire = true
+            isRead = false
+        }
+        if (!data.isReplay && (lastRecord ? isExpire : true)) {
+            isShow = true
+        }
+        // 重复显示开关
+        if (!isShow && data.isReplay && !isRead) {
+            isShow = true
+        }
+        if (isShow) {
+            $('#advertImg').attr('src', data.img)
+            $("#advert").show()
+        }
+    }
+    function closeAdvert() {
+        $("#advert").hide()
+    }
+    function handleAdvert() {
+        var advertSetting = JSON.parse(localStorage.getItem('advertSetting'));
+        advertSetting.isRead = true;
+        localStorage.setItem('advertSetting', JSON.stringify(advertSetting));
+        $("#advert").hide()
+        window.location = advertLinkInfo.link
+
+    }
+    function GetGroupProductByIds(ids) {
+        $.ajax('/m-wap/home/GetFightGroupViewByIds', {
+            data: {
+                ids: ids.join(',')
+            },
+            dataType: 'json',
+            type: 'get',
+            timeout: 20000,
+            success: function (data) {
+                const res = data.data.data
+                const nodeContent = document.querySelectorAll('.group-product-view')
+                const listarr = []
+                res.forEach(item => {
+                    listarr.push(item.item_id)
+                })
+                nodeContent.forEach(nodeC => {
+                    let nodeLi = nodeC.querySelectorAll('li')
+                    nodeLi.forEach((nodeli) => {
+                        const nodeA = nodeli.querySelector('a')
+                        const actityId = nodeA.href.split('fightgroup/detail/')[1]
+                        const nodeTime = nodeli.querySelector('.time')
+                        const nodeProName = nodeli.querySelector('h3 em')
+                        const nodeSale = nodeli.querySelector('.price span')
+                        const nodeOldSale = nodeli.querySelector('.price s')
+                        const nodeImg = nodeli.querySelector('.product-img img')
+                        if (!listarr.includes(parseInt(actityId))) {
+                            nodeli.style.display = 'none'
+                            return
+                        }
+                        for (let i = 0; i < res.length; i++) {
+                            const stringifyItem = JSON.stringify(res[i])
+                            const item = JSON.parse(stringifyItem)
+                            if (item.item_id === parseInt(actityId)) {
+                                item.times = item.beginSec > 0 ? item.beginSec : item.endSec
+                                nodeImg.src = item.pic
+                                nodeProName ? nodeProName.innerHTML = item.title :''
+                                nodeSale ? nodeSale.innerHTML = `<i>￥</i>${item.price.toFixed(2)}` : ''
+                                nodeOldSale ? nodeOldSale.innerHTML = `￥${item.saleprice.toFixed(2)}` : ''
+                                item.timetext = item.beginSec > 0 ? '距开始' : '距结束'
+                                if (item.endSec < 0) {
+                                    nodeli.style.display = 'none'
+                                }
+                                setInterval(() => {
+                                    countDown(item.times, (day, hour, minute, second) => {
+                                        item.times -= 1
+                                        if (nodeTime) {
+                                            if (parseFloat(day)>0) {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${day}</i>天<i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            } else {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            }
+                                        }
+                                    })
+                                }, 1000)
+                            }
+                        }
+
+                    })
+
+                })
+            },
+        })
+    }
+    function GetLimitProductByIds(ids) {
+        $.ajax('/m-wap/home/GetLimitBuyViewByIds', {
+            data: {
+                ids: ids.join(',')
+            },
+            dataType: 'json',
+            type: 'get',
+            timeout: 20000,
+            success: function (data) {
+                const res = data.data.data
+                const nodeContent = document.querySelectorAll('.limit-product-view')
+                const listarr = []
+                res.forEach(item => {
+                    listarr.push(item.pid)
+                })
+                nodeContent.forEach(nodeC => {
+                    let nodeLi = nodeC.querySelectorAll('li')
+                    nodeLi.forEach((nodeli) => {
+                        const nodeA = nodeli.querySelector('a')
+                        const productId = nodeA.href.split('?productId=')[1]
+                        const nodeTime = nodeli.querySelector('.time')
+                        const nodeProName = nodeli.querySelector('h3 em')
+                        const nodeSale = nodeli.querySelector('.price span')
+                        const nodeImg = nodeli.querySelector('.product-img img')
+                        const nodeProgress = nodeli.querySelector('.el-progress-bar__inner')
+                        const nodeOldSale = nodeli.querySelector('.price s')
+                        const nodeStock = nodeli.querySelector('.sale-count .stock')
+                        const nodeSaleCount = nodeli.querySelector('.sale-count .sale')
+                        if (!listarr.includes(parseInt(productId))) {
+                            nodeli.style.display = 'none'
+                            return
+                        }
+                        for (let i = 0; i < res.length; i++) {
+                            const stringifyItem = JSON.stringify(res[i])
+                            const item = JSON.parse(stringifyItem)
+                            if (item.pid === parseInt(productId)) {
+                                item.times = item.beginSec > 0 ? item.beginSec : item.endSec
+                                item.percentage = 100 - item.number / (item.stock + item.number) * 100
+                                nodeImg.src = item.pic
+                                nodeProgress ? nodeProgress.style.width = `${item.percentage}%` : ''
+                                nodeProName ? nodeProName.innerHTML = item.title :''
+                                nodeSale ? nodeSale.innerHTML = `<i>￥</i>${item.price.toFixed(2)}` : ''
+                                nodeOldSale ? nodeOldSale.innerHTML = `￥${item.saleprice.toFixed(2)}` : ''
+                                nodeStock.innerHTML = `仅剩<i>${item.stock}</i>件`
+                                nodeSaleCount.innerHTML = `已抢<i>${item.number}</i>件`
+                                item.timetext = item.beginSec > 0 ? '距开始' : '距结束'
+                                if (item.endSec < 0) {
+                                    nodeli.style.display = 'none'
+                                }
+                                setInterval(() => {
+                                    countDown(item.times, (day, hour, minute, second) => {
+                                        item.times -= 1
+                                        if (nodeTime) {
+                                            if (parseFloat(day) > 0) {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${day}</i>天<i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            } else {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            }
+                                        }
+                                    })
+                                }, 1000)
+                            }
+                        }
+
+                    })
+
+                })
+            },
+        })
+    }
+    function GetViewProductByIds(ids) {
+        $.ajax('/m-wap/home/GetViewProductsById', {
+            data: {
+                productIds: ids.join(',')
+            },
+            type: 'get',
+            success: function (data) {
+                const nodeUl = document.querySelectorAll('.normal-product-view')//循环找到所有ul盒子
+                nodeUl.forEach(nodeul => {//循环找到所有ul盒子下面的li
+                    let nodeliArray = nodeul.querySelectorAll('li')
+                    nodeliArray.forEach(nodeli => {
+                        let views = nodeli.querySelector('.product-wrap')
+                        let nodeA = views.querySelector('a')
+                        let nodeH = views.querySelector('h3')
+                        let nodeSpan = views.querySelectorAll('span')
+                        let pirce = views.querySelector('.price')
+                        let pidList = nodeA.href.split('/')
+                        let pid = pidList[pidList.length - 1]
+                        data.data.data.forEach(pro => {//遍历更新商品数据
+                            if (pro.id == pid) {
+                                nodeH.innerHTML = `${pro.pname}`
+                                pirce.innerHTML = `<i>¥</i>${pro.price.toFixed(2)}`
+                                nodeSpan[1].setAttribute('data-activitytype', pro.activitytype)
+                                nodeSpan[1].setAttribute('data-productType', pro.productType)
+                            }
+                            if (pro.id == pid && pro.statue != '销售中') {
+                                nodeli.style.display = 'none' // 如果不在销售中隐藏当前列表
+                            }
+                        })
+                    })
+                })
+            }
+        })
+    }
+    function Base64() {
+        _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        this.decode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3;
+            var enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            while (i < input.length) {
+                enc1 = _keyStr.indexOf(input.charAt(i++));
+                enc2 = _keyStr.indexOf(input.charAt(i++));
+                enc3 = _keyStr.indexOf(input.charAt(i++));
+                enc4 = _keyStr.indexOf(input.charAt(i++));
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+                output = output + String.fromCharCode(chr1);
+                if (enc3 != 64) {
+                    output = output + String.fromCharCode(chr2);
+                }
+                if (enc4 != 64) {
+                    output = output + String.fromCharCode(chr3);
+                }
+            }
+            output = _utf8_decode(output);
+            return output;
+        }
+        _utf8_decode = function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+            while (i < utftext.length) {
+                c = utftext.charCodeAt(i);
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                } else if ((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i + 1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                } else {
+                    c2 = utftext.charCodeAt(i + 1);
+                    c3 = utftext.charCodeAt(i + 2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+            }
+            return string;
+        }
+    }
+</script>
+<script type="text/html" id="initCoupons">
+    <div class="wrap" style="background:{{content.bgColor}}; padding: {{content.verticalMargin*2}}px 0;">
+        <div class="coupon-list {{content.showType !== 1?'small':''}}">
+            {{each content.coupons}}
+            <a href='{{$value.link}}'>
+                <div class="items">
+                    <img class="coupon-bg" src="/Areas/Admin/Templates/vshop/t1/images/coupon-{{content.showType === 1?'home':'small'}}.png" />
+                    <div class="info">
+                        <div class="h3"><span>￥</span>{{$value.price||$value.Price}}</div>
+                        <div class="h5">{{$value.title||$value.CouponName}}</div>
+                        {{if $value.condition}}
+                        <div class="p">
+                            {{$value.condition!=='0'?'满'+ $value.condition +'元可用':'无使用门槛'}}
+                        </div>
+                        {{else}}
+                        <div class="p">{{$value.OrderAmount?'满'+ $value.OrderAmount +'元可用':'无使用门槛'}}</div>
+                        {{/if}}
+                    </div>
+                    {{if content.showType === 1}}
+                    <img class="coupon-btn" src="/Areas/Admin/Templates/vshop/t1/images/coupon-btn.png" />
+                    {{/if}}
+                </div>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+<script type="text/html" id="initSwiper">
+    <div class="swiper-container {{content.imgStyle?"img-shadow":""}}" style="padding:{{content.verticalMargin}}px 0px;margin:0px {{content.pageMargin}}px;background:{{content .bgColor?content.bgColor:"none"}}" id="swiper_{{id}}">
+        <div class="swiper-wrapper" style="">
+            {{each content.images}}
+                <div class="swiper-slide"><a href="{{$value.link}}"><img src="{{$value.imgSrc}}" style="object-fit:{{content.fill?"cover":"scale-down"}};border-radius:{{content.imgRadius=="1"?"8px":"0px"}};" /></a></div>
+            {{/each}}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</script>
+
+<script src="~/Areas/Mobile/Templates/Default/Scripts/mui.min.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/AppAuto.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/home.js"></script>
+<!--<script src="~/Scripts/swipe-template.js"></script>-->
+<script src="~/Areas/Mobile/Templates/Default/Scripts/swiper.min.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/template.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/IndexShare.js"></script>

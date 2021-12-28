@@ -1,0 +1,39 @@
+﻿<div id="div_coupons">
+    <div id="spcolose"><img src='/Storage/Applet/images/coupons-close.png' class="img_btn"></img></div>
+    <div class="coupons_title"></div>
+    <ul id="ul_coupons">
+    </ul>
+    <div class="bot">
+		<img src='/Storage/Applet/images/coupons-bot.png' class="img_bot"></img>
+		<a href="/m-wap/Coupon/Management"><img src='/Storage/Applet/images/coupons-btn.png' class="img_btn"></img></a>
+	</div>
+</div>
+<div id='mask'></div>
+<script>
+    function FillCoupon(coupondata,returnurl) {
+        var htmlresult = "";
+        const couponsTitle = document.querySelector('.coupons_title')
+        couponsTitle.innerHTML = `<span>${coupondata.length}</span>张新人专享礼券`
+        $(coupondata).each(function (idx,item) {
+            item.strStartTime = item.strStartTime.replace(/-/g,'.')
+            item.strEndTime = item.strEndTime.replace(/-/g,'.')
+            htmlresult += `
+            <li>
+                <img src='/Storage/Applet/images/coupons-list.png'>
+                <div class='pirce'><span>￥</span>${item.Price}</div>
+                <div class='des'>
+                    <div>${item.CouponName}</div>
+				    <div class="text">${item.strStartTime} - ${item.strEndTime}</div>
+                </div>
+            </li>
+            `;
+        });
+        $("#ul_coupons").html(htmlresult)
+        $("#div_coupons").css("display", "block")
+        $("#mask").css("display","block")
+        $("#spcolose").on("click", function () {
+            $("#mask").css("display","none")
+            location.replace(decodeURIComponent(returnurl));
+        });
+    }
+</script>

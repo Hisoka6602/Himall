@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "CouponList";
+}
+<script src="~/Scripts/jquery.hiMallDatagrid.js"></script>
+<script src="~/Areas/Admin/Scripts/CouponList.js"></script>
+
+<div class="container">
+    <ul class="nav nav-tabs-custom clearfix">
+        @*<li><a href="./Management">优惠券购买列表</a></li>
+        <li><a href="./ServiceSetting">服务费用设置</a></li>*@
+        <li class="active"><a>平台优惠券</a></li>
+        <li><a href="@Url.Action("Add")">新增优惠券</a></li>
+    </ul>
+    <div class="queryDiv">
+        <img class="queryImg" src="/Images/ic_query.png">
+        <div class="tipBox">
+            <h5>温馨提示:</h5>
+            <ul>
+                <li><span>平台优惠券的成本由平台承担，平台优惠券和商家优惠券可以同时叠加使用。</span></li>
+            </ul>
+        </div>
+    </div>
+   
+        <div class="search-box">
+            <form class="form-inline custom-inline">
+                <div class="form-group">
+                    <label class="label-inline w75" for="">搜优惠券</label>
+                    <input type="text" id="CouponName" maxlength="20" class="form-control input-ssm">
+                </div>
+                <div class="form-group">
+                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">搜 索</button>
+                </div>
+            </form>
+        </div>
+    
+        <div>
+            <table class="table" id="list"></table>
+        </div>
+</div>
+<input type="hidden" value="@DateTime.Now.Date" id="DTND" />

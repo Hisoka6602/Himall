@@ -1,0 +1,211 @@
+﻿@model Himall.DTO.Live.AnchorModel
+@{
+    ViewBag.Title = "添加主播";
+}
+
+<script src="~/Scripts/jquery.hiMallDatagrid.js"></script>
+<script src="~/Scripts/jquery.himallLinkage.nocreate.js"></script>
+<script src="~/Scripts/jquery.placeholder.min.js"></script>
+<script src="~/Scripts/bootstrap.autocompletetwo.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-datetimepicker.min.css">
+<script type="text/javascript" src="/Scripts/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/Scripts/bootstrap-datetimepicker.zh-CN.js"></script>
+<style type="text/css">
+    .SearchListClass {
+        position: absolute;
+        opacity: 2;
+        z-index: 999;
+        top: 30px;
+        width: 240px;
+        height: 100px;
+        background-color: #FFF;
+        border: 1px solid #666;
+        overflow-y: auto;
+        text-align: left;
+        font-size: 12px;
+    }
+    .dln #qr_code{width: 160px;height: 160px;}
+</style>
+<script language="javascript">
+    $(document).ready(function () {
+        AutoComplete();
+    });
+
+    function AutoComplete() {
+        $('#txtUserId').autocomplete({
+            source: function (query, process) {
+                var userId = 0;
+                $.post("./GetAnchorMembers", { "keyWords": $('#txtUserId').val(), "userId": userId }, function (respData) {
+                    return process(respData);
+                });
+            },
+            formatItem: function (item) {
+                //console.log("item1:" + JSON.stringify(item));
+                return item.value.split('|')[0];
+            },
+            setValue: function (item) {
+                var str = (item.value + "").split('|');
+                var strvalue2 = str.length > 1 ? str[1] : "";
+                return { 'data-value': str[0], 'data-value2': strvalue2, 'real-value': item.key };
+            },
+        })
+            //.focus(function (query, process) {
+            //    $(this).autocomplete("source");
+            //});
+    }
+</script>
+<div class="container clear-v20">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li><a href="@Url.Action("AnchorList")">主播列表</a></li>
+        <li class="active"><a>@(Model.Id > 0 ? "编辑" : "添加")主播</a></li>
+    </ul>
+    <div class="form-horizontal">
+
+        @using (Ajax.BeginForm("SaveAnchor", "Live", null
+            , new AjaxOptions { HttpMethod = "post", OnBegin = "beginpost", OnSuccess = "successpost" }
+            , new { @class = "form-horizontal", id = "editform" }))
+        {
+            @Html.HiddenFor(m => m.ShopId)
+            @Html.HiddenFor(m => m.Id)
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for=""><b style="color:red;">*</b>主播昵称：</label>
+                <div class="col-sm-3">@Html.TextBoxFor(m => m.AnchorName, new { Value = Model.AnchorName, @class = "form-control input-sm" })</div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for=""><b style="color:red;">*</b>微信帐号：</label>
+                <div class="col-sm-3">@Html.TextBoxFor(m => m.WeChat, new { Value = Model.WeChat, @class = "form-control input-sm " })</div>
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label" for=""><b style="color:red;">*</b>关联会员帐号：</label>
+                <div class="col-sm-3" style="position:relative;">
+                    <input type="text" id="txtUserId" value="@Model.ShowName" autocomplete="off" class="form-control input-sm" setsecondId="CellPhone" placeholder="请输入“昵称/账号/手机号”会自动搜索" />
+                    <input type="hidden" id="UserId" name="UserId" value="@Model.UserId" />
+                    选中自动搜索的会员;
+                </div>
+                <input type="hidden" id="hidDataJson" />
+                <input type="hidden" id="hidDataName" />
+                <input type="hidden" id="hidDataKey" />
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for=""><b style="color:red;">*</b>手机号码：</label>
+                <div class="col-sm-3">@Html.TextBoxFor(m => m.CellPhone, new { Value = Model.CellPhone, @class = "form-control input-sm " })</div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" id="btsubmit" class="btn btn-primary">保 存</button>
+                </div>
+            </div>
+        }
+    </div>
+
+
+</div>
+
+<div class="dln" id="payMent">
+    <ul><li><img id="qr_code" src="" style='display:block;margin:0 auto' /></li></ul>
+</div>
+@Html.Hidden("mgurl", Url.Action("AnchorList"))
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        btsubmit = $("#btsubmit");
+
+        //提交前检测
+        $("#editform").bind("submit", function (e) {
+            var userId = $("#txtUserId").attr("real-value");
+            if (userId != null)
+                $("#UserId").val(userId);
+
+            var anchorName = $("#AnchorName").val();
+            if (anchorName == "") {
+                $.dialog.errorTips("请输入主播昵称");
+                return false;
+            }
+
+            var weChat = $("#WeChat").val();
+            if (weChat.length < 1 || weChat.length > 100) {
+                $.dialog.errorTips("请输入主播微信号，字符长度在1-100之间");
+                return false;
+            }
+            
+            if (parseInt($("#UserId").val()) < 0) {
+                $.dialog.errorTips("请关联有效会员帐号");                
+                return false;
+            }
+
+            var cellPhone = $("#CellPhone").val();
+            if (cellPhone.length < 1) {
+                $.dialog.errorTips("请输入手机号");
+                return false;
+            }
+
+            var isdataok = true;
+
+            return isdataok;
+        });
+    });
+    var btsubmit;
+    var loading;
+
+    var isposting = false;
+    function beginpost() {
+        if (isposting) {
+            $.dialog.tips("数据提交中...");
+            return false;
+        }
+        isposting = true;
+        btsubmit.text("提交中...");
+        loading = showLoading();
+    }
+
+    function successpost(data) {
+        isposting = false;
+        btsubmit.text("保 存");
+        loading.close();
+        if (data.success == true) {
+                $.dialog.tips("主播数据保存成功", function () {
+                    window.location.href = $("#mgurl").val();//数据提交成功页面跳转
+                });
+          
+        } else {
+            if (data.msg.indexOf('微信未实名认证') >= 0) {
+                AnchorAuthentication(data.msg.split('|')[1]);
+            } else {
+                $.dialog.errorTips(data.msg);
+            }
+           
+        }
+    }
+
+    //认证图片
+    function AnchorAuthentication(qrcode) {
+        $("#qr_code").attr("src", qrcode);
+        $.dialog({
+            title: '小程序直播认证',
+            lock: true,
+            width: 300,
+            id: 'goodCheck',
+            content: $("#payMent")[0],
+            padding: '20px',
+            button: [
+                {
+                    name: '已完成认证',
+                    callback: function () {
+                    }
+                }]
+        });
+    }
+</script>

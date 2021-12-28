@@ -1,0 +1,77 @@
+﻿@{
+	var weixinShareArgs = this.WeiXinShareArgs;
+}
+@if (weixinShareArgs != null)
+{
+	<!--_WeiXinShare start-->
+	<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script src="~/Areas/Mobile/Templates/Default/Scripts/WeiXinShare.js?v=20183030"></script>
+	<script>
+        (function () {
+            var hidShareTitle = $("#hidShareTitle").val();
+            var hidShareDesc = $("#hidShareDesc").val();
+            var hidShareImage = $("#hidShareImage").val();
+            var hidShareUrl = $("#hidShareUrl").val();
+            if (hidShareTitle == null) {
+                hidShareTitle = document.title;
+            }
+            if (hidShareDesc == null) {
+                hidShareDesc = hidShareTitle + ',精选好货,集您所需';
+            }
+            if (hidShareImage == null) {
+                hidShareImage = location.origin + '/Areas/Mobile/Templates/Default/Images/default.png';
+            }
+            if (hidShareUrl == null || hidShareUrl == "") {
+                hidShareTitle = location.href;
+            }
+            this.winxinShareArgs = window.winxinShareArgs;
+            if (this.winxinShareArgs == null) {
+                this.winxinShareArgs = {
+                    share: {
+                        title: hidShareTitle,
+                        desc: hidShareDesc,
+                        link: hidShareUrl,
+                        imgUrl: hidShareImage
+                    }
+                };
+            }
+			if(this.winxinShareArgs){
+				this.winxinShareArgs=$.extend({
+					appId: '@weixinShareArgs.AppId',
+					timestamp: '@weixinShareArgs.Timestamp',
+					noncestr: '@weixinShareArgs.NonceStr',
+					signature: '@weixinShareArgs.Signature',
+					success: null,
+					error: null,
+					share: {
+                        title: document.title,
+                        desc: null,
+                        link: location.href,
+                        imgUrl: null,
+						success: null,
+						cancel: null,
+						fail: null,
+						complete: null,
+						trigger: null
+					}
+				},this.winxinShareArgs);
+
+				if(this.winxinShareArgs.share.imgUrl==null||this.winxinShareArgs.share.imgUrl=='')
+					this.winxinShareArgs.share.imgUrl=location.origin+'/Areas/Mobile/Templates/Default/Images/default.png';
+
+				//初始化微信分享
+				initWinxin(this.winxinShareArgs);
+			}
+		})();
+	</script>
+	<!--_WeiXinShare end-->
+}
+else
+{
+    <script>
+        if(loading)
+        {
+            loading.close();
+        }
+	</script>
+}

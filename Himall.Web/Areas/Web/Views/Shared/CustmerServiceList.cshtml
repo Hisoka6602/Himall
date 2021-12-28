@@ -1,0 +1,44 @@
+﻿@model List<Himall.DTO.CustomerService>
+@{
+    Layout = null;
+}
+<!--CustmerServices start-->
+@{ var customerservices = Model; }
+@if (customerservices!=null && customerservices.Count > 0)
+{
+    <span>
+        @foreach (var item in customerservices)
+        {
+            if (item.Tool == Himall.Entities.CustomerServiceInfo.ServiceTool.MeiQia)
+            {
+                <a href="javascript:void(0)" onclick="commonJS.callMeiQiaCS('@item.AccountCode')" title="@item.Name">
+                    <div class="online-service">
+                        <img src="/images/meiqia_icon.png" />
+                        <em>@item.Name</em>
+                    </div>
+                </a>
+            }
+
+            if (item.Tool == Himall.Entities.CustomerServiceInfo.ServiceTool.QQ)
+            {
+                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=@item.AccountCode&amp;site=qq&amp;menu=yes" title="@item.Name">
+                    <div class="online-service">
+                        <i class="qq-img"></i>
+                        <em>@item.Name</em>
+                    </div>
+                </a>
+            }
+
+            if (item.Tool == Himall.Entities.CustomerServiceInfo.ServiceTool.HiChat)
+            {
+                <a href="javascript:void(0)" onclick="OpenHiChat('@item.AccountCode')" title="@item.Name">
+                    <div class="online-service">
+                        <img src="/images/hichat.png" />
+                        <em>@item.Name</em>
+                    </div>
+                </a>
+            }
+        }
+    </span>
+}
+<!--CustmerServices end-->

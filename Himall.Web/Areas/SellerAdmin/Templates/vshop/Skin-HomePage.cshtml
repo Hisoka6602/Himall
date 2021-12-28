@@ -1,0 +1,340 @@
+﻿@{Layout = "/Areas/Mobile/Templates/Default/Views/Shared/_Base.cshtml";}
+@{
+    long curvshopid =(long)ViewBag.VshopId;
+    long curshopid = (long)ViewBag.ShopId;
+}
+<div class="container">
+@(Html.Action("VShopHeader", "vshop", new { id = curvshopid }))
+<link rel="stylesheet" href="/Content/PublicMob/css/style.css" />
+<link rel="stylesheet" href="/Areas/Admin/templates/common/style/mycss.css" rev="stylesheet" type="text/css">
+<link rel="stylesheet" href="/Areas/Admin/templates/common/style/head.css">
+<script type="text/javascript">
+    var curshopid=@curshopid,curvshopid=@curvshopid;
+  $(function(){
+    $.ajax(
+      {
+        url:`/Areas/SellerAdmin/Templates/vshop/${curshopid}/t1/Data/default.json`,
+        data:{
+          timestamp:new Date().getTime()
+        },
+        context:document.getElementById('modules'),
+        success:function(data){
+            var str = '';
+            if (typeof (data) == "string") {
+                data = JSON.parse(data);
+            }
+            var pidlist = [], groupPidList = [], limitPidList = [];
+            for(var i=0; i<data.LModules.length; i++){
+              var de=new Base64(),
+                item=data.LModules[i];
+              if(item.type==1 && item.content.showType== 2){
+                str+=template('initSwiper',item)
+              }else if(item.type===10){
+                str+=template('initCoupons',item)
+              }else{
+				if(item.type===8){
+					item.content.goodslist.forEach(pro => {
+					pidlist.push(pro.item_id);
+				})
+				}
+                  if (item.type === 15) {
+                      item.content.goodslist.forEach(pro => {
+                          groupPidList.push(pro.item_id);
+                      });
+                  }
+                  if (item.type === 14) {
+                      item.content.goodslist.forEach(pro => {
+                          limitPidList.push(pro.item_id);
+                      });
+                  }
+                str+=de.decode(item.dom_conitem);
+              }
+            }
+           $(this).html(str)
+		   if(pidlist.length>0){
+				GetViewProductByIds(pidlist)
+		   }
+            if (limitPidList.length > 0) {
+                GetLimitProductByIds(limitPidList)
+            }
+            if (groupPidList.length > 0) {
+                GetGroupProductByIds(groupPidList)
+            }
+            $('.swiper-container').each(function(){
+					new Swiper('#'+this.id, {
+						pagination: '.swiper-pagination',
+						autoplay:4000,
+						speed:500
+					});
+				});
+        }
+      }
+    )
+  })
+    function GetGroupProductByIds(ids) {
+        $.ajax('/m-wap/home/GetFightGroupViewByIds', {
+            data: {
+                ids: ids.join(',')
+            },
+            dataType: 'json',
+            type: 'get',
+            timeout: 20000,
+            success: function (data) {
+                const res = data.data.data
+                const nodeContent = document.querySelectorAll('.group-product-view')
+                const listarr = []
+                res.forEach(item => {
+                    listarr.push(item.item_id)
+                })
+                nodeContent.forEach(nodeC => {
+                    let nodeLi = nodeC.querySelectorAll('li')
+                    nodeLi.forEach((nodeli) => {
+                        const nodeA = nodeli.querySelector('a')
+                        const actityId = nodeA.href.split('fightgroup/detail/')[1]
+                        const nodeTime = nodeli.querySelector('.time')
+                        const nodeProName = nodeli.querySelector('h3 em')
+                        const nodeSale = nodeli.querySelector('.price span')
+                        const nodeOldSale = nodeli.querySelector('.price s')
+                        const nodeImg = nodeli.querySelector('.product-img img')
+                        if (!listarr.includes(parseInt(actityId))) {
+                            nodeli.style.display = 'none'
+                            return
+                        }
+                        for (let i = 0; i < res.length; i++) {
+                            const stringifyItem = JSON.stringify(res[i])
+                            const item = JSON.parse(stringifyItem)
+                            if (item.item_id === parseInt(actityId)) {
+                                item.times = item.beginSec > 0 ? item.beginSec : item.endSec
+                                nodeImg.src = item.pic
+                                nodeProName ? nodeProName.innerHTML = item.title : ''
+                                nodeSale ? nodeSale.innerHTML = `<i>￥</i>${item.price.toFixed(2)}` : ''
+                                nodeOldSale ? nodeOldSale.innerHTML = `￥${item.saleprice.toFixed(2)}` : ''
+                                item.timetext = item.beginSec > 0 ? '距开始' : '距结束'
+                                if (item.endSec < 0) {
+                                    nodeli.style.display = 'none'
+                                }
+                                setInterval(() => {
+                                    countDown(item.times, (day, hour, minute, second) => {
+                                        item.times -= 1
+                                        if (nodeTime) {
+                                            if (parseFloat(day) > 0) {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${day}</i>天<i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            } else {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            }
+                                        }
+                                    })
+                                }, 1000)
+                            }
+                        }
+
+                    })
+
+                })
+            },
+        })
+    }
+    function GetLimitProductByIds(ids) {
+        $.ajax('/m-wap/home/GetLimitBuyViewByIds', {
+            data: {
+                ids: ids.join(',')
+            },
+            dataType: 'json',
+            type: 'get',
+            timeout: 20000,
+            success: function (data) {
+                const res = data.data.data
+                const nodeContent = document.querySelectorAll('.limit-product-view')
+                const listarr = []
+                res.forEach(item => {
+                    listarr.push(item.pid)
+                })
+                nodeContent.forEach(nodeC => {
+                    let nodeLi = nodeC.querySelectorAll('li')
+                    nodeLi.forEach((nodeli) => {
+                        const nodeA = nodeli.querySelector('a')
+                        const productId = nodeA.href.split('?productId=')[1]
+                        const nodeTime = nodeli.querySelector('.time')
+                        const nodeProName = nodeli.querySelector('h3 em')
+                        const nodeSale = nodeli.querySelector('.price span')
+                        const nodeImg = nodeli.querySelector('.product-img img')
+                        const nodeProgress = nodeli.querySelector('.el-progress-bar__inner')
+                        const nodeOldSale = nodeli.querySelector('.price s')
+                        const nodeStock = nodeli.querySelector('.sale-count .stock')
+                        const nodeSaleCount = nodeli.querySelector('.sale-count .sale')
+                        if (!listarr.includes(parseInt(productId))) {
+                            nodeli.style.display = 'none'
+                            return
+                        }
+                        for (let i = 0; i < res.length; i++) {
+                            const stringifyItem = JSON.stringify(res[i])
+                            const item = JSON.parse(stringifyItem)
+                            if (item.pid === parseInt(productId)) {
+                                item.times = item.beginSec > 0 ? item.beginSec : item.endSec
+                                item.percentage = 100 - item.number / (item.stock + item.number) * 100
+                                nodeImg.src = item.pic
+                                nodeProgress ? nodeProgress.style.width = `${item.percentage}%` : ''
+                                nodeProName ? nodeProName.innerHTML = item.title : ''
+                                nodeSale ? nodeSale.innerHTML = `<i>￥</i>${item.price.toFixed(2)}` : ''
+                                nodeOldSale ? nodeOldSale.innerHTML = `￥${item.saleprice.toFixed(2)}` : ''
+                                nodeStock.innerHTML = `仅剩<i>${item.stock}</i>件`
+                                nodeSaleCount.innerHTML = `已抢<i>${item.number}</i>件`
+                                item.timetext = item.beginSec > 0 ? '距开始' : '距结束'
+                                if (item.endSec < 0) {
+                                    nodeli.style.display = 'none'
+                                }
+                                setInterval(() => {
+                                    countDown(item.times, (day, hour, minute, second) => {
+                                        item.times -= 1
+                                        if (nodeTime) {
+                                            if (parseFloat(day) > 0) {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${day}</i>天<i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            } else {
+                                                nodeTime.innerHTML = `${item.timetext}<span><i>${hour}</i>:<i>${minute}</i>:<i>${second}</i></span>`
+                                            }
+                                        }
+                                    })
+                                }, 1000)
+                            }
+                        }
+
+                    })
+
+                })
+            },
+        })
+    }
+  function GetViewProductByIds(pidlist) {
+		$.ajax('/m-wap/home/GetViewProductsById',{
+			data:{
+		productIds:pidlist.join(',')
+		},
+		type:'get',
+		success:function(data){
+			const nodeUl = document.querySelectorAll('.product-list')//循环找到所有ul盒子
+			nodeUl.forEach(nodeul=>{//循环找到所有ul盒子下面的li
+				let nodeliArray = nodeul.querySelectorAll('li')
+				nodeliArray.forEach(nodeli=>{
+					let views = nodeli.querySelector('.product-wrap')
+					let nodeA = views.querySelector('a')
+					let nodeH = views.querySelector('h3')
+					let nodeSpan = views.querySelectorAll('span')
+					let pirce = views.querySelector('.price')
+					let pidList = nodeA.href.split('/')
+					let pid = pidList[pidList.length-1]
+					data.data.data.forEach(pro=>{//遍历更新商品数据
+						if(pro.id == pid){
+							nodeH.innerHTML = `${pro.pname}`
+							pirce.innerHTML = `<i>¥</i>${pro.price.toFixed(2)}`
+							nodeSpan[1].setAttribute('data-activitytype',pro.activitytype)
+							nodeSpan[1].setAttribute('data-productType',pro.productType)
+						}
+						if(pro.id == pid&&pro.statue != '销售中'){
+							nodeli.style.display = 'none' // 如果不在销售中隐藏当前列表
+						}
+					})
+				})
+			})												
+		}
+		})
+	}
+  function Base64() {
+	_keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	this.decode = function(input) {
+		var output = "";
+		var chr1, chr2, chr3;
+		var enc1, enc2, enc3, enc4;
+		var i = 0;
+		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+		while(i < input.length) {
+			enc1 = _keyStr.indexOf(input.charAt(i++));
+			enc2 = _keyStr.indexOf(input.charAt(i++));
+			enc3 = _keyStr.indexOf(input.charAt(i++));
+			enc4 = _keyStr.indexOf(input.charAt(i++));
+			chr1 = (enc1 << 2) | (enc2 >> 4);
+			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+			chr3 = ((enc3 & 3) << 6) | enc4;
+			output = output + String.fromCharCode(chr1);
+			if(enc3 != 64) {
+				output = output + String.fromCharCode(chr2);
+			}
+			if(enc4 != 64) {
+				output = output + String.fromCharCode(chr3);
+			}
+		}
+		output = _utf8_decode(output);
+		return output;
+	}
+	_utf8_decode = function(utftext) {
+		var string = "";
+		var i = 0;
+		var c = c1 = c2 = 0;
+		while(i < utftext.length) {
+			c = utftext.charCodeAt(i);
+			if(c < 128) {
+				string += String.fromCharCode(c);
+				i++;
+			} else if((c > 191) && (c < 224)) {
+				c2 = utftext.charCodeAt(i + 1);
+				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+				i += 2;
+			} else {
+				c2 = utftext.charCodeAt(i + 1);
+				c3 = utftext.charCodeAt(i + 2);
+				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+				i += 3;
+			}
+		}
+		return string;
+	}
+}
+</script>
+<script type="text/html" id="initCoupons">
+			<div class="wrap" style="background: {{content.bgColor}}; padding: {{content.verticalMargin*2}}px 0;">
+				<div class="coupon-list {{content.showType !== 1?'small':''}}">
+					{{each content.coupons}}
+						<a href='{{$value.link}}'>
+						<div class="items">
+							<img class="coupon-bg" src="/Areas/Admin/Templates/vshop/t1/images/coupon-{{content.showType === 1?'home':'small'}}.png" />
+							<div class="info">
+								<div class="h3"><span>￥</span>{{$value.price||$value.Price}}</div>
+								<div class="h5">{{$value.title||$value.CouponName}}</div>
+								{{if $value.condition}}
+									<div class="p">
+										{{$value.condition!=='0'?'满'+ $value.condition +'元可用':'无使用门槛'}}
+									</div>
+									{{else}}
+									<div class="p">{{$value.OrderAmount?'满'+ $value.OrderAmount +'元可用':'无使用门槛'}}</div>						
+								{{/if}}
+							</div>
+							{{if content.showType === 1}}
+								<img class="coupon-btn" src="/Areas/Admin/Templates/vshop/t1/images/coupon-btn.png" />
+							{{/if}}
+						</div>
+					</a>
+					{{/each}}
+				</div>
+			</div>
+		</script>
+<script type="text/html" id="initSwiper">
+    <div class="swiper-container" {{if content.space=='1'}}style="margin:10px 0"{{/if}} id="swiper_{{id}}">
+        <div class="swiper-wrapper">
+          {{each content.images}}
+              <div class="swiper-slide"><a href="{{$value.link}}"><img src="{{$value.imgSrc}}"/></a></div>
+            {{/each}}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</script>
+<style>#footerbt {display: none;}
+    .container {
+        padding-bottom: 64px;
+    }
+</style>
+        <div id='modules'></div>
+        @{Html.RenderPartial("~/Areas/Mobile/Templates/Default/Views/Shared/_4ButtonsFoot_shop.cshtml");}
+</div>
+<a class="WX-backtop"></a>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/shophome.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/template.js"></script>
+<script src="~/Areas/Mobile/Templates/Default/Scripts/swiper.min.js"></script>

@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "添加直播间";
+}
+@section Styles
+{
+    <link href="~/Areas/SellerAdmin/Content/liveroom.css" rel="stylesheet" />
+}
+<style type="text/css">
+</style>
+<script src="~/Scripts/jquery.hiMallDatagrid.js"></script>
+<script src="~/Scripts/jquery.himallLinkage.nocreate.js"></script>
+<script src="~/Scripts/jquery.placeholder.min.js"></script>
+<script src="~/Scripts/bootstrap.autocomplete.js"></script>
+<link href="~/Areas/SellerAdmin/Content/product.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-datetimepicker.min.css">
+<script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="~/Areas/SellerAdmin/Scripts/AddLiveRoom.js?t=2020091015015"></script>
+<style type="text/css">
+    .SearchListClass { position: absolute; opacity: 2; z-index: 999; left: 180px; top: 30px; width: 300px; height: 100px; background-color: #FFF; border: 1px solid #666; overflow-y: auto; text-align: left; font-size: 12px; }
+</style>
+<script language="javascript">
+
+</script>
+<div class="container">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li><a href="@Url.Action("Management")">直播列表</a></li>
+        <li class="active"><a href="@Url.Action("AddLiveRoom")">创建直播间</a></li>
+    </ul>
+    <div class="form-horizontal">
+        <div class="columnright" style="position: relative">
+            <div class="showbox">
+                <div class="sharebox">
+                    <div id="sharebgBox" class="sharebgbox">
+                    </div>
+                </div>
+                <div class="backwallbox">
+                    <div id="backwallbgbox" class="backwallbgbox">
+                        <div class="preview_card_head">
+                            <div class="preview_card_head_inner">
+                                <span class="preview_card_avatar" style="background-size: cover; background-image: url('/Areas/SellerAdmin/content/images/appletlogo.png');"></span>
+                                <div class="preview_card_head_info">
+                                    <h1 class="preview_card_head_info_title">HiMall演示版</h1>
+                                    <p class="preview_card_head_info_desc">观看人数</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="formitem">
+                <ul>
+                    <li>
+                        <div class="form-group" style="display: none">
+                            <input type="hidden" id="dtp_input1" value="" />
+                            <br />
+                        </div>
+                    </li>
+                    <li>
+                        <span class="formitemtitle "><em>*</em>直播标题：</span>
+                        <input type="text" name="txtName" id="txtName" placeholder="标题长度3-17个汉字(一个汉字等于两个英文字符或特殊字符）" class="forminput form-control" style="width:300px;" />
+                    </li>
+                    <li style="position: relative;">
+                        <span class="formitemtitle "><em>*</em>开播时间：</span>
+                        <input type="text" id="calendarStartTime" class="form-control input-sm start_datetime"  readonly="readonly" style="width:140px;" />
+                        <span class="timerange_text">至</span>
+                        <input type="text" id="calendarEndTime" class="form-control input-sm end_datetime"  readonly="readonly" style="width:140px;" />
+                        <img class="queryImg" src="/Areas/SellerAdmin/content/images/ic_query.png" alt="" />
+                        <div class="tipBox">
+                            <p><strong>说明</strong></p>
+                            <p>
+                                开播时间必须在6个月之内，且在当前时间10分钟之后，主播可提前开始直播，开播和结束时间必须不短于30分钟，不超过24小时，主播可提前结束直播
+                            </p>
+                        </div>
+                    </li>
+
+                    <li style="position: relative;">
+                        <span class="formitemtitle "><em>*</em>主播微信帐号：</span>
+                        <input type="text" name="txtAnchorWeChat" id="txtAnchorWeChat" class="form-control input-sm" style="width:300px; cursor:pointer;" autocomplete="off" />
+                        <input type="hidden" id="hidDataJson" />
+                        <input type="hidden" id="hidDataName" />
+                        <input type="hidden" id="hidDataKey" />
+                        <div id="SearchList" style="" class="SearchListClass form-control">
+                        </div>
+                        <img class="queryImg" src="/Areas/SellerAdmin/content/images/ic_query.png" alt="" />
+                        <div class="tipBox">
+                            <p>
+                                <strong>说明</strong><br />
+                                每个直播间需要绑定一个用作核实主播身份，不会展示给观众,主播微信帐号必须是通过实名认证的微信号
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="formitemtitle "><em>*</em>主播昵称：</span>
+                        <input type="text" name="txtAnchorNickName" id="txtAnchorNickName" class="form-control input-sm" style="width:300px;" />
+                    </li>
+                    <li class="m_none">
+                        <span class="formitemtitle  m_none"><em>*</em>分享卡片封面：</span>
+                        <div class="product pic">
+                            <div class="upload_pic" id="upload_shareimg" style="background-image:url('')"><input type="hidden" name="ShareImg" id="ShareImg" value="" /></div><span class="upload pic btn">上传图片</span><i class="del hide">x</i>
+                        </div>
+                        <div class="upload_pic_notic">
+                            建议尺寸为800*640;
+                            大小不超过1M
+                        </div>
+                    </li>
+                    <li class="m_none">
+                        <span class="formitemtitle  m_none"><em>*</em>直播间背景墙：</span>
+                        <div class="product pic">
+                            <div class="upload_pic" id="upload_coverimg" style="background-image:url('')"><input type="hidden" name="coverImage" id="coverImage" value="" /></div><span class="upload pic btn">上传图片</span><i class="del hide">x</i>
+                        </div>
+                        <div class="upload_pic_notic">
+                            建议尺寸为600*1300;大小不超过2M
+                        </div>
+                    </li>
+                    <li>
+                        <span class="formitemtitle"><em></em>直接间功能：</span>
+                        <div class="checkboxs">
+                            <input type="checkbox" id="chkCloseComment" value="0" checked="checked" />&nbsp;&nbsp;评论<br />
+                            <input type="checkbox" id="chkCloseLike" value="0" checked="checked" />&nbsp;&nbsp;点赞<br />
+                            <input type="checkbox" id="chkCloseGoods" value="0" checked="checked" />&nbsp;&nbsp;商品货架<br />
+                        </div>
+                    </li>
+                    <li><span class="formitemtitle"><em></em>&nbsp;&nbsp;</span></li>
+                    <li><span class="formitemtitle"><em></em>&nbsp;&nbsp;</span></li>
+                    <li><span class="formitemtitle"><em></em>&nbsp;&nbsp;</span></li>
+
+                </ul>
+            </div>
+            <div class="pro-detail-btn clearfix">
+                <input id="btnSave" class="btn btn-default Sclear-P71" style="float:left;margin-left:40%;" type="submit" value="保   存" />
+
+                @*<input id="btnNext" class="btn btn-danger  fr" type="submit" value="下一步" />*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

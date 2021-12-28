@@ -1,0 +1,44 @@
+﻿@using Himall.DTO
+@{
+    ViewBag.Title = "主播列表";
+}
+
+<script src="~/Scripts/jquery.hiMallDatagrid.js"></script>
+<script src="~/Scripts/jquery.himallLinkage.nocreate.js"></script>
+<script src="~/Areas/Admin/Scripts/AnchorList.js?v=20200722"></script>
+<div class="container">
+
+    <ul class="nav nav-tabs-custom clearfix">
+        <li class="active"><a>主播列表</a></li>
+    </ul>
+
+
+    <div class="pd-white-box">
+        <div class="search-box" id="search-box">
+            <form id="search_form" class="form-inline custom-inline" method="post" target="_blank">
+                <div class="form-group">
+                    <label class="label-inline w75" for="">主播名称</label>
+                    <input class="form-control input-ssm" type="text" id="txtAnchorName" name="name">
+                </div>
+                <div class="form-group">
+                    <label class="label-inline w75" for="">选择店铺</label>
+                    <select id="ddlShop" class="form-control input-ssm" name="status">
+                        <option value="">请选择</option>
+                        @foreach (var item in ViewBag.Shops as List<Shop>)
+                        {
+                            <option value="@item.Id">@item.ShopName</option>
+                        }
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <button type="button" id="searchButton" class="btn btn-primary btn-sm">搜 索</button>
+                </div>
+            </form>
+        </div>
+
+        <table id="list" class="table"></table>
+    </div>
+
+</div>

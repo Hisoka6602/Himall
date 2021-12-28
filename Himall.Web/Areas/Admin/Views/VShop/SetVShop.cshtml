@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "入驻微店设置";
+}
+<link href="~/Content/jquery.onoff.css.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.onoff.min.js"></script>
+<script src="~/Scripts/v.js"></script>
+<div class="container clear-v">
+    <ul class="nav nav-tabs-custom clearfix">
+        <li><a href="./VShopManagement">微店列表</a></li>
+        <li><a href="./HotVShop">热门微店管理</a></li>
+        <li><a href="./TopShop">主推微店管理</a></li>
+        <li class="active"><a>入驻微店设置</a></li>
+    </ul>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">启用入驻微店：</label>
+            <div class="col-sm-2"><input type="checkbox" id="vShopSwith" @(ViewBag.StartVShop ? "checked" : string.Empty) value="1"></div>
+            <div class="col-sm-5"><span class="help-default"></span></div>
+        </div>
+
+        <div class="form-group">
+            <div style="width:100%; padding-left:100px;">
+                <label class="tips-top mb0" style="margin-top:0;">
+                    <span class="help-default clear-d"><i></i>说明：此开关仅对小程序生效； </span>
+                </label><br />
+                <label class="tips-top mb0" style="margin-top:0; padding-left:65px;">
+                    <span class="help-default clear-d">关闭开关后，只会保留官方自营的微店。快速通过小程序审核时请关闭此开关，审核通过后再开启。 </span>
+                </label>
+            </div>
+
+        </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="button" id="btnSave" class="btn btn-primary" value="提 交">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('input[type="checkbox"]').onoff();
+        $("#btnSave").click(function () {
+            var data = $("#vShopSwith").is(':checked');
+            $.post("../VShop/SetVshopSwitch", { b: data }, function (result) {
+                if (result.success)
+                    $.dialog.tips("保存成功");
+            });
+        });
+    });
+</script>
